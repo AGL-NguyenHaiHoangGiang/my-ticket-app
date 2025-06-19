@@ -1,0 +1,783 @@
+.text__blue {
+    color: #00acc4;
+}
+
+.account__wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+}
+
+.avatar__container {
+    border-radius: 50%;
+    display: flex;
+    overflow: hidden;
+    align-items: start;
+}
+
+/* Account side pannel */
+.account__side {
+    max-width: 100%;
+    width: 265px;
+}
+
+@media screen and (max-width: 1024px) {
+    .account__side {
+        width: 100%;
+    }
+    
+}
+
+.welcome__container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.avatar__sidebar {
+    width: 60px;
+    height: 60px;
+}
+
+.name__container {
+    align-items: end;
+    align-content: end;
+}
+
+.avatar__container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.welcome__text h4 {
+    font-size: 14px;
+    font-weight: normal;
+    margin: 0;
+}
+
+.welcome__text h3 {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 0;
+}
+
+.horizontal__bar {
+    width: 100%;
+    height: 1px;
+    background-color: white;
+    margin: 15px 0px 15px 0px;
+}
+
+.nav__tag {
+    margin: 10px;
+}
+
+.nav__item {
+    margin: 20px 0px;
+    font-size: 16px;
+    font-weight: normal;
+}
+
+.nav__item a {
+    display: flex;
+    align-items: center;
+}
+
+.nav__item img {
+    fill: white;
+    stroke: white;
+    width: 30px;
+    height: 30px;
+    margin-right: 15px;
+}
+
+.profile__form-input {
+    display: none;
+    border: none;
+    outline: none;
+    width: calc(100% - 18px - 10px);
+    padding: 0 10px;
+    font-size: 1.6rem;
+    font-weight: 500;
+    color: #000;
+    background: transparent;
+    background-color: white;
+    border-radius: 10px;
+    width: 75%;
+    height: 40px;
+    padding: 0px 20px 0px 20px;
+    align-content: center;
+}
+/* End of Account side pannel */
+
+/* Account Main section */
+.main_container {
+    width: calc(100% - 265px - 30px);
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    padding: 30px;
+    font-family: var(--font-inter);
+}
+
+@media screen and (max-width: 1024px) {
+    .main_container {
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .main_container {
+        padding: 20px 20px 30px;
+    }
+}
+
+.main_container h3 {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 0;
+    color: #00acc4;
+}
+
+.account-detail__container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 30px;
+}
+
+@media screen and (max-width: 767px) {
+    .account-detail__container {
+        gap: 0;
+    }
+}
+
+.avatar__main {
+    width: 200px;
+    height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.account-avatar__section {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+    margin: 20px 0 20px 0;
+}
+
+.pill_container_actual {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+}
+
+.pill__container {
+    display: flex;
+    flex: 1;
+    min-height: 40px;
+    max-height: 40px;
+    background-color: rgba(255, 255, 255, 0.1);
+    margin-top: 20px;
+    border: 1px solid;
+    border-color: white;
+    border-radius: 10px;
+    align-items: center;
+    justify-content: center;
+    width: 90%;
+    height: 40px;
+    font-weight: bold;
+    color: #fff;
+    font-size: 16px;
+    font-family: var(--font-roboto);
+}
+
+@media screen and (max-width: 767px) {
+    .pill__container {
+        width: 250px;
+        max-width: 100%;
+        font-size: 1.4rem;
+    }
+}
+
+.pill__container:hover {
+    background: linear-gradient(to right, #00acc4, #006cb9);
+    transition: linear 0.1s;
+}
+
+.blue_background {
+    flex: 2;
+    background-color: #006cb9;
+}
+
+.red_background {
+    flex: 1;
+    background-color: #e31e33;
+}
+
+.red_background:hover {
+    background: #ff4d4d;
+    transition: linear 0.1s;
+}
+
+.personal_detail_container {
+    flex: 3;
+    width: 70%;
+    align-items: end;
+    padding: 10px;
+}
+
+@media screen and (max-width: 767px) {
+    .personal_detail_container {
+        padding: 10px 0;
+    }
+}
+
+.personal_detail_item {
+    margin: 10px 0px 10px 0px;
+    display: flex;
+    gap: 10px;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0px 20px 0px 20px;
+    margin-bottom: 10px;
+}
+
+@media screen and (max-width: 767px) {
+    .personal_detail_item {
+        padding: 0;
+        margin-bottom: 15px;
+        gap: 8px;
+    }
+}
+
+.personal_detail_title {
+    flex: 2 2;
+    min-width: 143px;
+}
+
+.personal_detail_value {
+    flex: 7 2;
+    height: 40px;
+    padding: 0px 20px 0px 20px;
+    align-content: center;
+}
+
+.blur__container {
+    border: none;
+    outline: none;
+    width: calc(100% - 18px - 10px);
+    padding: 0 10px;
+    font-size: 1.6rem;
+    font-weight: 500;
+    color: #fff;
+    background: transparent;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    width: 75%;
+    height: 40px;
+    min-height: 40px;
+    padding: 0px 20px 0px 20px;
+    align-content: center;
+}
+
+@media (max-width: 767px) {
+    .personal_detail_item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .personal_detail_title,
+    .personal_detail_value,
+    .blur__container,
+    .profile__form-input {
+        width: 100%;
+    }
+
+    .account__wrapper {
+        gap: 10px;
+    }
+
+    .personal_detail_value {
+        padding: 5px 12px;
+    }
+
+    .personal_detail_value:last-child {
+        padding: 0;
+    }
+}
+/* End of account main section */
+
+/* Setting section */
+.setting__container {
+    display: flex;
+    flex-direction: column;
+}
+
+.setting__container h4 {
+    margin: 10px 0px 10px 0px;
+}
+
+.setting__item {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    padding: 0 30px 0 0;
+    margin: 20px 0 0;
+}
+
+@media screen and (max-width: 767px) {
+    .setting__item {
+        padding: 0;
+        margin: 20px 0 0;
+    }
+}
+
+.setting__title {
+    width: 80%;
+    line-height: 1.5;
+}
+
+.setting_value {
+    width: 20%;
+}
+
+.toggle-switch {
+    width: 60px;
+    height: 30px;
+    background-color: #444; /* Dark Grey */
+    border-radius: 30px;
+    position: relative;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.toggle-button {
+    width: 26px;
+    height: 26px;
+    background-color: white;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    left: 2px;
+    transform: translateY(-50%);
+    transition: left 0.3s;
+}
+
+/* Active state (ON) */
+.toggle-switch.active {
+    background-color: #00acc4;
+}
+
+.toggle-switch.active .toggle-button {
+    left: 32px;
+}
+
+/* End of Setting section */
+
+/* Begin Ve da mua nav */
+.tab-container {
+    display: flex;
+    width: 100%;
+    margin: 20px auto;
+    gap: 10px;
+}
+
+@media screen and (max-width: 767px) {
+    .tab-container {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+.tab {
+    flex: 1;
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 10px;
+    background: linear-gradient(to right, #00acc4, #006cb9);
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+@media screen and (max-width: 767px) {
+    .tab {
+        width: 100%;
+    }
+}
+
+.tab:hover {
+    transform: scale(1.05);
+}
+
+.tab-content-container {
+    margin-top: 20px;
+    justify-content: space-between;
+}
+
+.tab-content {
+    display: none;
+    border-radius: 10px;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+.ticket_container {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    transition: 0.3s ease;
+    margin-top: 30px;
+    background-color: #27272a;
+    border-radius: 15px;
+}
+
+@media screen and (max-width: 767px) {
+    .ticket_container {
+        flex-direction: row;
+        align-items: flex-start;
+    }
+}
+
+.ticket_topsection_container {
+    display: flex;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 30px;
+    flex-direction: row;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    padding: 25px;
+}
+
+@media screen and (max-width: 767px) {
+    .ticket_topsection_container {
+        flex-direction: column-reverse;
+        align-items: flex-start;
+        padding: 20px;
+        gap: 15px;
+    }
+}
+
+.ticket_topsection_detail_container {
+    width: calc(45% - 30px);
+}
+
+.ticket_topsection_detail_container .text__blue {
+    font-weight: bold;
+}
+
+.ticket_topsection_img_container {
+    border-radius: 15px;
+    overflow: hidden;
+    object-fit: cover;
+    aspect-ratio: 1.74;
+    width: 55%;
+}
+
+.text_success {
+    color: #4fa14f;
+    font-weight: bold;
+}
+
+.text_inprogress {
+    color: #f29339;
+    font-weight: bold;
+}
+
+.text_cancelled {
+    color: #e31e33;
+    font-weight: bold;
+}
+
+.ticket_expand_button {
+    width: 100%;
+    height: 40px;
+    background: linear-gradient(to right, #00acc4, #006cb9);
+    color: white;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.ticket_botsection_container {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    align-content: flex-start;
+    padding: 0 25px;
+    gap: 30px;
+    background: #27272a;
+    height: 0;
+    transition: 0.3s ease;
+    overflow: hidden;
+}
+
+@media screen and (max-width: 767px) {
+    .ticket_botsection_container {
+        padding: 0 20px;
+        gap: 20px;
+    }
+}
+
+.ticket_botsection_left_container {
+    width: calc(45% - 30px);
+}
+
+.ticket_botsection_right_container {
+    width: 55%;
+}
+
+.ticket_botsection_detail_container {
+    display: flex;
+    width: 100%; /* Takes full available width */
+    justify-content: space-between;
+    margin-top: 7px;
+}
+
+@media screen and (max-width: 767px) {
+    .ticket_botsection_detail_container {
+        font-size: 1.4rem;
+    }
+}
+
+.left-text {
+    width: 50%;
+    color: rgb(189, 189, 189);
+}
+
+.right-text {
+    width: 50%;
+    font-weight: bold;
+    align-items: flex-end;
+    justify-content: flex-start;
+}
+
+.ticket_detail_item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 10px 0px 10px 0px;
+}
+
+.icon_container {
+    margin-top: 4px;
+    width: 10%;
+}
+
+.icon_container img {
+    width: 25px;
+    height: 25px;
+    object-fit: contain;
+}
+
+.ticket_detail_item span {
+    width: 90%;
+    line-height: 1.5;
+}
+
+@media screen and (max-width: 767px) {
+    .ticket_detail_item span {
+        font-size: 1.4rem;
+    }
+}
+
+.justify_margin {
+    margin: 0px 0px 0px 3px;
+}
+
+.table_container {
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    padding: 10px;
+    margin-top: 10px;
+}
+
+.ticket-table {
+    border-collapse: collapse;
+    width: 100%;
+    padding: 10px;
+}
+
+@media screen and (max-width: 767px) {
+    .ticket-table {
+        font-size: 1.4rem;
+    }
+}
+
+.ticket-table th,
+.ticket-table td {
+    padding: 14px 18px;
+}
+
+@media screen and (max-width: 767px) {
+    .ticket-table th,
+    .ticket-table td {
+        padding: 15px 8px;
+    }
+}
+
+.left-align {
+    text-align: left;
+}
+.center-align {
+    text-align: center;
+}
+.right-align {
+    text-align: right;
+}
+
+.ticket-table thead {
+    border-bottom: 2px solid #fff;
+}
+
+@media (max-width: 1200px) {
+    .ticket_topsection_img_container,
+    .ticket_topsection_detail_container {
+        width: calc(50% - 15px);
+    }
+
+    .ticket_botsection_left_container,
+    .ticket_botsection_right_container {
+        width: calc(50% - 15px);
+    }
+}
+
+@media (max-width: 767px) {
+    .ticket_topsection_img_container,
+    .ticket_topsection_detail_container {
+        width: 100%;
+        margin: 0px;
+    }
+
+    .ticket_topsection_img_container {
+        border-radius: 10px;
+    }
+
+    .ticket_botsection_left_container,
+    .ticket_botsection_right_container {
+        width: 100%;
+    }
+}
+
+/* Payment Main section */
+.payment_header {
+    display: flex;
+}
+
+.payment_header .pill__container {
+    margin-top: 0px;
+    margin-left: 20px;
+    max-width: 15%;
+    min-width: 150px;
+    min-height: 30px;
+    max-height: 30px;
+}
+
+.card_category {
+    display: flex;
+    flex-direction: column;
+    margin-left: 40px;
+    margin-top: 15px;
+    gap: 10px
+}
+
+@media screen and (max-width: 767px) {
+    .card_category {
+        margin-left: 0px;
+    }
+}
+
+.card_category_header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+}
+
+.card_category_header img{
+    width: 40px;
+    height: 40px;
+}
+
+.card_item_container {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    margin-left: 40px;
+    align-items: center;
+}
+
+.card_item_container img {
+    width: 40px;
+    height: 40px;
+}
+
+.card_item_detail_container {
+    display: flex;
+    flex-direction: column;
+}
+
+.add_payment:hover {
+    transform: scale(1.2);
+
+}
+
+.card_item_header {
+    font-weight: bold;
+
+}
+
+.card_item_value {
+
+}
+
+.hide_by_default {
+    display: none;
+}
+
+.btn {
+    cursor: pointer;
+    padding-top: 5px;
+    border-radius: 6px;
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    display: block;
+}
+
+.btn:hover {
+    background: #ff4d4d;
+    transition: linear 0.1s;
+}
+  
+.btn-outline-danger {
+    display: none;
+    align-items: center;
+    justify-items: center;
+    margin-left: 20px;
+    width: 40px;
+    height: 40px;
+    background-color: rgb(220, 53, 69);
+    color: rgb(255, 255, 255);
+    border: 0.8px solid rgb(220, 53, 69);
+}
+
+.btn-outline-danger svg {
+}
+  
+.bi-trash {
+    fill: rgb(255, 255, 255);
+    width: 22px;
+    height: 22px;
+}
+/* End Payment Main section */

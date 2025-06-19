@@ -1,0 +1,443 @@
+.event__head {
+    padding: 50px 0 30px;
+    background: linear-gradient(180deg, rgba(39, 39, 42, 1) 0%, rgba(0, 0, 0, 1) 100%);
+}
+
+@media screen and (max-width: 767px) {
+    .event__head {
+        padding: 30px 0;
+    }
+}
+
+/* e-ticket  */
+.e-ticket {
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
+    border-radius: 20px;
+    overflow: hidden;
+    background-color: #38383D;
+}
+
+@media screen and (max-width: 768px) {
+    .e-ticket {
+        flex-direction: column-reverse;
+    }
+}
+
+.e-ticket--left {
+    width: 474px;
+    position: relative;
+    padding: 26px;
+}
+
+@media screen and (max-width: 768px) {
+    .e-ticket--left {
+        width: 100%;
+    }
+}
+
+.e-ticket--left::after {
+    content: '';
+    position: absolute;
+    top: -30px;
+    right: -30px;
+    width: 60px;
+    height: 60px;
+    background-color: #27272A;
+    z-index: 2;
+    border-radius: 100%;
+}
+
+@media screen and (max-width: 768px) {
+    .e-ticket--left::after {
+        background-color: #141415;
+        width: 40px;
+        height: 40px;
+        top: -20px;
+        right: -20px;
+    }
+}
+
+.e-ticket--left::before {
+    content: '';
+    position: absolute;
+    bottom: -30px;
+    right: -30px;
+    width: 60px;
+    height: 60px;
+    background-color: #030303;
+    z-index: 2;
+    border-radius: 100%;
+}
+
+@media screen and (max-width: 768px) {
+    .e-ticket--left::before {
+        left: -20px;
+        background-color: #141415;
+        bottom: auto;
+        top: -20px;
+        width: 40px;
+        height: 40px;
+    }
+}
+
+.e-ticket--right {
+    width: calc(100% - 474px);
+    position: relative;
+}
+
+@media screen and (max-width: 768px) {
+    .e-ticket--right {
+        width: 100%;
+    }
+}
+
+.e-ticket--right::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -4px;
+    width: 4px;
+    height: 100%;
+    background: url(../images/common/vertical-dashed.svg) repeat-y center;
+    background-size: contain;
+    z-index: 1;
+    border-radius: 100%;
+}
+
+@media screen and (max-width: 768px) {
+    .e-ticket--right::after {
+        content: unset;
+    }
+}
+
+.e-ticket__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.e-ticket__info {
+    border-top: 1px solid #fff;
+    border-bottom: 1px solid #fff;
+    padding: 25px 0;
+    margin: 20px 0 25px;
+}
+
+.e-ticket__info-item {
+    display: flex;
+    justify-content: space-between;
+    font-weight: 500;
+    font-size: 1.6rem;
+    color: #fff;
+    line-height: 1.4;
+    gap: 15px;
+}
+
+.e-ticket__info-item:not(:first-child) {
+    margin-top: 25px;
+}
+
+.e-ticket__info-icon {
+    max-width: 18px;
+    max-height: 20px;
+}
+
+.e-ticket__info-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.e-ticket__info-text {
+    width: calc(100% - 18px - 15px);
+}
+
+.e-ticket__btn {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.e-ticket__arrow {
+    width: 20px;
+    height: auto;
+    object-fit: cover;
+    margin-top: 13px;
+}
+
+.e-ticket__btn:hover .e-ticket__arrow {
+    animation: arrow 0.8s infinite;
+}
+
+@keyframes arrow {
+    0% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-5px);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+
+.e-ticket-info {
+    display: block;
+    background-color: var(--color-black-800);
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.e-ticket-info__title {
+    padding: 17px 25px;
+    border-bottom: 1px solid #fff;
+}
+
+@media screen and (max-width: 767px) {
+    .e-ticket-info__title {
+        padding: 15px 20px;
+    }
+    
+}
+
+.e-ticket-info__table {
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+.e-ticket-info__table th,
+.e-ticket-info__table td {
+    font-family: var(--font-lato);
+    font-weight: 700;
+    line-height: 1.5;
+    padding: 20px 25px;
+}
+
+@media screen and (max-width: 767px) {
+    .e-ticket-info__table th,
+    .e-ticket-info__table td {
+        font-size: 1.4rem;
+        padding: 16px 20px;
+    }
+    
+}
+
+.e-ticket-info__table th {
+    text-align: left;
+    text-transform: uppercase;
+    width: 50%;
+}
+
+.e-ticket-info__table td {
+    text-align: right;
+    color: var(--color-secondary);
+}
+
+.e-ticket-info__table tr:nth-child(even) {
+    background-color: #555555;
+}
+
+.e-ticket-info__table tr:nth-child(odd) {
+    background-color: #38383D;
+}
+
+.e-ticket-info__booking {
+    padding: 17px 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+@media screen and (max-width: 767px) {
+    .e-ticket-info__booking {
+        padding: 16px 20px;
+        font-size: 1.5rem;
+        line-height: 1.5;
+    }
+    
+}
+
+.e-ticket-info__booking .button {
+    width: 132px;
+    padding: 5px 15px;
+}
+
+@media screen and (max-width: 767px) {
+    .e-ticket-info__booking .button {
+        width: 120px;
+        height: 40px;
+        border-radius: 5px;
+        padding: 5px 10px;
+        font-size: 1.4rem;
+    }
+    
+}
+
+.e-ticket-info__time {
+    display: flex;
+    align-items: center;
+    font-weight: 500;
+    width: calc(100% - 150px);
+}
+
+.e-ticket-info__time-icon {
+    width: 18px;
+    margin-right: 12px;
+    margin-bottom: 3px;
+}
+
+
+
+/* event body */
+.event-detail {
+    margin-top: 30px;
+}
+.event__wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+}
+
+.event__block + .event__block {
+    margin-top: 60px;
+}
+
+@media screen and (max-width: 768px) {
+    .event__block + .event__block {
+        margin-top: 30px;
+    }
+}
+
+/* event sidebar */
+.event__side {
+    width: 258px;
+    max-width: 100%;
+}
+
+@media screen and (max-width: 820px) {
+    .event__side {
+        width: 230px;
+    }
+}
+
+
+@media screen and (max-width: 768px) {
+    .event__side {
+        width: 100%;
+    }
+}
+
+
+/* event content */
+.event__main {
+    width: calc(100% - 258px - 30px);
+}
+
+@media screen and (max-width: 820px) {
+    .event__main {
+        width: calc(100% - 230px - 30px);
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .event__main {
+        width: 100%;
+    }
+}
+
+.event__content {
+    background-color: #fff;
+    color: #000;
+    border-radius: 20px;
+}
+
+.event-title {
+    padding: 17px 25px;
+    border-bottom: 1px solid var(--color-black-900);
+}
+
+
+/* btc */
+.btc {
+    padding: 17px 20px 25px;
+}
+
+.btc__title {
+    margin-bottom: 17px;
+}
+
+.btc__avatar {
+    aspect-ratio: 218 / 150;
+    overflow: hidden;
+}
+
+@media screen and (max-width: 768px) {
+    .btc__avatar {
+        width: 218px;
+    }
+    
+}
+
+@media screen and (max-width: 680px) {
+    .btc__avatar {
+        width: 100%;
+    }
+}
+
+.btc__avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.btc__info {
+    padding: 17px 0 20px;
+    border-bottom: 1px solid #fff;
+}
+
+@media screen and (max-width: 768px) {
+    .btc__info {
+        width: calc(100% - 218px - 20px);
+        text-align: center;
+    } 
+}
+
+@media screen and (max-width: 680px) {
+    .btc__info {
+        width: 100%;
+        text-align: left;
+    } 
+}
+
+.btc__name {
+    margin-bottom: 8px;
+}
+
+.btc__desc {
+    margin-top: 20px;
+}
+
+@media screen and (max-width: 768px) {
+    .btc__content {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+}
+
+@media screen and (max-width: 680px) {
+    .btc__content {
+        display: block;
+    }
+}
+
+/* advertisement */
+.advertisement img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}

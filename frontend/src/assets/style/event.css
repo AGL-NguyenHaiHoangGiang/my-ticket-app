@@ -1,0 +1,10 @@
+.page-event {
+    margin-top: 50px;
+    position: relative;
+}
+
+@media screen and (max-width: 767px) {
+    .page-event {
+        margin-top: 30px;
+    }
+}
