@@ -18,7 +18,8 @@ const BlogSection1 = () => {
         'Chào năm cũ - đón năm mới, "BỮA TIỆC SÁCH" dành cho tất cả các bạn độc giả của chúng mình để gặp gỡ và chia sẻ những cuốn sách Hot nhất năm 2024 với những ưu đãi và nhiều quà tặng siêu hấp dẫn',
       image: blog1,
       link: "/tin-tuc-detail/",
-      hot: true,
+      author: "Bunny",
+      date: "27/12/2024",
     },
     {
       id: 1,
@@ -27,7 +28,8 @@ const BlogSection1 = () => {
         "Tham gia workshop để trải nghiệm nghệ thuật in khắc cao su, tạo ra những tác phẩm độc đáo và sáng tạo.",
       image: blog2,
       link: "/tin-tuc-detail/",
-      hot: false,
+      author: "Bunny",
+      date: "27/12/2024",
     },
     {
       id: 2,
@@ -36,7 +38,8 @@ const BlogSection1 = () => {
         "Tham gia giải chạy Dalat Ultra Trail 2025 để trải nghiệm thiên nhiên tuyệt đẹp và thử thách bản thân.",
       image: blog3,
       link: "/tin-tuc-detail/",
-      hot: false,
+      author: "Bunny",
+      date: "27/12/2024",
     },
     {
       id: 3,
@@ -45,7 +48,8 @@ const BlogSection1 = () => {
         "Thưởng thức cà phê tại Nhà kính kiểu Joost vào thứ 7, nơi mang đến không gian thư giãn và trải nghiệm độc đáo.",
       image: blog4,
       link: "/tin-tuc-detail/",
-      hot: false,
+      author: "Bunny",
+      date: "27/12/2024",
     },
     {
       id: 4,
@@ -54,18 +58,19 @@ const BlogSection1 = () => {
         "Tham gia CHÙM NHO CINEMA 5 để thưởng thức bộ phim 'Close-up' (1990) của Iran, khám phá nghệ thuật điện ảnh độc đáo.",
       image: blog5,
       link: "/tin-tuc-detail/",
-      hot: false,
+      author: "Bunny",
+      date: "27/12/2024",
     },
   ];
   const blogArrayDom = blogArray.map((item) => {
-    if (item.hot) return null;
+    if (item.id == 0) return null;
     return (
       <VerticalPostItem
         key={item.id}
         img={item.image}
         title={item.title}
-        author="Bunny"
-        date="27/12/2024"
+        author={item.author}
+        date={item.date}
       />
     );
   });
