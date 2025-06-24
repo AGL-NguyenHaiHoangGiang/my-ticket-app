@@ -1,6 +1,14 @@
+import React from "react";
+import BlogSection1 from "./blog/blogSection1";
+
 const News = () => {
-    return (
-        <h1>Test Tin tức</h1>
-    );
-}
+  return (
+    <React.Fragment>
+      {/* section 1 */}
+      <BlogSection1 />
+      {/* trending news */}
+      {/* blog bottom */}
+    </React.Fragment>
+  );
+};
 export default News;
