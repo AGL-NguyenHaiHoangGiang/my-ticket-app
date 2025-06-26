@@ -8,9 +8,9 @@ const COLLECTIONS_NAME = 'Keys'
 const keyTokenSchema = new mongoose.Schema(
   {
     user: {
-      type: Schema.Types.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       required: true,
-      ref: 'Shop',
+      ref: 'User',
     },
     privateKey: {
       type: String,

@@ -1,9 +1,9 @@
-"use strict";
+'use strict'
 
-const mongoose = require("mongoose"); 
+const mongoose = require('mongoose')
 
-const DOCUMENT_NAME = "ApiKey";
-const COLLECTIONS_NAME = "ApiKeys";
+const DOCUMENT_NAME = 'ApiKey'
+const COLLECTIONS_NAME = 'ApiKeys'
 
 const apiKeySchema = new mongoose.Schema(
   {
@@ -19,13 +19,13 @@ const apiKeySchema = new mongoose.Schema(
     permissions: {
       type: [String],
       required: true,
-      enum: ["0000", "1111", "2222"],
+      enum: ['0000', '1111', '2222'],
     },
   },
   {
     timestamps: true,
     collection: COLLECTIONS_NAME,
-  }
-);
+  },
+)
 
-module.exports = mongoose.model(DOCUMENT_NAME, apiKeySchema);
+module.exports = mongoose.model(DOCUMENT_NAME, apiKeySchema)
