@@ -1,6 +1,6 @@
 import React from "react";
-import VerticalPostItem from "./verticalPostItem";
-import DataBlog from "./dataBlog";
+import VerticalPostItem from "./news/verticalPostItem";
+import DataBlog from "./data/dataBlog";
 
 import "../../assets/style/style.css";
 import "../../assets/style/blog.css";

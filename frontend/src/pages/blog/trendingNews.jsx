@@ -1,8 +1,8 @@
 import React from "react";
 import "../../assets/style/style.css";
 import "../../assets/style/blog.css";
-import PostItemTrendingNews from "./postItemTrendingNews";
-import DataBlog from "./dataBlog";
+import PostItemTrendingNews from "./news/postItemTrendingNews";
+import DataBlog from "./data/dataBlog";
 
 const TrendingNews = () => {
   const trendingNews = DataBlog.slice(5, 9);
