@@ -93,6 +93,59 @@ const DataBlog = [
     image: blog12,
     title: "Chuỗi sự kiện Giáng sinh tình - Hội chợ Giáng sinh 2024",
   },
+  {
+    id: 9,
+    title: "Ngôi sao điện ảnh Brad Pitt trong bộ phim Meet Joe Black",
+    image: "",
+    description:
+      "Cà phê Điện ảnh tuần này giới thiệu đến bạn một trong những bộ phim đã làm nên tên tuổi Brad Pitt – Meet Joe Black, thuộc thể loại chính kịch xen lẫn lãng mạn, kỳ ảo do Martin Brest đạo diễn và sản xuất.",
+    bigCard: true,
+  },
+  {
+    id: 10,
+    title:
+      "Điện ảnh TÂY BAN NHA tại OSCAR 2024 với bộ phim SOCIETY OF THE SNOW",
+    image: "",
+    description:
+      "Sở hữu một nền điện ảnh lâu đời- Barcelona là nơi đầu tiên tổ chức triển lãm phim ở Tây Ban Nha năm 1895- nhưng điện ảnh Tây Ban Nha chỉ được chú ý đặc biệt trong hơn một thập niên trở lại đây khi liên tiếp ghi tên trên bảng vàng giải thưởng điện ảnh danh giá của thế giới.",
+    bigCard: true,
+  },
+  {
+    id: 11,
+    title:
+      "Salon Âm nhạc thính phòng với chủ đề - HẠ TRẮNG (Ký ức nhạc Việt & Âm nhạc cổ điển)",
+    image: "",
+    description: "",
+    bigCard: false,
+    latest: true,
+  },
+  {
+    id: 12,
+    title:
+      "Salon Âm nhạc thính phòng với chủ đề - HẠ TRẮNG (Ký ức nhạc Việt & Âm nhạc cổ điển)",
+    image: "",
+    description: "",
+    bigCard: false,
+    latest: true,
+  },
+  {
+    id: 13,
+    title:
+      "Salon Âm nhạc thính phòng với chủ đề - HẠ TRẮNG (Ký ức nhạc Việt & Âm nhạc cổ điển)",
+    image: "",
+    description: "",
+    bigCard: false,
+    latest: true,
+  },
+  {
+    id: 14,
+    title:
+      "Salon Âm nhạc thính phòng với chủ đề - HẠ TRẮNG (Ký ức nhạc Việt & Âm nhạc cổ điển)",
+    image: "",
+    description: "",
+    bigCard: false,
+    latest: true,
+  },
 ];
 
 export default DataBlog;

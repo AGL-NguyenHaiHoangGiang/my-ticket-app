@@ -1,6 +1,7 @@
 import React from "react";
 import BlogSection1 from "./blog/blogSection1";
 import TrendingNews from "./blog/trendingNews";
+import BlogBottom from "./blog/blogBottom";
 
 const News = () => {
   return (
@@ -10,6 +11,7 @@ const News = () => {
       {/* trending news */}
       <TrendingNews />
       {/* blog bottom */}
+      <BlogBottom />
     </React.Fragment>
   );
 };
