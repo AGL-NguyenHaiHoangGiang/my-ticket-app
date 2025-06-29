@@ -2,9 +2,13 @@
 
 const mongoose = require('mongoose')
 const AutoIncrement = require('mongoose-sequence')(mongoose)
+const { default: slugify } = require('slugify')
 
 const DOCUMENT_NAME = 'Blog'
 const COLLECTION_NAME = 'Blogs'
+/**
+ * Index: isDraft, isPublish
+ */
 
 const blogSchema = new mongoose.Schema(
   {
@@ -20,7 +24,6 @@ const blogSchema = new mongoose.Schema(
       type: String,
       required: true,
       unique: true,
-      lowercase: true,
     },
     blog_image: {
       type: String,
@@ -39,10 +42,17 @@ const blogSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
     },
-    blog_status: {
-      type: String,
-      enum: ['DRAFT', 'PUBLISHED'],
-      default: 'PUBLISHED',
+    isDraft: {
+      type: Boolean,
+      default: true,
+      index: true,
+      select: false,
+    },
+    isPublished: {
+      type: Boolean,
+      default: false,
+      index: true,
+      select: false,
     },
     blog_published_at: {
       type: Date,
@@ -56,5 +66,17 @@ const blogSchema = new mongoose.Schema(
 
 // AutoIncrement ID
 blogSchema.plugin(AutoIncrement, { inc_field: 'blog_id' })
+// Run before save
+blogSchema.pre('save', function (next) {
+  if (!this.blog_slug) {
+    this.blog_slug = slugify(this.blog_title, { lower: true })
+  }
+
+  if (this.isPublished && !this.blog_published_at) {
+    this.blog_published_at = new Date()
+  }
+
+  next()
+})
 
 module.exports = mongoose.model(DOCUMENT_NAME, blogSchema)
