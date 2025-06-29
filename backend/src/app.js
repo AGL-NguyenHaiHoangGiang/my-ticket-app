@@ -1,13 +1,41 @@
-require('dotenv').config();
-
+require('dotenv').config()
 const express = require('express');
-const app = express();
+const morgan = require('morgan');
+const helmet = require('helmet');
+const compression = require('compression');
+
+const app = express()
 
 // init middlewares
-
+app.use(morgan('dev'))
+app.use(helmet())
+app.use(compression())
+app.use(express.json())
+app.use(
+  express.urlencoded({
+    extended: true,
+  }),
+)
 // init db
-require('./dbs/init.mongodb');
+require('./dbs/init.mongodb')
+
+// Define routes
+app.use('/', require('./routes'))
 
 // handle errors
+app.use((req, res, next) => {
+  const error = new Error('Not found')
+  error.status = 404
+  next(error)
+})
 
-module.exports = app;
+app.use((error, req, res, next) => {
+  const statusCode = error.status || 500 // error server code
+  return res.status(statusCode).json({
+    status: 'error',
+    code: statusCode,
+    message: error.message || 'Internal server error',
+  })
+})
+
+module.exports = app

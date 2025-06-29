@@ -4,7 +4,7 @@ const mongoose = require('mongoose')
 const AutoIncrement = require('mongoose-sequence')(mongoose)
 
 const DOCUMENT_NAME = 'Order'
-const COLLECTION_NAME = 'Orders'
+const COLLECTION_NAME = 'orders'
 
 const orderSchema = new mongoose.Schema(
   {

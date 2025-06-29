@@ -4,7 +4,7 @@ const mongoose = require('mongoose')
 const AutoIncrement = require('mongoose-sequence')(mongoose)
 
 const DOCUMENT_NAME = 'Event'
-const COLLECTION_NAME = 'Events'
+const COLLECTION_NAME = 'events'
 
 const eventSchema = new mongoose.Schema(
   {

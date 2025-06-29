@@ -4,7 +4,7 @@ const mongoose = require('mongoose')
 const AutoIncrement = require('mongoose-sequence')(mongoose)
 
 const DOCUMENT_NAME = 'BlogCategory'
-const COLLECTION_NAME = 'BlogCategories'
+const COLLECTION_NAME = 'blog_categories'
 
 const blogCategorySchema = new mongoose.Schema(
   {
