@@ -4,6 +4,7 @@ import OtherNews from "./blogBottom/otherNews";
 import DataBlog from "./data/dataBlog";
 import BigCardNews from "../../components/blog/bigCardNews";
 import VerticalPostItem from "../../components/blog/verticalPostItem";
+import BlogSide from "./blogBottom/blogSide";
 
 const BlogBottom = () => {
   const sportNews = {
@@ -41,6 +42,7 @@ const BlogBottom = () => {
             verticalPost={movieNews.verticalPost}
           />
         </div>
+        <BlogSide />
       </div>
     </div>
   );

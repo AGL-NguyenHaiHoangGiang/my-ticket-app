@@ -1,5 +1,6 @@
-import SideItem from "../../components/blog/sideItem";
-import DataBlog from "./data/dataBlog";
+import SideItem from "../../../components/blog/sideItem";
+import DataBlog from "../data/dataBlog";
+import adsBanner from "../../../assets/images/blog/ad-banner.png";
 
 const BlogSide = () => {
   const blogSideData = DataBlog.slice(0, 5).map((item) => (
@@ -8,11 +9,16 @@ const BlogSide = () => {
   console.log("Blog Side Data:", blogSideData);
 
   return (
-    <div className="blog-side">
+    <div className="blog__side">
       <div className="heading">
         <h2 class="title">Đọc nhiều</h2>
       </div>
       <ul className="side__block">{blogSideData}</ul>
+      <div class="side__block pc-only">
+        <a href="#" class="add-banner">
+          <img src={adsBanner} alt="ads" />
+        </a>
+      </div>
     </div>
   );
 };

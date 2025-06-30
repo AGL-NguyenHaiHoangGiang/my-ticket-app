@@ -2,7 +2,7 @@ import React from "react";
 import BlogSection1 from "./blog/blogSection1";
 import TrendingNews from "./blog/trendingNews";
 import BlogBottom from "./blog/blogBottom";
-import BlogSide from "./blog/blogSide";
+import BlogSide from "./blog/blogBottom/blogSide";
 
 const News = () => {
   return (
@@ -13,8 +13,6 @@ const News = () => {
       <TrendingNews />
       {/* blog bottom */}
       <BlogBottom />
-      {/* blog side */}
-      <BlogSide />
     </React.Fragment>
   );
 };
