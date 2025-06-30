@@ -1,11 +1,11 @@
 import React from "react";
 import "../../assets/style/style.css";
 import "../../assets/style/blog.css";
-import PostItemTrendingNews from "./news/postItemTrendingNews";
+import PostItemTrendingNews from "../../components/blog/postItemTrendingNews";
 import DataBlog from "./data/dataBlog";
 
 const TrendingNews = () => {
-  const trendingNews = DataBlog.slice(5, 9);
+  const trendingNews = DataBlog.slice(1, 5);
   const trendingNewsItems = trendingNews.map((post) => (
     <PostItemTrendingNews
       key={post.id}
@@ -15,7 +15,6 @@ const TrendingNews = () => {
       date="2025"
     />
   ));
-  console.log("Trending News Items:", trendingNewsItems);
 
   return (
     <section className="blog-feature" id="tin-noi-bat">
