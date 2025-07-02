@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import BigCardNews from "../../../components/blog/bigCardNews";
 
 const OtherNews = (prop) => {
@@ -5,9 +6,9 @@ const OtherNews = (prop) => {
     <section>
       <div className="heading">
         <h2 className="title">{prop.title}</h2>
-        <a href="/tin-tuc-category/" className="readmore">
+        <Link to={"/tin-tuc/" + prop.path} className="readmore">
           Xem thêm
-        </a>
+        </Link>
       </div>
       <div className="flex-box">
         <div className="flex-item">

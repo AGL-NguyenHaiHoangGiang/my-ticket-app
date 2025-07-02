@@ -4,8 +4,6 @@ import SmallCardNews from "../../../components/blog/smallCardNews";
 
 const LatestNews = () => {
   const bigCardNewsArr = DataBlog.slice(0, 2);
-  console.log(bigCardNewsArr);
-
   const bigCardNewsList = bigCardNewsArr.map((item) => (
     <BigCardNews
       image={item.image}

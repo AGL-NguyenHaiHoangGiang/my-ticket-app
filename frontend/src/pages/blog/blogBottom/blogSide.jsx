@@ -6,7 +6,6 @@ const BlogSide = () => {
   const blogSideData = DataBlog.slice(0, 5).map((item) => (
     <SideItem title={item.title} />
   ));
-  console.log("Blog Side Data:", blogSideData);
 
   return (
     <div className="blog__side">

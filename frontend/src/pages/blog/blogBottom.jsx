@@ -2,9 +2,9 @@ import React from "react";
 import LatestNews from "./blogBottom/latestNews";
 import OtherNews from "./blogBottom/otherNews";
 import DataBlog from "./data/dataBlog";
-import BigCardNews from "../../components/blog/bigCardNews";
 import VerticalPostItem from "../../components/blog/verticalPostItem";
 import BlogSide from "./blogBottom/blogSide";
+import DataCategory from "./data/dataCategory";
 
 const BlogBottom = () => {
   const sportNews = {
@@ -19,10 +19,12 @@ const BlogBottom = () => {
         date={item.date}
       />
     )),
+    path: DataCategory[0].path,
   };
   const movieNews = {
     ...sportNews,
     title: "Phim ảnh - Giải trí",
+    path: DataCategory[1].path,
   };
 
   return (
@@ -35,11 +37,13 @@ const BlogBottom = () => {
             title={sportNews.title}
             bigCard={sportNews.bigCard}
             verticalPost={sportNews.verticalPost}
+            path={sportNews.path}
           />
           <OtherNews
             title={movieNews.title}
             bigCard={movieNews.bigCard}
             verticalPost={movieNews.verticalPost}
+            path={movieNews.path}
           />
         </div>
         <BlogSide />
