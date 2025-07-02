@@ -32,6 +32,7 @@ const DataBlog = [
     link: "/tin-tuc-detail/",
     author: "Bunny",
     date: "27/12/2024",
+    category: "phim-anh",
   },
   {
     id: 1,
@@ -42,6 +43,7 @@ const DataBlog = [
     link: "/tin-tuc-detail/",
     author: "Bunny",
     date: "27/12/2024",
+    category: "phim-anh",
   },
   {
     id: 2,
@@ -52,6 +54,7 @@ const DataBlog = [
     link: "/tin-tuc-detail/",
     author: "Bunny",
     date: "27/12/2024",
+    category: "phim-anh",
   },
   {
     id: 3,
@@ -62,6 +65,7 @@ const DataBlog = [
     link: "/tin-tuc-detail/",
     author: "Bunny",
     date: "27/12/2024",
+    category: "phim-anh",
   },
   {
     id: 4,
@@ -72,6 +76,7 @@ const DataBlog = [
     link: "/tin-tuc-detail/",
     author: "Bunny",
     date: "27/12/2024",
+    category: "phim-anh",
   },
 ];
 

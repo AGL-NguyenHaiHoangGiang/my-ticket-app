@@ -4,6 +4,7 @@ import DataBlog from "./data/dataBlog";
 
 import "../../assets/style/style.css";
 import "../../assets/style/blog.css";
+import { Link } from "react-router-dom";
 
 const BlogSection1 = () => {
   const section1News = DataBlog.slice(0, 5);
@@ -27,7 +28,10 @@ const BlogSection1 = () => {
         <div className="flex-box">
           <div className="blog1__left">
             <div className="post__card--large">
-              <a href="/tin-tuc-detail/" className="blog__link">
+              <Link
+                to={"/tin-tuc/" + DataBlog[0].category + "/" + DataBlog[0].id}
+                className="post__card"
+              >
                 <div className="post__img blog1__main-image">
                   <img src={DataBlog[0].image} alt="blog" />
                 </div>
@@ -39,7 +43,7 @@ const BlogSection1 = () => {
                     {DataBlog[0].description}
                   </p>
                 </div>
-              </a>
+              </Link>
             </div>
           </div>
           <div className="blog1__right">
