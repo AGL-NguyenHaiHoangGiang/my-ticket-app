@@ -1,6 +1,6 @@
 'use strict'
 
-const { CREATED } = require("../core/success.response")
+const { CREATED, OK } = require("../core/success.response")
 const blogService = require("../services/blog.service")
 
 class BlogController {
@@ -14,6 +14,27 @@ class BlogController {
             }),
         }).send(res)
     }
+
+     // Query
+      /**
+       * @description Get all draft blog
+       * @param {Number} limit
+       * @param {Number} skip
+       * @return {JSON}
+       */
+      getAllDrafts = async (req, res, next) => {
+        new OK({
+          message: 'Get list draft success',
+          metadata: await blogService.findAllDrafts({}),
+        }).send(res)
+      }
+    
+      getAllPublish = async (req, res, next) => {
+        new OK({
+          message: 'Get list publish success',
+          metadata: await blogService.findAllPublish({}),
+        }).send(res)
+      }
 }
 
 module.exports = new BlogController()

@@ -38,8 +38,7 @@ const blogSchema = new mongoose.Schema(
       ref: 'BlogCategory',
     },
     blog_author: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
+      type: String,
     },
     isDraft: {
       type: Boolean,

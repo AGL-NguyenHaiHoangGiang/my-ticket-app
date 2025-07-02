@@ -9,7 +9,7 @@ const COLLECTION_NAME = 'blog_categories'
 const blogCategorySchema = new mongoose.Schema(
   {
     blog_category_id: {
-      type: String,
+      type: Number,
       unique: true,
     },
     blog_category_name: {

@@ -7,7 +7,7 @@ const COLLECTION_NAME = 'event_categories'
 const eventCategorySchema = new mongoose.Schema(
   {
     event_category_id: {
-      type: String,
+      type: Number,
       unique: true,
     },
     event_category_name: {

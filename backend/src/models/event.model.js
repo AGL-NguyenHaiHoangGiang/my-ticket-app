@@ -9,7 +9,7 @@ const COLLECTION_NAME = 'events'
 const eventSchema = new mongoose.Schema(
   {
     event_id: {
-      type: String,
+      type: Number,
       unique: true,
     },
     event_title: {

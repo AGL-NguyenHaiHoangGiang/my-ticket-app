@@ -5,6 +5,11 @@ const blogController = require('../../controller/blog.controller')
 const asyncHandler = require('../../utils/asyncHandler')
 const router = express.Router()
 
+// Create
 router.post('', asyncHandler(blogController.createBlog))
+
+// QUERY
+router.get('/drafts/all', asyncHandler(blogController.getAllDrafts))
+router.get('/published/all', asyncHandler(blogController.getAllPublish))
 
 module.exports = router
