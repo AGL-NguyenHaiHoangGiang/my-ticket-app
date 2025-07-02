@@ -32,7 +32,6 @@ const BlogBottom = () => {
       <div className="container flex-box">
         <div className="blog__main">
           <LatestNews />
-          {/* Thể thao - Du lịch */}
           <OtherNews
             title={sportNews.title}
             bigCard={sportNews.bigCard}

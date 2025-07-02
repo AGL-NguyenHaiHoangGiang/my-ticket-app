@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import DataCategory from "./blog/data/dataCategory";
 import DataBlog from "./blog/data/dataBlog";
 import CategoryNewsTop from "../components/blog/categoryNewsTop";
+import CategoryNewsBottom from "../components/blog/categoryNewsBottom";
 
 const NewsCategory = () => {
   const { category } = useParams();
@@ -17,7 +18,7 @@ const NewsCategory = () => {
   const bottomNews = Array(6)
     .fill(DataBlog[0])
     .map((item) => (
-      <CategoryNewsTop
+      <CategoryNewsBottom
         title={item.title}
         image={item.image}
         author={item.author}
@@ -54,7 +55,7 @@ const NewsCategory = () => {
           </div>
           <div className="category--bottom">
             <div className="flex-box">
-              <div className="blog-main">
+              <div className="blog__main">
                 <div className="blog-new__main flex-box">
                   <ul className="flex-box">{bottomNews}</ul>
                   <div className="blog__btn">
@@ -66,6 +67,50 @@ const NewsCategory = () => {
                     </a>
                   </div>
                 </div>
+              </div>
+              <div className="blog__side">
+                <div className="heading">
+                  <h2 className="title">Tin mới cập nhật</h2>
+                </div>
+                <ul className="side__block">
+                  <li className="side__item">
+                    <div className="side__content">
+                      <a href="/tin-tuc-detail/">
+                        <h3 className="side__title">
+                          Giải chạy đêm Hà Nội - VnExpress Hanoi Midnight 2024
+                        </h3>
+                      </a>
+                    </div>
+                  </li>
+                  <li className="side__item">
+                    <div className="side__content">
+                      <a href="/tin-tuc-detail/">
+                        <h3 className="side__title">
+                          Giải chạy Water Run 2024 tại Công viên bờ sông Sài Gòn
+                        </h3>
+                      </a>
+                    </div>
+                  </li>
+                  <li className="side__item">
+                    <div className="side__content">
+                      <a href="/tin-tuc-detail/">
+                        <h3 className="side__title">
+                          Giải chạy Quảng Trị Marathon 2024
+                        </h3>
+                      </a>
+                    </div>
+                  </li>
+                  <li className="side__item">
+                    <div className="side__content">
+                      <a href="/tin-tuc-detail/">
+                        <h3 className="side__title">
+                          Trọn gói trải nghiệm cắm trại cao cấp ven suối tại Đạ
+                          Tẻh, Lâm Đồng
+                        </h3>
+                      </a>
+                    </div>
+                  </li>
+                </ul>
               </div>
             </div>
           </div>

@@ -1,6 +1,7 @@
 import DataBlog from "../data/dataBlog";
 import BigCardNews from "../../../components/blog/bigCardNews";
 import SmallCardNews from "../../../components/blog/smallCardNews";
+import { Link } from "react-router-dom";
 
 const LatestNews = () => {
   const bigCardNewsArr = DataBlog.slice(0, 2);
@@ -15,9 +16,9 @@ const LatestNews = () => {
     <section>
       <div className="heading">
         <h2 className="title">Tin mới nhất</h2>
-        <a href="/tin-tuc-category/" className="readmore">
+        <Link to="/tin-tuc/tin-moi" className="readmore">
           Xem thêm
-        </a>
+        </Link>
       </div>
       <div className="blog-new flex-box">
         <ul className="flex-box">{bigCardNewsList}</ul>
