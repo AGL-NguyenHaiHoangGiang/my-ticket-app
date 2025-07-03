@@ -9,6 +9,22 @@ const findAllDrafts = async ({ query, limit, skip }) => {
 const findAllPublish = async ({ query, limit, skip }) => {
   return await queryBlog({ query, limit, skip })
 }
+// Search
+const searchBlog = async ({ keySearch }) => {
+  const regexSearch = new RegExp(keySearch)
+  const result = await blogModel
+    .find(
+      {
+        isPublished: true,
+        $text: { $search: regexSearch },
+      },
+      { score: { $meta: 'textScore' } },
+    )
+    .sort({ score: { $meta: 'textScore' } })
+    .lean()
+  return result
+}
+
 //PUT
 const publishBlog = async ({ id }) => {
   const { modifiedCount } = await blogModel.updateOne(
@@ -59,4 +75,5 @@ module.exports = {
   findAllPublish,
   publishBlog,
   unPublishBlog,
+  searchBlog,
 }

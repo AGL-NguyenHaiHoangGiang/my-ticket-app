@@ -5,6 +5,9 @@ const blogController = require('../../controller/blog.controller')
 const asyncHandler = require('../../utils/asyncHandler')
 const router = express.Router()
 
+// Search - No permission
+router.get('/search/:keySearch', asyncHandler(blogController.getListSearchBlog))
+
 // Create
 router.post('', asyncHandler(blogController.createBlog))
 

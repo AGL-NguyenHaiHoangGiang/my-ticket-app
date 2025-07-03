@@ -10,11 +10,11 @@ class BlogService {
   }
 
   // PUT
-  static async publishBlog({id}){
-    return await blogRepository.publishBlog({id})
+  static async publishBlog({ id }) {
+    return await blogRepository.publishBlog({ id })
   }
-  static async unPublishBlog({id}) {
-    return await blogRepository.unPublishBlog({id})    
+  static async unPublishBlog({ id }) {
+    return await blogRepository.unPublishBlog({ id })
   }
 
   // Query
@@ -26,6 +26,10 @@ class BlogService {
   static async findAllPublish({ limit = 10, skip = 0 }) {
     const query = { isPublished: true }
     return await blogRepository.findAllPublish({ query, limit, skip })
+  }
+
+  static async getListSearchBlog({ keySearch }) {
+    return await blogRepository.searchBlog({ keySearch })
   }
 }
 

@@ -62,6 +62,10 @@ const blogSchema = new mongoose.Schema(
   },
 )
 
+// Index for search
+blogSchema.index({title: 'text', description: 'text'})
+
+
 // AutoIncrement ID with unique counter name
 blogSchema.plugin(AutoIncrement, {
   inc_field: 'id',

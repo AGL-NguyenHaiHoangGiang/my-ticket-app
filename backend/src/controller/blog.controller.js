@@ -46,6 +46,13 @@ class BlogController {
       metadata: await blogService.findAllPublish({}),
     }).send(res)
   }
+
+    getListSearchBlog = async (req, res, next) => {
+    new OK({
+      message: 'Get list search blog success',
+      metadata: await blogService.getListSearchBlog(req.params),
+    }).send(res)
+  }
 }
 
 module.exports = new BlogController()
