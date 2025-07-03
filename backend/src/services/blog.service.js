@@ -9,6 +9,14 @@ class BlogService {
     return await blogModel.create(data)
   }
 
+  // PUT
+  static async publishBlog({id}){
+    return await blogRepository.publishBlog({id})
+  }
+  static async unPublishBlog({id}) {
+    return await blogRepository.unPublishBlog({id})    
+  }
+
   // Query
   static async findAllDrafts({ limit = 10, skip = 0 }) {
     const query = { isDraft: true }

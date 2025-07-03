@@ -8,43 +8,43 @@ const COLLECTION_NAME = 'events'
 
 const eventSchema = new mongoose.Schema(
   {
-    event_id: {
+    id: {
       type: Number,
       unique: true,
     },
-    event_title: {
+    title: {
       type: String,
       required: true,
     },
-    event_slug: {
+    slug: {
       type: String,
       unique: true,
       lowercase: true,
       required: true,
     },
-    event_description: {
+    description: {
       type: String,
     },
-    event_content: {
+    content: {
       type: String,
     },
-    event_image: {
+    image: {
       type: String,
     },
-    event_location: {
+    location: {
       type: String,
     },
-    event_start_date: {
+    start_date: {
       type: Date,
     },
-    event_end_date: {
+    end_date: {
       type: Date,
     },
-    event_category: {
+    category: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'EventCategory',
     },
-    event_status: {
+    status: {
       type: String,
       enum: ['UPCOMING', 'ACTIVE', 'FINISHED', 'CANCEL'],
       default: 'UPCOMING',
@@ -56,7 +56,10 @@ const eventSchema = new mongoose.Schema(
   },
 )
 
-// Auto-increment
-eventSchema.plugin(AutoIncrement, { inc_field: 'event_id' })
+// Auto-increment with unique counter name
+eventSchema.plugin(AutoIncrement, {
+  inc_field: 'id',
+  id: 'event_seq',
+})
 
 module.exports = mongoose.model(DOCUMENT_NAME, eventSchema)

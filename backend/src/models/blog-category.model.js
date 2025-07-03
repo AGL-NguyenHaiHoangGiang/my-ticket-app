@@ -8,18 +8,18 @@ const COLLECTION_NAME = 'blog_categories'
 
 const blogCategorySchema = new mongoose.Schema(
   {
-    blog_category_id: {
+    id: {
       type: Number,
       unique: true,
     },
-    blog_category_name: {
+    name: {
       type: String,
       required: true,
     },
-    blog_category_description: {
+    description: {
       type: String,
     },
-    blog_category_status: {
+    status: {
       type: String,
       enum: ['ACTIVE', 'INACTIVE'],
       default: 'ACTIVE',
@@ -30,7 +30,10 @@ const blogCategorySchema = new mongoose.Schema(
     collection: COLLECTION_NAME,
   },
 )
-// AutoIncrement ID
-blogCategorySchema.plugin(AutoIncrement, { inc_field: 'blog_category_id' })
+// AutoIncrement ID with unique counter name
+blogCategorySchema.plugin(AutoIncrement, {
+  inc_field: 'id',
+  id: 'blog_category_seq',
+})
 
 module.exports = mongoose.model(DOCUMENT_NAME, blogCategorySchema)

@@ -9,12 +9,12 @@ const COLLECTION_NAME = 'orders'
 const orderSchema = new mongoose.Schema(
   {
     // Internal auto-increment
-    order_seq: {
+    seq: {
       type: Number,
       unique: true,
     },
     // Public orderID "ORD001"
-    order_id: {
+    id: {
       type: String,
       unique: true,
     },
@@ -23,7 +23,7 @@ const orderSchema = new mongoose.Schema(
       ref: 'User',
       required: true,
     },
-    order_tickets: [
+    tickets: [
       {
         ticket_id: {
           type: mongoose.Schema.Types.ObjectId,
@@ -45,10 +45,10 @@ const orderSchema = new mongoose.Schema(
         },
       },
     ],
-    order_price: {
+    price: {
       type: Number,
     },
-    order_status: {
+    status: {
       type: String,
       enum: ['COMPLETE', 'PENDING', 'CANCEL'],
       default: 'PENDING',
@@ -61,13 +61,13 @@ const orderSchema = new mongoose.Schema(
 )
 
 // Auto-increment
-orderSchema.plugin(AutoIncrement, { inc_field: 'order_seq' })
+orderSchema.plugin(AutoIncrement, { inc_field: 'seq', id: 'order_seq' })
 
-// order_id
+// id
 orderSchema.pre('save', function (next) {
-  if (this.isNew && !this.order_id) {
+  if (this.isNew && !this.id) {
     // ORD001, ORD012, ...
-    this.order_id = `ORD${String(this.order_seq).padStart(3, '0')}`
+    this.id = `ORD${String(this.seq).padStart(3, '0')}`
   }
   next()
 })

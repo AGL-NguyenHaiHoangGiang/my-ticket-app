@@ -12,32 +12,32 @@ const COLLECTION_NAME = 'blogs'
 
 const blogSchema = new mongoose.Schema(
   {
-    blog_id: {
+    id: {
       type: Number,
       unique: true,
     },
-    blog_title: {
+    title: {
       type: String,
       required: true,
     },
-    blog_slug: {
+    slug: {
       type: String,
       unique: true,
     },
-    blog_image: {
+    image: {
       type: String,
     },
-    blog_description: {
+    description: {
       type: String,
     },
-    blog_content: {
+    content: {
       type: String,
     },
-    blog_category: {
+    category: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'BlogCategory',
     },
-    blog_author: {
+    author: {
       type: String,
     },
     isDraft: {
@@ -52,7 +52,7 @@ const blogSchema = new mongoose.Schema(
       index: true,
       select: false,
     },
-    blog_published_at: {
+    publishedAt: {
       type: Date,
     },
   },
@@ -62,24 +62,22 @@ const blogSchema = new mongoose.Schema(
   },
 )
 
-// AutoIncrement ID
-blogSchema.plugin(AutoIncrement, { inc_field: 'blog_id' })
+// AutoIncrement ID with unique counter name
+blogSchema.plugin(AutoIncrement, {
+  inc_field: 'id',
+  id: 'blog_seq',
+})
 // Run before save
 blogSchema.pre('save', function (next) {
   // Always generate slug if not provided or if title changed
-  if (!this.blog_slug || this.isModified('blog_title')) {
-    if (this.blog_title) {
-      this.blog_slug = slugify(this.blog_title, {
+  if (!this.slug || this.isModified('title')) {
+    if (this.title) {
+      this.slug = slugify(this.title, {
         lower: true,
         strict: true,
       })
     }
   }
-
-  if (this.isPublished && !this.blog_published_at) {
-    this.blog_published_at = new Date()
-  }
-
   next()
 })
 
