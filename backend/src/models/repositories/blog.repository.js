@@ -9,6 +9,20 @@ const findAllDrafts = async ({ query, limit, skip }) => {
 const findAllPublish = async ({ query, limit, skip }) => {
   return await queryBlog({ query, limit, skip })
 }
+const findAllBlogs = async ({ limit, sort, page, filter, select }) => {
+  const skip = (page - 1) * limit
+  const sortBy = sort === 'ctime' ? { _id: -1 } : { _id: 1 } // Sort by time
+  const blogs = await blogModel
+    .find(filter)
+    .sort(sortBy)
+    .skip(skip)
+    .limit(limit)
+    .select(select)
+    .lean()
+
+  return blogs
+}
+
 // Search
 const searchBlog = async ({ keySearch }) => {
   const regexSearch = new RegExp(keySearch)
@@ -76,4 +90,5 @@ module.exports = {
   publishBlog,
   unPublishBlog,
   searchBlog,
+  findAllBlogs,
 }

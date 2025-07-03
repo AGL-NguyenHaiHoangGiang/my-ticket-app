@@ -47,10 +47,17 @@ class BlogController {
     }).send(res)
   }
 
-    getListSearchBlog = async (req, res, next) => {
+  getListSearchBlog = async (req, res, next) => {
     new OK({
       message: 'Get list search blog success',
       metadata: await blogService.getListSearchBlog(req.params),
+    }).send(res)
+  }
+
+  getAllBlogs = async (req, res, next) => {
+    new OK({
+      message: 'Get list all blog  success',
+      metadata: await blogService.findAllBlogs(req.query),
     }).send(res)
   }
 }

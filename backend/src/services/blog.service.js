@@ -27,6 +27,20 @@ class BlogService {
     const query = { isPublished: true }
     return await blogRepository.findAllPublish({ query, limit, skip })
   }
+  static async findAllBlogs({
+    limit = 10,
+    sort = 'ctime',
+    page = 1,
+    filter = { isPublished: true },
+  }) {
+    return await blogRepository.findAllBlogs({
+      limit,
+      sort,
+      page,
+      filter,
+      select: ['title', 'image', 'description'],
+    })
+  }
 
   static async getListSearchBlog({ keySearch }) {
     return await blogRepository.searchBlog({ keySearch })
