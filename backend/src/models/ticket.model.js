@@ -17,24 +17,19 @@ const ticketSchema = new mongoose.Schema(
       type: String,
       unique: true,
     },
-    ticket_name: {
-      type: String,
-      unique: true,
-      required: true,
-    },
-    ticket_min_price: {
+    min_price: {
       type: Number,
       required: true,
     },
-    ticket_max_price: {
+    max_price: {
       type: Number,
       required: true,
     },
-    ticket_quantity: {
+    remain: {
       type: Number,
       required: true,
     },
-    ticket_status: {
+    status: {
       type: String,
       enum: ['ACTIVE', 'INACTIVE'],
       default: 'ACTIVE',
