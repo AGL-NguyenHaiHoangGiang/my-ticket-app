@@ -22,6 +22,9 @@ const findAllBlogs = async ({ limit, sort, page, filter, select }) => {
 
   return blogs
 }
+const findBlogBySlug = async ({ slug }) => {
+  return await blogModel.findOne({ slug: slug })
+}
 
 // Search
 const searchBlog = async ({ keySearch }) => {
@@ -91,4 +94,5 @@ module.exports = {
   unPublishBlog,
   searchBlog,
   findAllBlogs,
+  findBlogBySlug,
 }

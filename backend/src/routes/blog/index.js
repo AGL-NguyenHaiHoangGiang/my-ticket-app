@@ -8,7 +8,7 @@ const router = express.Router()
 // GET - No permission
 router.get('/search/:keySearch', asyncHandler(blogController.getListSearchBlog))
 router.get('', asyncHandler(blogController.getAllBlogs))
-
+router.get('/:slug', asyncHandler(blogController.getBlogBySlug))
 // Create
 router.post('', asyncHandler(blogController.createBlog))
 
