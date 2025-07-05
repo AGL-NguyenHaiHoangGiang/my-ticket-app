@@ -1,5 +1,5 @@
 const mongoose =  require('mongoose');
-const connectionString  =  process.env.MONGODB_URI || 'mongodb://localhost:27017/mydatabase';
+const connectionString  =  process.env.PRODUCT_MONGODB_URI || process.env.MONGODB_URI || 'mongodb://localhost:27017/myticket';
 
 mongoose.connect(connectionString)
     .then(() => {
