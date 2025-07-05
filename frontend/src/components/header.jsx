@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import logo from '../assets/images/common/logo.svg';
+import iconSearch from '../assets/images/common/icon-search.svg';
 
 function Header() {
     return (
@@ -12,7 +13,17 @@ function Header() {
                         </Link>
                     </div>
                     <div className="header__support">
-                        {/* component search */}
+                        <div className="header__search">
+                            <form className="search">
+                                <img src={iconSearch} alt="Search" />
+                                <input type="text" placeholder="Bạn tìm gì hôm nay?" />
+                                <button type="submit">Tìm kiếm</button>
+                            </form>
+                        </div>
+
+                        <div className="search--sp js-search-sp">
+                            <img src={iconSearch} width="20" height="20" alt="Search" />
+                        </div>
                     </div>
                 </div>
             </div>
@@ -30,13 +41,13 @@ function Header() {
                         </ul> */}
                         <ul className="nav__list">
                             <li>
-                                <Link to="/live-concert/">Live Concert</Link>
+                                <Link to="/events/live-concert/">Live Concert</Link>
                             </li>
                             <li>
-                                <Link to="/san-khau-nghe-thuat/">Sân khấu & Nghệ thuật</Link>
+                                <Link to="/events/san-khau-nghe-thuat/">Sân khấu & Nghệ thuật</Link>
                             </li>
                             <li>
-                                <Link to="/the-thao/">Thể thao</Link>
+                                <Link to="/events/the-thao/">Thể thao</Link>
                             </li>
                             <li>
                                 <Link to="/tin-tuc/">Tin tức</Link>
@@ -48,7 +59,7 @@ function Header() {
                     </nav>
                 </div>
             </div>
-        </header>
+        </header >
     )
 }
 
