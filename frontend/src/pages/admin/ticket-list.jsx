@@ -1,7 +1,7 @@
 import { Table, Button, Space, Tag } from 'antd';
-import { EditOutlined, DeleteOutlined, EyeOutlined } from '@ant-design/icons';
+import { EditOutlined, DeleteOutlined, EyeOutlined, PlusOutlined } from '@ant-design/icons';
 
-const TicketList = () => {
+const TicketList = ({ onMenuClick }) => {
     const columns = [
         {
             title: 'ID',
@@ -97,7 +97,13 @@ const TicketList = () => {
             <div className="admin-header-section">
                 <h1 className="admin-page-title">Quản lý sự kiện</h1>
                 <div className="admin-actions">
-                    <Button type="primary">Thêm sự kiện</Button>
+                    <Button 
+                        type="primary" 
+                        icon={<PlusOutlined />}
+                        onClick={() => onMenuClick && onMenuClick('add-ticket')}
+                    >
+                        Thêm sự kiện
+                    </Button>
                 </div>
             </div>
             <div className="admin-table-container">

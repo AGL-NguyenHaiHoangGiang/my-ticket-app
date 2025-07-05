@@ -1,4 +1,3 @@
-import React from 'react';
 import { Table, Button, Space, Tag, Avatar } from 'antd';
 import { EditOutlined, DeleteOutlined, EyeOutlined, UserOutlined } from '@ant-design/icons';
 
