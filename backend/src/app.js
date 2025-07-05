@@ -4,6 +4,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 
 const authRoutes = require('./routes/auth.routes');
+const eventRoutes = require('./routes/event.routes');
 const adminAuthRoutes = require('./routes/admin.auth.routes');
 
 const app = express();
@@ -18,6 +19,7 @@ require('./dbs/init.mongodb');
 
 //routes
 app.use('/api/v0/auth', authRoutes);
+app.use('/api/v0/event', eventRoutes);
 app.use('/api/v0/admin/auth', adminAuthRoutes);
 
 module.exports = app;
