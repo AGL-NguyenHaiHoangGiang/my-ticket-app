@@ -4,59 +4,70 @@ const mongoose = require('mongoose')
 const AutoIncrement = require('mongoose-sequence')(mongoose)
 
 const DOCUMENT_NAME = 'Event'
-const COLLECTION_NAME = 'Events'
+const COLLECTION_NAME = 'ticketbox_events'
 
 const eventSchema = new mongoose.Schema(
   {
-    event_id: {
-      type: String,
+    id: {
+      type: Number,
       unique: true,
     },
-    event_title: {
+    name: {
       type: String,
-      required: true,
+      required: true, 
     },
-    event_slug: {
+    imageUrl: {
+      type: String,
+      default: "https://images.tkbcdn.com/2/608/332/ts/ds/d7/ca/da/05869cacf8a20ea0871833237856ba07.png", 
+    },
+    orgLogoUrl: {
+      type: String,
+      default: "https://images.tkbcdn.com/2/608/332/ts/ds/d7/ca/da/05869cacf8a20ea0871833237856ba07.png", 
+    },
+    day: {
+      type: Date,
+      default: Date.now,
+    },
+    price: {
+      type: mongoose.Schema.Types.Int32,
+      default: 0,
+    },
+    deeplink: {
+      type: String,
+      default: "https://ticketbox.vn/phat-bao-nghiem-tran-trien-lam-di-san-phat-giao-doc-ban-giua-long-sai-gon-24329?utm_medium=sr-all-dates_all-prices&utm_source=tkb-search-results",
+    },
+    isNewBookingFlow: {
+      type: Boolean,
+      default: true,
+    },
+    originalId: {
+      type: Number,
+      // Reference to the event's own id
+    },
+    url: {
       type: String,
       unique: true,
       lowercase: true,
       required: true,
     },
-    event_description: {
+    description: {
       type: String,
     },
-    event_content: {
-      type: String,
+    badge: {
+      type: String, // Assuming badge can be of any type, adjust as necessary
     },
-    event_image: {
-      type: String,
-    },
-    event_location: {
-      type: String,
-    },
-    event_start_date: {
-      type: Date,
-    },
-    event_end_date: {
-      type: Date,
-    },
-    event_category: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'EventCategory',
-    },
-    event_status: {
-      type: String,
-      enum: ['UPCOMING', 'ACTIVE', 'FINISHED', 'CANCEL'],
-      default: 'UPCOMING',
+    category: {
+      type: Array,
+      default: ['others'],
     },
   },
   {
-    timestamps: true,
+    timestamps: false, // Disable automatic timestamps
     collection: COLLECTION_NAME,
   },
 )
 
 // Auto-increment
-eventSchema.plugin(AutoIncrement, { inc_field: 'event_id' })
+eventSchema.plugin(AutoIncrement, { inc_field: 'id' })
 
 module.exports = mongoose.model(DOCUMENT_NAME, eventSchema)
