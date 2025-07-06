@@ -1,6 +1,7 @@
 import Title from '../components/title';
 import EventList from '../components/event/event-list';
 import Pagination from '../components/pagination';
+import DateRangePicker from '../components/date-range-picker';
 
 const eventData = [
   {
@@ -156,7 +157,9 @@ const EventCategory = () => {
         <div className="container">
           <div className="heading">
             <Title className='title' text='Live Concert' />
-
+            <div className="filter">
+              <DateRangePicker />
+            </div>
           </div>
           <EventList className="" data={eventData} />
 
