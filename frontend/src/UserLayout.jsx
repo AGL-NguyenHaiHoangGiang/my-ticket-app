@@ -20,8 +20,7 @@ export default function UserLayout() {
     const getMainClass = () => {
         const path = location.pathname;
         if (path === '/') return 'home';
-        else if (path === '/tin-tuc') return 'blog';
-        else if (path.startsWith('/tin-tuc/')) return 'blog category';
+        else if (path === '/tin-tuc/') return 'blog';
         else if (path.startsWith('/tin-tuc/') && path.split('/').length === 3) return 'blog category';
         else if (path.startsWith('/tin-tuc/') && path.split('/').length === 4) return 'blog blog-single';
         else if (path.startsWith('/events')) return 'events';
