@@ -7,6 +7,7 @@ import Footer from './components/footer';
 import Loading from './components/loading';
 import Home from './pages/home';
 import News from './pages/news';
+import EventCategory from './pages/event-category';
 
 import AdminLayout from './pages/admin/app';
 import AdminLogin from './pages/admin/login';
@@ -31,6 +32,7 @@ function App() {
               <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/tin-tuc" element={<News />} />
+                <Route path="/events/:slug" element={<EventCategory />} />
               </Routes>
             </main>
             <Footer />
