@@ -1,8 +1,59 @@
+import React, { useState, useRef, useEffect } from 'react';
+
 import { Link } from 'react-router-dom';
 import logo from '../assets/images/common/logo.svg';
 import iconSearch from '../assets/images/common/icon-search.svg';
 
+import SearchBox from './searchbox';
+
 function Header() {
+    const [openSearchBox, setOpenSearchBox] = useState(false);
+    const searchRef = useRef(null);
+    const searchBoxRef = useRef(null);
+
+    const handleClickOutside = (e) => {
+        // Kiểm tra nếu click không phải trong search form hoặc search box
+        if (
+            searchRef.current &&
+            !searchRef.current.contains(e.target) &&
+            searchBoxRef.current &&
+            !searchBoxRef.current.contains(e.target)
+        ) {
+            setOpenSearchBox(false);
+        }
+    };
+
+    const handleSearchClick = (e) => {
+        console.log(e.target.type);
+        if (e.target.type === 'submit') {
+            e.preventDefault();
+            return;
+        }
+
+        e.preventDefault();
+        setOpenSearchBox(true);
+    };
+
+    const handleSubmitSearch = (e) => {
+        e.preventDefault();
+        // Logic tìm kiếm ở đây
+        console.log('Search submitted');
+    };
+
+    const handleCloseSearchBox = () => {
+        setOpenSearchBox(false);
+    };
+
+    useEffect(() => {
+        // Thêm event listener cho click outside
+        document.addEventListener('mousedown', handleClickOutside);
+
+        // Cleanup event listener
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, []);
+
     return (
         <header className="header">
             <div className="header__top">
@@ -14,16 +65,28 @@ function Header() {
                     </div>
                     <div className="header__support">
                         <div className="header__search">
-                            <form className="search">
-                                <img src={iconSearch} alt="Search" />
-                                <input type="text" placeholder="Bạn tìm gì hôm nay?" />
-                                <button type="submit">Tìm kiếm</button>
-                            </form>
+                            <div className={`js-search ${openSearchBox ? 'show' : ''}`}>
+                                <form
+                                    className="search"
+                                    onClick={handleSearchClick}
+                                    onSubmit={handleSubmitSearch}
+                                >
+                                    <img src={iconSearch} alt="Search" />
+                                    <input ref={searchRef} type="text" placeholder="Bạn tìm gì hôm nay?" />
+                                    <button type="submit">Tìm kiếm</button>
+                                </form>
+                            </div>
                         </div>
 
-                        <div className="search--sp js-search-sp">
+                        <div className="search--sp js-search-sp" onClick={handleSearchClick}>
                             <img src={iconSearch} width="20" height="20" alt="Search" />
                         </div>
+
+                        {openSearchBox && (
+                            <div ref={searchBoxRef}>
+                                <SearchBox onClose={handleCloseSearchBox} />
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>
