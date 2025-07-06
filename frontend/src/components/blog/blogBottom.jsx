@@ -2,7 +2,7 @@ import React from "react";
 import LatestNews from "./blogBottom/latestNews";
 import OtherNews from "./blogBottom/otherNews";
 import DataBlog from "./data/dataBlog";
-import VerticalPostItem from "../../components/blog/verticalPostItem";
+import VerticalPostItem from "./verticalPostItem";
 import BlogSide from "./blogBottom/blogSide";
 import DataCategory from "./data/dataCategory";
 

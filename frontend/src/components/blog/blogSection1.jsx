@@ -1,9 +1,6 @@
 import React from "react";
-import VerticalPostItem from "../../components/blog/verticalPostItem";
+import VerticalPostItem from "./verticalPostItem";
 import DataBlog from "./data/dataBlog";
-
-import "../../assets/style/style.css";
-import "../../assets/style/blog.css";
 import { Link } from "react-router-dom";
 
 const BlogSection1 = () => {

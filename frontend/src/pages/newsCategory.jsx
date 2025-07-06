@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
-import DataCategory from "./blog/data/dataCategory";
-import DataBlog from "./blog/data/dataBlog";
+import DataCategory from "../components/blog/data/dataCategory";
+import DataBlog from "../components/blog/data/dataBlog";
 import CategoryNewsTop from "../components/blog/categoryNewsTop";
 import CategoryNewsBottom from "../components/blog/categoryNewsBottom";
 
@@ -28,7 +28,7 @@ const NewsCategory = () => {
 
   return (
     <React.Fragment>
-      <main className="blog category">
+
         <div className="container">
           <h1 className="title">{categoryData.name}</h1>
           <div className="cat__feature">
@@ -115,7 +115,7 @@ const NewsCategory = () => {
             </div>
           </div>
         </div>
-      </main>
+
     </React.Fragment>
   );
 };

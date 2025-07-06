@@ -1,10 +1,11 @@
 import React from "react";
-import BlogSection1 from "./blog/blogSection1";
-import TrendingNews from "./blog/trendingNews";
-import BlogBottom from "./blog/blogBottom";
-import BlogSide from "./blog/blogBottom/blogSide";
+
+import BlogSection1 from "../components/blog/blogSection1";
+import TrendingNews from "../components/blog/trendingNews";
+import BlogBottom from "../components/blog/blogBottom";
 
 const News = () => {
+  
   return (
     <React.Fragment>
       {/* section 1 */}

@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import BigCardNews from "../../../components/blog/bigCardNews";
+import BigCardNews from "../bigCardNews";
 
 const OtherNews = (prop) => {
   return (
@@ -26,8 +26,8 @@ const OtherNews = (prop) => {
             </div>
           </a>
         </div>
-        <div class="flex-item">
-          <ul class="verticle-post">{prop.verticalPost}</ul>
+        <div className="flex-item">
+          <ul className="verticle-post">{prop.verticalPost}</ul>
         </div>
       </div>
     </section>

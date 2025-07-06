@@ -1,6 +1,6 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import DataBlog from "./blog/data/dataBlog";
+import DataBlog from "../components/blog/data/dataBlog";
 import detailImage from "../assets/images/blog/blog12.png";
 import avatar from "../assets/images/blog/avatar.jpg";
 

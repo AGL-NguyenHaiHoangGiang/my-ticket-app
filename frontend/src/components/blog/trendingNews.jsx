@@ -1,7 +1,4 @@
-import React from "react";
-import "../../assets/style/style.css";
-import "../../assets/style/blog.css";
-import PostItemTrendingNews from "../../components/blog/postItemTrendingNews";
+import PostItemTrendingNews from "./postItemTrendingNews";
 import DataBlog from "./data/dataBlog";
 
 const TrendingNews = () => {

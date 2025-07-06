@@ -10,11 +10,11 @@ const BlogSide = () => {
   return (
     <div className="blog__side">
       <div className="heading">
-        <h2 class="title">Đọc nhiều</h2>
+        <h2 className="title">Đọc nhiều</h2>
       </div>
       <ul className="side__block">{blogSideData}</ul>
-      <div class="side__block pc-only">
-        <a href="#" class="add-banner">
+      <div className="side__block pc-only">
+        <a href="#" className="add-banner">
           <img src={adsBanner} alt="ads" />
         </a>
       </div>
