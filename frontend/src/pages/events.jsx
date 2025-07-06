@@ -149,13 +149,13 @@ const eventData = [
   }
 ];
 
-const EventCategory = () => {
+const Events = () => {
   return (
     <>
       <section className="event-section">
         <div className="container">
           <div className="heading">
-            <Title className='title' text='Live Concert' />
+            <Title className='title' text='Tất cả sự kiện' />
 
           </div>
           <EventList className="" data={eventData} />
@@ -167,4 +167,4 @@ const EventCategory = () => {
   );
 };
 
-export default EventCategory;
+export default Events;

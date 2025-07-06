@@ -165,13 +165,13 @@ function Header() {
                         </ul>
                         <ul className="nav__list">
                             <li>
-                                <Link to="/events/live-concert/">Live Concert</Link>
+                                <Link to="/loai-su-kien/live-concert/">Live Concert</Link>
                             </li>
                             <li>
-                                <Link to="/events/san-khau-nghe-thuat/">Sân khấu & Nghệ thuật</Link>
+                                <Link to="/loai-su-kien/san-khau-nghe-thuat/">Sân khấu & Nghệ thuật</Link>
                             </li>
                             <li>
-                                <Link to="/events/the-thao/">Thể thao</Link>
+                                <Link to="/loai-su-kien/the-thao/">Thể thao</Link>
                             </li>
                             <li>
                                 <Link to="/tin-tuc/">Tin tức</Link>
