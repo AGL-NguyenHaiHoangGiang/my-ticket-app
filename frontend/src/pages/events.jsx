@@ -1,7 +1,6 @@
 import Title from '../components/title';
 import EventList from '../components/event/event-list';
 import Pagination from '../components/pagination';
-import DateRangePicker from '../components/date-range-picker';
 
 const eventData = [
   {
@@ -150,16 +149,14 @@ const eventData = [
   }
 ];
 
-const EventCategory = () => {
+const Events = () => {
   return (
     <>
       <section className="event-section">
         <div className="container">
           <div className="heading">
-            <Title className='title' text='Live Concert' />
-            <div className="filter">
-              <DateRangePicker />
-            </div>
+            <Title className='title' text='Tất cả sự kiện' />
+
           </div>
           <EventList className="" data={eventData} />
 
@@ -170,4 +167,4 @@ const EventCategory = () => {
   );
 };
 
-export default EventCategory;
+export default Events;

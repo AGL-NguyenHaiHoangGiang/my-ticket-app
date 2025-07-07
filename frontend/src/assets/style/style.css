@@ -2165,6 +2165,10 @@ button {
     color: white;
 }
 
+.currentDay {
+    color: #00acc4;
+}
+
 .prev-month,
 .next-month {
     color: var(--color-primary);

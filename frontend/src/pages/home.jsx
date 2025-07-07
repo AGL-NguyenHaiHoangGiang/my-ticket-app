@@ -8,7 +8,7 @@ const eventData = [
     {
         id: 1,
         image: 'https://images.tkbcdn.com/2/608/332/ts/ds/06/c8/2b/eecfd23915973246255c93a58f97200d.png',
-        link: '/live-concert/',
+        link: '/su-kien/live-concert/',
         title: 'LULULOLA SHOW VŨ CÁT TƯỜNG - CHỈ CẦN CÓ NHAU',
         price: '480.000đ',
         location: 'TP. Đà Lạt',
@@ -17,7 +17,7 @@ const eventData = [
     {
         id: 2,
         image: 'https://images.tkbcdn.com/2/608/332/ts/ds/06/c8/2b/eecfd23915973246255c93a58f97200d.png',
-        link: '/live-concert/',
+        link: '/su-kien/live-concert/',
         title: 'LULULOLA SHOW VŨ CÁT TƯỜNG - CHỈ CẦN CÓ NHAU',
         price: '480.000đ',
         location: 'TP. Đà Lạt',
@@ -26,7 +26,7 @@ const eventData = [
     {
         id: 3,
         image: 'https://images.tkbcdn.com/2/608/332/ts/ds/06/c8/2b/eecfd23915973246255c93a58f97200d.png',
-        link: '/live-concert/',
+        link: '/su-kien/live-concert/',
         title: 'LULULOLA SHOW VŨ CÁT TƯỜNG - CHỈ CẦN CÓ NHAU',
         price: '480.000đ',
         location: 'TP. Đà Lạt',
@@ -35,7 +35,7 @@ const eventData = [
     {
         id: 4,
         image: 'https://images.tkbcdn.com/2/608/332/ts/ds/06/c8/2b/eecfd23915973246255c93a58f97200d.png',
-        link: '/live-concert/',
+        link: '/su-kien/live-concert/',
         title: 'LULULOLA SHOW VŨ CÁT TƯỜNG - CHỈ CẦN CÓ NHAU',
         price: '480.000đ',
         location: 'TP. Đà Lạt',
@@ -47,28 +47,28 @@ const newsData = [
     {
         id: 1,
         image: 'https://ticketgo.vn/uploads/images/blog/1716192664.jpg',
-        link: '/live-concert/',
+        link: '/tin-tuc/live-concert/',
         title: 'Tiểu sử và sự nghiệp của ca sĩ Jimmii Nguyễn | Jimmii Nguyễn hội ngộ khán giả thủ đô',
         date: '28 tháng 12, 2024',
     },
     {
         id: 2,
         image: 'https://ticketgo.vn/uploads/images/blog/1716192664.jpg',
-        link: '/live-concert/',
+        link: '/tin-tuc/live-concert/',
         title: 'Tiểu sử và sự nghiệp của ca sĩ Jimmii Nguyễn | Jimmii Nguyễn hội ngộ khán giả thủ đô',
         date: '28 tháng 12, 2024',
     },
     {
         id: 3,
         image: 'https://ticketgo.vn/uploads/images/blog/1716192664.jpg',
-        link: '/live-concert/',
+        link: '/tin-tuc/live-concert/',
         title: 'Tiểu sử và sự nghiệp của ca sĩ Jimmii Nguyễn | Jimmii Nguyễn hội ngộ khán giả thủ đô',
         date: '28 tháng 12, 2024',
     },
     {
         id: 4,
         image: 'https://ticketgo.vn/uploads/images/blog/1716192664.jpg',
-        link: '/live-concert/',
+        link: '/tin-tuc/live-concert/',
         title: 'Tiểu sử và sự nghiệp của ca sĩ Jimmii Nguyễn | Jimmii Nguyễn hội ngộ khán giả thủ đô',
         date: '28 tháng 12, 2024',
     }
@@ -96,7 +96,7 @@ const Home = () => {
                 <div className="container">
                     <div className="heading">
                         <Title className='title' text='Live Concert' />
-                        <Link to="/live-concert/" className="readmore">Xem thêm</Link>
+                        <Link to="/loai-su-kien/live-concert/" className="readmore">Xem thêm</Link>
                     </div>
                     <EventList className="" data={eventData} />
                 </div>
@@ -106,7 +106,7 @@ const Home = () => {
                 <div className="container">
                     <div className="heading">
                         <Title className='title' text='Sân Khấu Nghệ Thuật' />
-                        <Link to="/san-khau-nghe-thuat/" className="readmore">Xem thêm</Link>
+                        <Link to="/loai-su-kien/san-khau-nghe-thuat/" className="readmore">Xem thêm</Link>
                     </div>
                     <EventList className="" data={eventData} />
                 </div>
@@ -116,7 +116,7 @@ const Home = () => {
                 <div className="container">
                     <div className="heading">
                         <Title className='title' text='Thể Thao' />
-                        <Link to="/the-thao/" className="readmore">Xem thêm</Link>
+                        <Link to="/loai-su-kien/the-thao/" className="readmore">Xem thêm</Link>
                     </div>
                     <EventList className="" data={eventData} />
                 </div>
@@ -126,7 +126,7 @@ const Home = () => {
                 <div className="container">
                     <div className="heading">
                         <Title className='title' text='Thể Loại Khác' />
-                        <Link to="/the-loai-khac/" className="readmore">Xem thêm</Link>
+                        <Link to="/loai-su-kien/the-loai-khac/" className="readmore">Xem thêm</Link>
                     </div>
                     <EventList className="" data={eventData} />
                 </div>

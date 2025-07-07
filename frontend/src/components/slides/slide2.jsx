@@ -12,37 +12,37 @@ const slideList = [
     {
         id: 1,
         image: imgEvent,
-        link: '/live-concert/',
+        link: '/su-kien/live-concert/',
         title: 'Slide 1'
     },
     {
         id: 2,
         image: imgEvent,
-        link: '/live-concert/',
+        link: '/su-kien/live-concert/',
         title: 'Slide 2'
     },
     {
         id: 3,
         image: imgEvent,
-        link: '/live-concert/',
+        link: '/su-kien/live-concert/',
         title: 'Slide 1'
     },
     {
         id: 4,
         image: imgEvent,
-        link: '/live-concert/',
+        link: '/su-kien/live-concert/',
         title: 'Slide 2'
     },
     {
         id: 5,
         image: imgEvent,
-        link: '/live-concert/',
+        link: '/su-kien/live-concert/',
         title: 'Slide 3'
     },
     {
         id: 6,
         image: imgEvent,
-        link: '/live-concert/',
+        link: '/su-kien/live-concert/',
         title: 'Slide 4'
     }
 ];
