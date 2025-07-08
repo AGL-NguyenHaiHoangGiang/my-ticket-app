@@ -26,7 +26,7 @@ const eventSchema = new mongoose.Schema(
     },
     day: {
       type: Date,
-      default: Date.now,
+      default: new Date(Date.now()).toISOString,
     },
     price: {
       type: mongoose.Schema.Types.Int32,
