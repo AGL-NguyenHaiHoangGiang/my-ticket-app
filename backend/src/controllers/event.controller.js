@@ -1,4 +1,6 @@
 const Event = require('../models/event.model');
+const EventDetails = require('../models/event-details.model');
+
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
@@ -31,15 +33,15 @@ exports.getAllEvents = async (req, res) => {
 exports.getEventBySlug = async (req, res) => {
   try {
 
-    const event = await Event.findOne({ url: req.params.slug });
+    const eventDetails = await EventDetails.findOne({ url: req.params.slug });
     
-    if (!event) {
+    if (!eventDetails) {
       return res.status(404).json({ error: 'Event not found' });
     }
     
     res.status(200).json({
-      message: 'Event retrieved successfully',
-      body: event,
+      message: 'Event details retrieved successfully',
+      body: eventDetails,
     });
   } catch (err) {
     res.status(500).json({ error: err.message });
