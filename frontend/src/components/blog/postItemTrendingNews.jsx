@@ -1,7 +1,9 @@
+import { Link } from "react-router-dom";
+
 const PostItemTrendingNews = (post) => {
   return (
     <li className="post__item">
-      <a href="/tin-tuc-detail/" className="post__card">
+      <Link to={"/tin-tuc/" + post.category + "/" + post.id}>
         <div className="post__img">
           <img src={post.image} alt="post" />
         </div>
@@ -13,7 +15,7 @@ const PostItemTrendingNews = (post) => {
             </span>
           </div>
         </div>
-      </a>
+      </Link>
     </li>
   );
 };

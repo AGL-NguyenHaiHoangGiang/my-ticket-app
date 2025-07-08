@@ -17,6 +17,8 @@ const BlogBottom = () => {
         title={item.title}
         author={item.author}
         date={item.date}
+        category={item.category}
+        id={item.id}
       />
     )),
     path: DataCategory[0].path,

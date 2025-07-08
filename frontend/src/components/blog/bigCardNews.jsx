@@ -1,7 +1,12 @@
+import { Link } from "react-router-dom";
+
 const BigCardNews = (prop) => {
   return (
     <li className="flex-item">
-      <a className="post__card" href="/tin-tuc-detail/">
+      <Link
+        to={"/tin-tuc/" + prop.category + "/" + prop.id}
+        className="post__card"
+      >
         <div className="image post__img">
           <img src={prop.image} alt={prop.title} />
         </div>
@@ -9,7 +14,7 @@ const BigCardNews = (prop) => {
           <h3 className="title txt-ellip txt-ellip--2">{prop.title}</h3>
           <p className="desc txt-ellip txt-ellip--2">{prop.description}</p>
         </div>
-      </a>
+      </Link>
     </li>
   );
 };

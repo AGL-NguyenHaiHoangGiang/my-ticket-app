@@ -1,10 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import DataBlog from "../components/blog/data/dataBlog";
 import detailImage from "../assets/images/blog/blog12.png";
 import avatar from "../assets/images/blog/avatar.jpg";
 
 const NewDetail = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   const { category, id } = useParams();
   const news = DataBlog.find((item) => item.id === parseInt(id));
   const newsCategory = DataBlog.find((item) => item.category === category);
@@ -26,18 +29,18 @@ const NewDetail = () => {
               <div className="content">
                 <h2>Lorem ipsum dolor sit amet</h2>
                 <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Proin cursus arcu sed ultricies imperdiet. Proin at ante
-                  vitae nibh viverra interdum eget eget neque. Integer sit
-                  amet egestas ante, id fermentum tellus. Donec volutpat
-                  sollicitudin aliquam. Aliquam commodo enim eu ante semper
-                  auctor. Maecenas sodales hendrerit libero vitae tempus.
-                  Donec tincidunt sem a velit auctor accumsan eget at urna.
-                  Vestibulum id orci dignissim, auctor elit in, cursus libero.
-                  Sed ornare lorem et sapien ultricies tempus. Curabitur nulla
-                  massa, consequat a sodales nec, cursus non erat. Aenean
-                  facilisis lorem augue, eu posuere risus hendrerit in.
-                  Phasellus imperdiet suscipit pellentesque.
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin
+                  cursus arcu sed ultricies imperdiet. Proin at ante vitae nibh
+                  viverra interdum eget eget neque. Integer sit amet egestas
+                  ante, id fermentum tellus. Donec volutpat sollicitudin
+                  aliquam. Aliquam commodo enim eu ante semper auctor. Maecenas
+                  sodales hendrerit libero vitae tempus. Donec tincidunt sem a
+                  velit auctor accumsan eget at urna. Vestibulum id orci
+                  dignissim, auctor elit in, cursus libero. Sed ornare lorem et
+                  sapien ultricies tempus. Curabitur nulla massa, consequat a
+                  sodales nec, cursus non erat. Aenean facilisis lorem augue, eu
+                  posuere risus hendrerit in. Phasellus imperdiet suscipit
+                  pellentesque.
                 </p>
                 <img
                   src={detailImage}
@@ -47,17 +50,17 @@ const NewDetail = () => {
                 <h3>Lorem ipsum dolor sit amet</h3>
                 <p>
                   <em>Praesent non metus ac nunc blandit efficitur.</em>{" "}
-                  Phasellus lobortis purus vitae suscipit ornare. Ut est
-                  libero, porta eu est vel, lacinia commodo quam. Sed diam
-                  risus, cursus nec elit in, pharetra tempus lacus. Phasellus
-                  ultrices mauris ligula, nec vehicula magna iaculis sit amet.
-                  Nunc ullamcorper lorem ante, nec condimentum augue hendrerit
-                  vitae. Aliquam viverra, sapien et mattis ultrices, diam
-                  massa dapibus lorem, eu porta est elit id ipsum. Integer
-                  eget rhoncus lacus. Pellentesque lobortis diam justo,
-                  vehicula volutpat orci efficitur vel. Aliquam lectus nisi,
-                  sodales non libero in, congue interdum diam. Vestibulum ac
-                  nunc nec massa faucibus blandit. Suspendisse non arcu diam.
+                  Phasellus lobortis purus vitae suscipit ornare. Ut est libero,
+                  porta eu est vel, lacinia commodo quam. Sed diam risus, cursus
+                  nec elit in, pharetra tempus lacus. Phasellus ultrices mauris
+                  ligula, nec vehicula magna iaculis sit amet. Nunc ullamcorper
+                  lorem ante, nec condimentum augue hendrerit vitae. Aliquam
+                  viverra, sapien et mattis ultrices, diam massa dapibus lorem,
+                  eu porta est elit id ipsum. Integer eget rhoncus lacus.
+                  Pellentesque lobortis diam justo, vehicula volutpat orci
+                  efficitur vel. Aliquam lectus nisi, sodales non libero in,
+                  congue interdum diam. Vestibulum ac nunc nec massa faucibus
+                  blandit. Suspendisse non arcu diam.
                 </p>
                 <ul>
                   <li>
@@ -97,32 +100,32 @@ const NewDetail = () => {
                   </li>
                 </ol>
                 <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Proin cursus arcu sed ultricies imperdiet. Proin at ante
-                  vitae nibh viverra interdum eget eget neque. Integer sit
-                  amet egestas ante, id fermentum tellus. Donec volutpat
-                  sollicitudin aliquam. Aliquam commodo enim eu ante semper
-                  auctor. Maecenas sodales hendrerit libero vitae tempus.
-                  Donec tincidunt sem a velit auctor accumsan eget at urna.
-                  Vestibulum id orci dignissim, auctor elit in, cursus libero.
-                  Sed ornare lorem et sapien ultricies tempus. Curabitur nulla
-                  massa, consequat a sodales nec, cursus non erat. Aenean
-                  facilisis lorem augue, eu posuere risus hendrerit in.
-                  Phasellus imperdiet suscipit pellentesque.
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin
+                  cursus arcu sed ultricies imperdiet. Proin at ante vitae nibh
+                  viverra interdum eget eget neque. Integer sit amet egestas
+                  ante, id fermentum tellus. Donec volutpat sollicitudin
+                  aliquam. Aliquam commodo enim eu ante semper auctor. Maecenas
+                  sodales hendrerit libero vitae tempus. Donec tincidunt sem a
+                  velit auctor accumsan eget at urna. Vestibulum id orci
+                  dignissim, auctor elit in, cursus libero. Sed ornare lorem et
+                  sapien ultricies tempus. Curabitur nulla massa, consequat a
+                  sodales nec, cursus non erat. Aenean facilisis lorem augue, eu
+                  posuere risus hendrerit in. Phasellus imperdiet suscipit
+                  pellentesque.
                 </p>
                 <p>
                   Praesent non metus ac nunc blandit efficitur. Phasellus
-                  lobortis purus vitae suscipit ornare. Ut est libero, porta
-                  eu est vel, lacinia commodo quam. Sed diam risus, cursus nec
-                  elit in, pharetra tempus lacus. Phasellus ultrices mauris
-                  ligula, nec vehicula magna iaculis sit amet. Nunc
-                  ullamcorper lorem ante, nec condimentum augue hendrerit
-                  vitae. Aliquam viverra, sapien et mattis ultrices, diam
-                  massa dapibus lorem, eu porta est elit id ipsum. Integer
-                  eget rhoncus lacus. Pellentesque lobortis diam justo,
-                  vehicula volutpat orci efficitur vel. Aliquam lectus nisi,
-                  sodales non libero in, congue interdum diam. Vestibulum ac
-                  nunc nec massa faucibus blandit. Suspendisse non arcu diam.
+                  lobortis purus vitae suscipit ornare. Ut est libero, porta eu
+                  est vel, lacinia commodo quam. Sed diam risus, cursus nec elit
+                  in, pharetra tempus lacus. Phasellus ultrices mauris ligula,
+                  nec vehicula magna iaculis sit amet. Nunc ullamcorper lorem
+                  ante, nec condimentum augue hendrerit vitae. Aliquam viverra,
+                  sapien et mattis ultrices, diam massa dapibus lorem, eu porta
+                  est elit id ipsum. Integer eget rhoncus lacus. Pellentesque
+                  lobortis diam justo, vehicula volutpat orci efficitur vel.
+                  Aliquam lectus nisi, sodales non libero in, congue interdum
+                  diam. Vestibulum ac nunc nec massa faucibus blandit.
+                  Suspendisse non arcu diam.
                 </p>
               </div>
               <div className="comment-section">
@@ -163,12 +166,12 @@ const NewDetail = () => {
                             <h3>Duck</h3>
                           </div>
                           <p className="comment__content">
-                            Lorem Ipsum is simply dummy text of the printing
-                            and typesetting industry. Lorem Ipsum has been the
-                            industry's standard dummy text ever since the
-                            1500s, when an unknown printer took a galley of
-                            type and scrambled it to make a type specimen
-                            book. It has survived not only five centuries, .
+                            Lorem Ipsum is simply dummy text of the printing and
+                            typesetting industry. Lorem Ipsum has been the
+                            industry's standard dummy text ever since the 1500s,
+                            when an unknown printer took a galley of type and
+                            scrambled it to make a type specimen book. It has
+                            survived not only five centuries, .
                           </p>
                           <div className="comment__actions">
                             <div className="sumit__action">
@@ -189,22 +192,19 @@ const NewDetail = () => {
                     <li className="comment__item">
                       <div className="user-profile">
                         <div className="user-avatar">
-                          <img
-                            src="/assets/images/blog/cat.jpg"
-                            alt="avatar"
-                          />
+                          <img src="/assets/images/blog/cat.jpg" alt="avatar" />
                         </div>
                         <div className="comment__main">
                           <div className="user__name">
                             <h3>Cat</h3>
                           </div>
                           <p className="comment__content">
-                            Lorem Ipsum is simply dummy text of the printing
-                            and typesetting industry. Lorem Ipsum has been the
-                            industry's standard dummy text ever since the
-                            1500s, when an unknown printer took a galley of
-                            type and scrambled it to make a type specimen
-                            book. It has survived not only five centuries, .
+                            Lorem Ipsum is simply dummy text of the printing and
+                            typesetting industry. Lorem Ipsum has been the
+                            industry's standard dummy text ever since the 1500s,
+                            when an unknown printer took a galley of type and
+                            scrambled it to make a type specimen book. It has
+                            survived not only five centuries, .
                           </p>
                           <div className="comment__actions">
                             <div className="sumit__action">
@@ -240,8 +240,8 @@ const NewDetail = () => {
                   <div className="side__content">
                     <a href="/tin-tuc-detail/">
                       <h3 className="side__title">
-                        Ngôi sao điện ảnh Brad Pitt trong bộ phim điện ảnh
-                        MEET JOE BLACK 2025
+                        Ngôi sao điện ảnh Brad Pitt trong bộ phim điện ảnh MEET
+                        JOE BLACK 2025
                       </h3>
                     </a>
                   </div>
@@ -250,8 +250,8 @@ const NewDetail = () => {
                   <div className="side__content">
                     <a href="/tin-tuc-detail/">
                       <h3 className="side__title">
-                        Điện ảnh TÂY BAN NHA tại OSCAR 2024 với bộ phim
-                        SOCIETY OF THE SNOW
+                        Điện ảnh TÂY BAN NHA tại OSCAR 2024 với bộ phim SOCIETY
+                        OF THE SNOW
                       </h3>
                     </a>
                   </div>
@@ -260,8 +260,8 @@ const NewDetail = () => {
                   <div className="side__content">
                     <a href="/tin-tuc-detail/">
                       <h3 className="side__title">
-                        Tiểu sử chi tiết về cuộc đời và sự nghiệp âm nhạc của
-                        ca sĩ Phan Đinh Tùng
+                        Tiểu sử chi tiết về cuộc đời và sự nghiệp âm nhạc của ca
+                        sĩ Phan Đinh Tùng
                       </h3>
                     </a>
                   </div>
@@ -270,8 +270,8 @@ const NewDetail = () => {
                   <div className="side__content">
                     <a href="/tin-tuc-detail/">
                       <h3 className="side__title">
-                        Top 10 địa điểm vui chơi cho bé trong ngày Tết thiếu
-                        nhi 1/6 tại Hà Nội
+                        Top 10 địa điểm vui chơi cho bé trong ngày Tết thiếu nhi
+                        1/6 tại Hà Nội
                       </h3>
                     </a>
                   </div>
