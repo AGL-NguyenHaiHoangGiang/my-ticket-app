@@ -5,55 +5,53 @@ const AutoIncrement = require('mongoose-sequence')(mongoose)
 const slugify = require('slugify')
 
 const DOCUMENT_NAME = 'Blog'
-const COLLECTION_NAME = 'blogs'
+const COLLECTION_NAME = 'article_details'
 /**
  * Index: isDraft, isPublish
  */
 
 const blogSchema = new mongoose.Schema(
   {
-    id: {
+    article_id: {
       type: Number,
       unique: true,
+    },
+    article_friendly_time: {
+      type: String,
+    },
+    article_datetime: {
+      type: Date,
+    },
+    published_date: {
+      type: String,
     },
     title: {
       type: String,
       required: true,
     },
-    slug: {
-      type: String,
-      unique: true,
-    },
-    image: {
+    short_description: {
       type: String,
     },
-    description: {
+    thumpnail: {
       type: String,
-    },
-    content: {
-      type: String,
-    },
-    category: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'BlogCategory',
     },
     author: {
       type: String,
     },
-    isDraft: {
-      type: Boolean,
-      default: true,
-      index: true,
-      select: false,
+    summary: {
+      type: String,
     },
-    isPublished: {
-      type: Boolean,
-      default: false,
-      index: true,
-      select: false,
+    slug: {
+      type: String,
+      unique: true,
     },
-    publishedAt: {
-      type: Date,
+    content: {
+      type: [String],
+      default: [],
+    },
+    category: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'BlogCategory',
     },
   },
   {
@@ -63,13 +61,11 @@ const blogSchema = new mongoose.Schema(
 )
 
 // Index for search
-blogSchema.index({title: 'text', description: 'text'})
-
+blogSchema.index({ title: 'text', short_description: 'text', summary: 'text' })
 
 // AutoIncrement ID with unique counter name
 blogSchema.plugin(AutoIncrement, {
-  inc_field: 'id',
-  id: 'blog_seq',
+  inc_field: 'article_id',
 })
 // Run before save
 blogSchema.pre('save', function (next) {

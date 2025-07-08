@@ -9,37 +9,28 @@ class BlogService {
     return await blogModel.create(data)
   }
 
-  // PUT
-  static async publishBlog({ id }) {
-    return await blogRepository.publishBlog({ id })
-  }
-  static async unPublishBlog({ id }) {
-    return await blogRepository.unPublishBlog({ id })
-  }
-
   // Query
-  static async findAllDrafts({ limit = 10, skip = 0 }) {
-    const query = { isDraft: true }
-    return await blogRepository.findAllDrafts({ query, limit, skip })
-  }
-
-  static async findAllPublish({ limit = 10, skip = 0 }) {
-    const query = { isPublished: true }
-    return await blogRepository.findAllPublish({ query, limit, skip })
-  }
-
+  // Lấy 3 blog mới nhất, trang 1, chỉ lấy title và author
+  // api/v1/blogs?limit=3&page=1&select=title,author
   static async findAllBlogs({
-    limit = 10,
-    sort = 'ctime',
-    page = 1,
-    filter = { isPublished: true },
+    limit = 10, // Số lượng blog mỗi trang
+    sort = 'ctime', // Lấy thời gian mới nhất
+    page = 1, // Trang hiện tại
+    filter = {}, // Lọc
+    select = [], // Chọn fields cần trả về
   }) {
+    // Xử lý select parameter - nếu là string thì convert thành array
+    let selectFields = select
+    if (typeof select === 'string') {
+      selectFields = select.split(',').map((field) => field.trim())
+    }
+
     return await blogRepository.findAllBlogs({
       limit,
       sort,
       page,
       filter,
-      select: ['title', 'image', 'description'],
+      select: selectFields, // Tùy chỉnh ['title', 'author', ...],
     })
   }
 
