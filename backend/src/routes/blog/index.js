@@ -1,7 +1,7 @@
 'use strict'
 
 const express = require('express')
-const blogController = require('../../controller/blog.controller')
+const blogController = require('../../controllers/blog.controller')
 const asyncHandler = require('../../utils/asyncHandler')
 const router = express.Router()
 

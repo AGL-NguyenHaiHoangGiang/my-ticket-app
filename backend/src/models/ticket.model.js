@@ -17,11 +17,6 @@ const ticketSchema = new mongoose.Schema(
       type: Number,
       unique: true,
     },
-    name: {
-      type: String,
-      unique: true,
-      required: true,
-    },
     min_price: {
       type: Number,
       required: true,
@@ -30,7 +25,7 @@ const ticketSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
-    quantity: {
+    remain: {
       type: Number,
       required: true,
     },

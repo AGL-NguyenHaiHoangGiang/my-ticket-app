@@ -11,6 +11,7 @@ import '../../assets/style/admin.css';
 import Dashboard from './dashboard';
 import TicketList from './ticket-list';
 import TicketCategories from './ticket-categories';
+import AddTicket from './add-ticket';
 import BlogList from './blog-list';
 import BlogCategories from './blog-categories';
 import OrderList from './order-list';
@@ -40,11 +41,7 @@ const items = [
       {
         key: 'ticket-categories',
         label: 'Ticket Categories',
-      },
-      {
-        key: 'ticket-status',
-        label: 'Ticket Status',
-      },
+      }
     ],
   },
   {
@@ -79,14 +76,14 @@ const items = [
         key: 'add-order',
         label: 'Add Order',
       },
-      {
-        key: 'order-status',
-        label: 'Order Status',
-      },
-      {
-        key: 'order-history',
-        label: 'Order History',
-      },
+      // {
+      //   key: 'order-status',
+      //   label: 'Order Status',
+      // },
+      // {
+      //   key: 'order-history',
+      //   label: 'Order History',
+      // },
     ],
   },
   {
@@ -102,10 +99,10 @@ const items = [
         key: 'add-user',
         label: 'Add User',
       },
-      {
-        key: 'user-roles',
-        label: 'User Roles',
-      }
+      // {
+      //   key: 'user-roles',
+      //   label: 'User Roles',
+      // }
     ],
   },
 ];
@@ -125,7 +122,9 @@ const App = () => {
       case 'dashboard':
         return <Dashboard />;
       case 'ticket-list':
-        return <TicketList />;
+        return <TicketList onMenuClick={(key) => setSelectedKey(key)} />;
+      case 'add-ticket':
+        return <AddTicket onMenuClick={(key) => setSelectedKey(key)} />;
       case 'ticket-categories':
         return <TicketCategories />;
       case 'blog-list':
@@ -145,6 +144,7 @@ const App = () => {
     const breadcrumbMap = {
       'dashboard': [{ title: 'Trang chủ' }, { title: 'Dashboard' }],
       'ticket-list': [{ title: 'Trang chủ' }, { title: 'Quản lý vé' }, { title: 'Danh sách vé' }],
+      'add-ticket': [{ title: 'Trang chủ' }, { title: 'Quản lý vé' }, { title: 'Thêm vé mới' }],
       'ticket-categories': [{ title: 'Trang chủ' }, { title: 'Quản lý vé' }, { title: 'Danh mục vé' }],
       'blog-list': [{ title: 'Trang chủ' }, { title: 'Quản lý blog' }, { title: 'Danh sách blog' }],
       'blog-categories': [{ title: 'Trang chủ' }, { title: 'Quản lý blog' }, { title: 'Danh mục blog' }],

@@ -1,21 +1,25 @@
 require('dotenv').config()
 const express = require('express');
-const morgan = require('morgan');
-const helmet = require('helmet');
-const compression = require('compression');
+const bodyParser = require('body-parser');
+const cors = require('cors');
 
-const app = express()
+const authRoutes = require('./routes/auth.routes');
+const eventRoutes = require('./routes/event.routes');
+const adminAuthRoutes = require('./routes/admin.auth.routes');
+
+const app = express();
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use(cors({
+    origin: process.env.CORS_ORIGIN || 'http://localhost:3000',
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true
+}));
 
 // init middlewares
-app.use(morgan('dev'))
-app.use(helmet())
-app.use(compression())
-app.use(express.json())
-app.use(
-  express.urlencoded({
-    extended: true,
-  }),
-)
+
 // init db
 require('./dbs/init.mongodb')
 
@@ -37,5 +41,10 @@ app.use((error, req, res, next) => {
     message: error.message || 'Internal server error',
   })
 })
+
+//routes
+app.use('/api/v0/auth', authRoutes);
+app.use('/api/v0/event', eventRoutes);
+app.use('/api/v0/admin/auth', adminAuthRoutes);
 
 module.exports = app

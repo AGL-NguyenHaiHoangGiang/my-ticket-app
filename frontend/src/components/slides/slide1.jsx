@@ -13,25 +13,25 @@ const slideList = [
     {
         id: 1,
         image: mainvisual01,
-        link: '/live-concert/',
+        link: '/su-kien/live-concert/',
         title: 'Slide 1'
     },
     {
         id: 2,
         image: mainvisual02,
-        link: '/live-concert/',
+        link: '/su-kien/live-concert/',
         title: 'Slide 2'
     },
     {
         id: 3,
         image: mainvisual01,
-        link: '/live-concert/',
+        link: '/su-kien/live-concert/',
         title: 'Slide 1'
     },
     {
         id: 4,
         image: mainvisual02,
-        link: '/live-concert/',
+        link: '/su-kien/live-concert/',
         title: 'Slide 2'
     }
 ];

@@ -74,6 +74,30 @@
     overflow-x: auto;
 }
 
+/* Form Container Styles */
+.admin-form-container {
+    background: #f5f5f5;
+    padding: 24px;
+    border-radius: 8px;
+    margin-top: 16px;
+}
+
+.admin-form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 24px;
+    padding-top: 24px;
+    border-top: 1px solid #f0f0f0;
+}
+
+.admin-form-actions .ant-btn {
+    min-width: 100px;
+    height: 40px;
+    border-radius: 6px;
+    font-weight: 500;
+}
+
 /* Login Page Styles */
 .login-container {
     min-height: 100vh;
