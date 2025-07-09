@@ -40,26 +40,35 @@ exports.getAllEvents = async (req, res) => {
       filter.address = { $regex: locationRegex };
     }
     if (isFree) filter.isFree = isFree === 'true';
-    if (category) filter.categories = category;
+    if (category) filter.categories = { $in: [category] };
     if (startDate) filter.day = { $gte: new Date(startDate) };
-    if (endDate) filter.day = { ...filter.day, $lte: new Date(endDate) };
+    if (endDate) filter.day = { ...filter.day, $lt: new Date(endDate).setDate(new Date(endDate).getDate() + 1) };
     
+        
     const eventList = await Event
         .find(filter)
         .skip(skip)
-        .limit(limit);
+        .limit(limit)
+        .sort({ day: -1, startTime: 1 });
+        
+    const totalEvents = await Event.countDocuments(filter);
+    const totalPages = Math.ceil(totalEvents / limit);
             
     if (!eventList || eventList.length === 0) 
-      return res.status(404).json({ error: 'Event not found' });
+      return res.status(200).json({ 
+        message: 'No event found',
+        body: []      
+    });
     
     return res.status(200).json({
       message: 'Events retrieved successfully',
-      body: eventList
+      body: eventList,
+      totalPages,
+      currentPage: page,
     })
     
   } catch (err) {
-    if (res.statusCode !== 401) 
-    res.status(500).json({ error: err.message });
+      res.status(500).json({ error: err.message });
   }
 };
 
