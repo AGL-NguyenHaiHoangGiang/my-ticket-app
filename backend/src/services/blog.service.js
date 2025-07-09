@@ -5,8 +5,13 @@ const blogModel = require('../models/blog.model')
 const blogCategory = require('../models/blog-category.model')
 class BlogService {
   // Create
-  static async createBlog(data) {
-    return await blogModel.create(data)
+  static async createBlog(payload) {
+    return await blogModel.create(payload)
+  }
+
+  // Update
+  static async updateBlog(blogId, payload) {
+    return await blogModel.findByIdAndUpdate(blogId, payload, { new: true })
   }
 
   // Query

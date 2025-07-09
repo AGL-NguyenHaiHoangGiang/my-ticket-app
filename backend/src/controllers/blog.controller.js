@@ -11,7 +11,15 @@ class BlogController {
       metadata: await blogService.createBlog(req.body),
     }).send(res)
   }
+  // PATCH update blog by id
+  updateBlog = async (req, res, next) => {
+    new OK({
+      message: 'Update blog success',
+      metadata: await blogService.updateBlog(req.params.id, req.body),
+    }).send(res)
+  }
 
+  // GET
   getListSearchBlog = async (req, res, next) => {
     new OK({
       message: 'Get list search blog success',

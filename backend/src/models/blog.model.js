@@ -23,17 +23,22 @@ function generatePublishedDate(datetime) {
   const date = new Date(datetime)
 
   const daysOfWeek = [
-    'Chủ nhật', 'Thứ hai', 'Thứ ba', 'Thứ tư', 
-    'Thứ năm', 'Thứ sáu', 'Thứ bảy'
+    'Chủ nhật',
+    'Thứ hai',
+    'Thứ ba',
+    'Thứ tư',
+    'Thứ năm',
+    'Thứ sáu',
+    'Thứ bảy',
   ]
-  
+
   const dayOfWeek = daysOfWeek[date.getDay()]
   const hours = date.getHours().toString().padStart(2, '0')
   const minutes = date.getMinutes().toString().padStart(2, '0')
   const day = date.getDate()
   const month = date.getMonth() + 1
   const year = date.getFullYear()
-  
+
   return `${dayOfWeek}, ${day}/${month}/${year} ${hours}:${minutes} (GMT+7)`
 }
 
@@ -95,6 +100,20 @@ blogSchema.plugin(AutoIncrement, {
   inc_field: 'article_id',
 })
 
+//  update (query)
+blogSchema.pre(['findOneAndUpdate', 'updateOne', 'findByIdAndUpdate'], function (next) {
+  const update = this.getUpdate()
+  if (update.title) {
+    update.slug = slugify(update.title, { lower: true, strict: true })
+  }
+  if (update.article_datetime) {
+    update.article_friendly_time = generateFriendlyTime(update.article_datetime)
+    update.published_date = generatePublishedDate(update.article_datetime)
+  }
+  this.setUpdate(update)
+  next()
+})
+
 // Run before save
 blogSchema.pre('save', function (next) {
   // Set article_datetime to current time if not provided
@@ -112,7 +131,7 @@ blogSchema.pre('save', function (next) {
     this.published_date = generatePublishedDate(this.article_datetime)
   }
 
-  // Always generate slug if not provided or if title changed
+  // Always generate slug
   if (!this.slug || this.isModified('title')) {
     if (this.title) {
       this.slug = slugify(this.title, {

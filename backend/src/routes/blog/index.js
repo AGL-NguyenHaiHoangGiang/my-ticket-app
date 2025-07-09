@@ -12,5 +12,7 @@ router.get('/:slug', asyncHandler(blogController.getBlogBySlug))
 
 // Create by manager
 router.post('', asyncHandler(blogController.createBlog))
+// Update by manager
+router.patch('/:id', asyncHandler(blogController.updateBlog))
 
 module.exports = router
