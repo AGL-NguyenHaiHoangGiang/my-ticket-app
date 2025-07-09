@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import DataBlog from "../components/blog/data/dataBlog";
 import detailImage from "../assets/images/blog/blog12.png";
 import avatar from "../assets/images/blog/avatar.jpg";
@@ -238,42 +238,70 @@ const NewDetail = () => {
               <ul className="side__block">
                 <li className="side__item">
                   <div className="side__content">
-                    <a href="/tin-tuc-detail/">
+                    <Link
+                      to={
+                        "/tin-tuc/" +
+                        DataBlog[0].category +
+                        "/" +
+                        DataBlog[0].id
+                      }
+                    >
                       <h3 className="side__title">
                         Ngôi sao điện ảnh Brad Pitt trong bộ phim điện ảnh MEET
                         JOE BLACK 2025
                       </h3>
-                    </a>
+                    </Link>
                   </div>
                 </li>
                 <li className="side__item">
                   <div className="side__content">
-                    <a href="/tin-tuc-detail/">
+                    <Link
+                      to={
+                        "/tin-tuc/" +
+                        DataBlog[0].category +
+                        "/" +
+                        DataBlog[0].id
+                      }
+                    >
                       <h3 className="side__title">
-                        Điện ảnh TÂY BAN NHA tại OSCAR 2024 với bộ phim SOCIETY
-                        OF THE SNOW
+                        Ngôi sao điện ảnh Brad Pitt trong bộ phim điện ảnh MEET
+                        JOE BLACK 2025
                       </h3>
-                    </a>
+                    </Link>
                   </div>
                 </li>
                 <li className="side__item">
                   <div className="side__content">
-                    <a href="/tin-tuc-detail/">
+                    <Link
+                      to={
+                        "/tin-tuc/" +
+                        DataBlog[0].category +
+                        "/" +
+                        DataBlog[0].id
+                      }
+                    >
                       <h3 className="side__title">
-                        Tiểu sử chi tiết về cuộc đời và sự nghiệp âm nhạc của ca
-                        sĩ Phan Đinh Tùng
+                        Ngôi sao điện ảnh Brad Pitt trong bộ phim điện ảnh MEET
+                        JOE BLACK 2025
                       </h3>
-                    </a>
+                    </Link>
                   </div>
                 </li>
                 <li className="side__item">
                   <div className="side__content">
-                    <a href="/tin-tuc-detail/">
+                    <Link
+                      to={
+                        "/tin-tuc/" +
+                        DataBlog[0].category +
+                        "/" +
+                        DataBlog[0].id
+                      }
+                    >
                       <h3 className="side__title">
-                        Top 10 địa điểm vui chơi cho bé trong ngày Tết thiếu nhi
-                        1/6 tại Hà Nội
+                        Ngôi sao điện ảnh Brad Pitt trong bộ phim điện ảnh MEET
+                        JOE BLACK 2025
                       </h3>
-                    </a>
+                    </Link>
                   </div>
                 </li>
               </ul>
@@ -289,8 +317,8 @@ const NewDetail = () => {
       {/* related post */}
       <div className="related">
         <div className="container">
-          <h2 className="title center _fadeiu">Có thể bạn quan tâm</h2>
-          <ul className="post__list _fadeiu">
+          <h2 className="title center">Có thể bạn quan tâm</h2>
+          <ul className="post__list">
             <li className="post__item">
               <a href="/event-detail/" className="post__card">
                 <div className="post__img">
