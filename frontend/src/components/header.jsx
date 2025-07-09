@@ -177,7 +177,7 @@ function Header() {
                                 <Link to="/tin-tuc/">Tin tức</Link>
                             </li>
                             <li>
-                                <Link to="#">Khác</Link>
+                                <Link to="/loai-su-kien/khac/">Khác</Link>
                             </li>
                         </ul>
                     </nav>
