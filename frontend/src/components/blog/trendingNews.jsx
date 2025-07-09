@@ -8,8 +8,10 @@ const TrendingNews = () => {
       key={post.id}
       image={post.image}
       title={post.title}
-      author="Bunny"
-      date="2025"
+      author={post.author}
+      date={post.date}
+      category={post.category}
+      id={post.id}
     />
   ));
 

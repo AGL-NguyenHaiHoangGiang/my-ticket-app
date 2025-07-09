@@ -12,7 +12,10 @@ const OtherNews = (prop) => {
       </div>
       <div className="flex-box">
         <div className="flex-item">
-          <a className="post__card" href="/tin-tuc-detail/">
+          <Link
+            to={"/tin-tuc/" + prop.bigCard.category + "/" + prop.bigCard.id}
+            className="post__card"
+          >
             <div className="post__img">
               <img src={prop.bigCard.image} alt={prop.bigCard.title} />
             </div>
@@ -24,7 +27,7 @@ const OtherNews = (prop) => {
                 {prop.bigCard.description}
               </p>
             </div>
-          </a>
+          </Link>
         </div>
         <div className="flex-item">
           <ul className="verticle-post">{prop.verticalPost}</ul>
