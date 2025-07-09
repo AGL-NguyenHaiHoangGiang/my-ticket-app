@@ -56,7 +56,7 @@ const eventSchema = new mongoose.Schema(
     badge: {
       type: String, // Assuming badge can be of any type, adjust as necessary
     },
-    category: {
+    categories: {
       type: Array,
       default: ['others'],
     },

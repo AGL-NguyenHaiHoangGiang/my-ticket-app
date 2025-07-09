@@ -40,7 +40,7 @@ exports.getAllEvents = async (req, res) => {
       filter.address = { $regex: locationRegex };
     }
     if (isFree) filter.isFree = isFree === 'true';
-    if (category) filter.categories = category;
+    if (category) filter.categories = { $in: [category] };
     if (startDate) filter.day = { $gte: new Date(startDate) };
     if (endDate) filter.day = { ...filter.day, $lte: new Date(endDate) };
     
