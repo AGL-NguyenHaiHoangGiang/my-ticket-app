@@ -48,7 +48,8 @@ exports.getAllEvents = async (req, res) => {
     const eventList = await Event
         .find(filter)
         .skip(skip)
-        .limit(limit);
+        .limit(limit)
+        .sort({ day: -1, startTime: 1 });
         
     const totalEvents = await Event.countDocuments(filter);
     const totalPages = Math.ceil(totalEvents / limit);
