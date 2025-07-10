@@ -12,7 +12,7 @@ exports.addEvent = async (req, res) => {
       imageUrl, categories, day, deeplink, 
       isNewBookingFlow, originalId, description, 
       orgLogoUrl, price 
-    } = req.body;
+    } = req.body; 
     
     if (!name || !url) {
       return res.status(400).json({ error: 'Name and URL are required' });

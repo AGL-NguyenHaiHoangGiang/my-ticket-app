@@ -1,4 +1,4 @@
-const {CATEGORIES, REQ_LOCATIONS, RES_LOCATIONS} = require('../utils/enums')
+const {CATEGORIES, RES_LOCATIONS} = require('../utils/enums')
 const {requestToresponseLocation} = require('../utils/location.mapper');
 
 const Event = require('../models/event.model');
@@ -18,10 +18,6 @@ exports.getAllEvents = async (req, res) => {
     const filter = {};
     
     // Kiểm tra và xử lý các tham số lọc
-    if (location && !Object.values(REQ_LOCATIONS).includes(location)) {
-      return res.status(400).json({ error: 'Invalid location' });
-    }
-    
     if (category && !Object.values(CATEGORIES).includes(category)) {
       return res.status(400).json({ error: 'Invalid category' });
     }
@@ -35,16 +31,20 @@ exports.getAllEvents = async (req, res) => {
     }
     
     // Tạo bộ lọc dựa trên các tham số
-    if (location && location != REQ_LOCATIONS.TOAN_QUOC ) {
-      const locationRegex = new RegExp(requestToresponseLocation(location), 'i'); 
-      filter.address = { $regex: locationRegex };
-    }
-    if (isFree) filter.isFree = isFree === 'true';
+    if (location) {
+      if (location === "Khác")
+        filter.location = { $nin: [RES_LOCATIONS.HCM, RES_LOCATIONS.HN, RES_LOCATIONS.DL] }
+      else
+        filter.location = { $in: [location] }
+    } 
+    if (isFree) filter.price = { $eq : 0};
     if (category) filter.categories = { $in: [category] };
     if (startDate) filter.day = { $gte: new Date(startDate) };
-    if (endDate) filter.day = { ...filter.day, $lt: new Date(endDate).setDate(new Date(endDate).getDate() + 1) };
-    
-        
+    if (endDate) {
+      const trueEndDate = new Date(endDate).setDate(new Date(endDate).getDate() + 1)
+      filter.day = { ...filter.day, $lt: trueEndDate };
+    }
+ 
     const eventList = await Event
         .find(filter)
         .skip(skip)
