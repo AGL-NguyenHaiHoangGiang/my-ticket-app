@@ -7,7 +7,7 @@ class EventService {
         });
     }
 
-    async getAll(limit = 10, page = 1, category = '', startDate = null, endDate = null) {
+    async getAll(limit = 10, page = 1, category = '', startDate = null, endDate = null, location = 'all', isFree = false) {
         const params = {
             limit,
             page,
@@ -23,6 +23,14 @@ class EventService {
 
         if (endDate) {
             params.endDate = endDate;
+        }
+
+        if (location && location !== 'all') {
+            params.location = location;
+        }
+
+        if (isFree) {
+            params.isFree = isFree;
         }
 
         const response = await this.api.get(`/all`, { params });

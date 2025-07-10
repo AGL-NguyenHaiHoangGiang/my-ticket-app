@@ -5,6 +5,7 @@ import Title from '../components/title';
 import EventList from '../components/event/event-list';
 import Pagination from '../components/pagination';
 import DateRangePicker from '../components/date-range-picker';
+import TypePicker from '../components/event-type-picker';
 
 const EventCategory = () => {
   const [events, setEvents] = useState([]);
@@ -26,11 +27,13 @@ const EventCategory = () => {
     others: "Khác"
   };
   const [dateRange, setDateRange] = useState({ startDate: null, endDate: null });
+  const [location, setLocation] = useState('all');
+  const [isFree, setFree] = useState(false);
 
-  const fetchData = async (currentPage, selectedDate) => {
+  const fetchData = async (currentPage, selectedDate, location, isFree) => {
     try {
 
-      const response = await EventService.getAll(limit, currentPage, category, selectedDate.startDate, selectedDate.endDate);
+      const response = await EventService.getAll(limit, currentPage, category, selectedDate.startDate, selectedDate.endDate, location, isFree);
       // console.log('Fetched events:', response.body);
       setEvents(response.body);
       setTotalPages(response.totalPages);
@@ -45,8 +48,8 @@ const EventCategory = () => {
   };
 
   useEffect(() => {
-    fetchData(page, dateRange);
-  }, [page, category, dateRange]);
+    fetchData(page, dateRange, location, isFree);
+  }, [page, category, dateRange, location, isFree]);
 
   useEffect(() => {
     const mappedCategory = categorySlugMap[categorySlug];
@@ -67,6 +70,10 @@ const EventCategory = () => {
           <div className="heading">
             <Title className='title' text={categoryDisplayMap[category]} />
             <div className="filter">
+              <TypePicker
+                setLocation={setLocation}
+                setFree={setFree}
+              />
               <DateRangePicker dateRange={dateRange} setDate={setDateRange} />
             </div>
           </div>

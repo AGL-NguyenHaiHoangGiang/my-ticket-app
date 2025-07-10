@@ -196,7 +196,7 @@ const DateRangePicker = ({dateRange, setDate}) => {
 
     return (
         <div className="relative" ref={pickerRef}>
-            <button onClick={() => setShowPicker(!showPicker)} className={`button-filter button-filter--date`}>
+            <button onClick={() => setShowPicker(!showPicker)} className={`button-filter button-filter--date ${showPicker ? " is-active" : ""}`} id="datePickerBtn">
                 {selectedStart && selectedEnd
                     ? selectedStart === selectedEnd
                         ? `${formatDate(selectedStart)}`
