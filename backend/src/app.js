@@ -7,8 +7,12 @@ const cors = require('cors');
 const authRoutes = require('./routes/auth.routes');
 const eventRoutes = require('./routes/event.routes');
 const adminAuthRoutes = require('./routes/admin.auth.routes');
+const adminEventRoutes = require('./routes/admin.event.routes');
 
 const app = express();
+
+// init middlewares
+app.use(express.json());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -19,8 +23,6 @@ app.use(cors({
     credentials: true
 }));
 
-// init middlewares
-
 // init db
 require('./dbs/init.mongodb');
 
@@ -30,5 +32,6 @@ require('./dbs/init.mongodb');
 app.use('/api/v0/auth', authRoutes);
 app.use('/api/v0/event', eventRoutes);
 app.use('/api/v0/admin/auth', adminAuthRoutes);
+app.use('/api/v0/admin/event', adminEventRoutes);
 
 module.exports = app;

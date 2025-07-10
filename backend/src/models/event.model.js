@@ -53,9 +53,9 @@ const eventSchema = new mongoose.Schema(
     description: {
       type: String,
     },
-    badge: {
-      type: String, // Assuming badge can be of any type, adjust as necessary
-    },
+    // badge: {
+    //   type: String, // Assuming badge can be of any type, adjust as necessary
+    // },
     categories: {
       type: Array,
       default: ['others'],
@@ -67,7 +67,6 @@ const eventSchema = new mongoose.Schema(
   },
 )
 
-// Auto-increment
 eventSchema.plugin(AutoIncrement, { inc_field: 'id' })
 
 module.exports = mongoose.model(DOCUMENT_NAME, eventSchema)
