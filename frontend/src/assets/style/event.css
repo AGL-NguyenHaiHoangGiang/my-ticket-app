@@ -8,3 +8,18 @@
         margin-top: 30px;
     }
 }
+
+.page-event .post__list {
+    min-height: 400px;;
+}
+
+.no-events {
+    text-align: center;
+    margin-top: 50px;
+    font-size: 18px;
+    color: #666;
+    min-height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

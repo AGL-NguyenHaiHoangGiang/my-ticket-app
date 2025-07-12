@@ -1,7 +1,11 @@
+import { Link } from "react-router-dom";
 const categoryNewsBottom = (prop) => {
   return (
     <li className="flex-item">
-      <a className="post__card" href="/tin-tuc-detail/">
+      <Link
+        to={"/tin-tuc/" + prop.category + "/" + prop.id}
+        className="post__card"
+      >
         <div className="image post__img">
           <img src={prop.image} alt={prop.title} />
         </div>
@@ -13,7 +17,7 @@ const categoryNewsBottom = (prop) => {
             </span>
           </div>
         </div>
-      </a>
+      </Link>
     </li>
   );
 };

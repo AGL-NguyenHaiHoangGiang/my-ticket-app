@@ -10,6 +10,10 @@ const LatestNews = () => {
       image={item.image}
       title={item.title}
       description={item.description}
+      author={item.author}
+      date={item.date}
+      category={item.category}
+      id={item.id}
     />
   ));
   return (
@@ -25,9 +29,12 @@ const LatestNews = () => {
         <ul className="flex-box">
           {DataBlog.slice(0, 4).map((item) => (
             <SmallCardNews
-              key={item.id}
               title={item.title}
               image={item.image}
+              author={item.author}
+              date={item.date}
+              category={item.category}
+              id={item.id}
             />
           ))}
         </ul>

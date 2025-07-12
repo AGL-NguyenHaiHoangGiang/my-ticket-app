@@ -21,7 +21,6 @@ import NotFound from './pages/404';
 
 export default function UserLayout() {
     const location = useLocation();
-    console.log(location.pathname.split('/').length);
 
     const getMainClass = () => {
         const path = location.pathname;
@@ -44,7 +43,7 @@ export default function UserLayout() {
                     <Route path="/tin-tuc" element={<News />} />
                     <Route path="/tin-tuc/:category" element={<NewsCategory />} />
                     <Route path="/tin-tuc/:category/:id" element={<NewDetail />} />
-                    <Route path="/loai-su-kien/:category" element={<EventCategory />} />
+                    <Route path="/loai-su-kien/:categorySlug" element={<EventCategory />} />
                     <Route path="/su-kien/:slug" element={<EventDetail />} />
                     <Route path="/su-kien" element={<Events />} />
                     <Route path="*" element={<NotFound />} />

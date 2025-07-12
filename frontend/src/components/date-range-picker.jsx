@@ -1,14 +1,14 @@
 import { useState, useEffect, useRef } from "react";
 import iconArrowRight from "../assets/images/common/icon-arrow-right--gray.svg";
 
-const DateRangePicker = () => {
+const DateRangePicker = ({dateRange, setDate}) => {
     const MONTH_NAMES = [
         "Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5", "Tháng 6",
         "Tháng 7", "Tháng 8", "Tháng 9", "Tháng 10", "Tháng 11", "Tháng 12"
     ];
 
-    const [selectedStart, setSelectedStart] = useState(null);
-    const [selectedEnd, setSelectedEnd] = useState(null);
+    const [selectedStart, setSelectedStart] = useState(dateRange.startDate || null);
+    const [selectedEnd, setSelectedEnd] = useState(dateRange.endDate || null);
     const [currentDate1, setCurrentDate1] = useState(new Date());
     const [currentDate2, setCurrentDate2] = useState(() => {
         const date = new Date();
@@ -92,11 +92,13 @@ const DateRangePicker = () => {
             date.setMonth(date.getMonth() + 1);
             return date;
         });
+        setDate({ startDate: null, endDate: null });
     };
 
     // Handle apply
     const handleApply = () => {
         setShowPicker(false);
+        setDate({ startDate: selectedStart, endDate: selectedEnd });
     };
 
     // Close picker when clicking outside
@@ -194,11 +196,13 @@ const DateRangePicker = () => {
 
     return (
         <div className="relative" ref={pickerRef}>
-            <button onClick={() => setShowPicker(!showPicker)} className={`button-filter button-filter--date`}>
+            <button onClick={() => setShowPicker(!showPicker)} className={`button-filter button-filter--date ${showPicker ? " is-active" : ""}`} id="datePickerBtn">
                 {selectedStart && selectedEnd
-                    ? `${formatDate(selectedStart)} - ${formatDate(selectedEnd)}`
+                    ? selectedStart === selectedEnd
+                        ? `${formatDate(selectedStart)}`
+                        : `${formatDate(selectedStart)} - ${formatDate(selectedEnd)}`
                     : selectedStart
-                        ? formatDate(selectedStart)
+                        ? formatDate(selectedStart) + " - ..."
                         : "Tất cả các ngày"}
             </button>
 

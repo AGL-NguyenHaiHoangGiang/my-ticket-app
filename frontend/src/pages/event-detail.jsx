@@ -1,3 +1,7 @@
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import EventService from '../services/events';
+
 import SingleEventHead from "../components/event/event-single-head";
 import iconCalendar from '../assets/images/common/icon-calendar.png';
 import eventStageImage from '../assets/images/event-detail/so-do-san-khau.jpg';
@@ -8,6 +12,24 @@ import adsImageSp from '../assets/images/event-detail/ads-sp.png';
 import RelatedEvents from '../components/related';
 
 const EventDetail = () => {
+  const [detail, setDetail] = useState({});
+  const { slug } = useParams();
+
+  const fetchEventDetail = async () => {
+    try {
+      const response = await EventService.getBySlug(slug);
+      setDetail(response.body);
+    } catch (error) {
+      console.error("Error fetching event detail:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchEventDetail();
+  }, [slug]);
+
+  console.log('Event Detail:', detail);
+
   return (
     <>
       <SingleEventHead />
