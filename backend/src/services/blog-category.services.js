@@ -10,6 +10,25 @@ class BlogCategoryService {
     return await blogCategoryModel.create(payload)
   }
 
+  // Update
+  static async updateBlogCategory(blogCategoryId, payload) {
+    const blogCategory = await blogCategoryModel.findByIdAndUpdate(blogCategoryId, payload, {
+      new: true,
+    })
+    if (!blogCategory) throw new BadRequestError(`Blog Category not found with Id: ${blogCategoryId}`)
+
+    return blogCategory
+  }
+
+  // Delete
+  static async deleteBlogCategory(blogCategoryId) {
+    const blogCategory = await blogCategoryModel.findByIdAndDelete(blogCategoryId)
+
+    if (!blogCategory) throw new BadRequestError(`Blog Category not found with Id: ${blogCategoryId}`)
+
+    return blogCategory
+  }
+
   // Query
   static async findBlogCategoryBySlug({ slug }) {
     return await blogCategoryRepository.findBlogCategoryBySlug({ slug })
@@ -26,18 +45,18 @@ class BlogCategoryService {
     if (typeof select === 'string') {
       selectFields = select.split(',').map((field) => field.trim())
     }
-     // Convert string into object
-        let parsedFilter = filter
-        if (typeof filter === 'string') {
-          parsedFilter = JSON.parse(filter)
-        }
-        return await blogCategoryRepository.findAllBlogCategories({
-          limit,
-          sort,
-          page,
-          filter: parsedFilter,
-          select: selectFields,
-        })
+    // Convert string into object
+    let parsedFilter = filter
+    if (typeof filter === 'string') {
+      parsedFilter = JSON.parse(filter)
+    }
+    return await blogCategoryRepository.findAllBlogCategories({
+      limit,
+      sort,
+      page,
+      filter: parsedFilter,
+      select: selectFields,
+    })
   }
 }
 

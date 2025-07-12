@@ -10,6 +10,10 @@ router.get('/:slug', asyncHandler(blogCategoryController.getBlogCategoryBySlug))
 router.get('',asyncHandler(blogCategoryController.getAllBlogCategories))
 // Create by manager
 router.post('', asyncHandler(blogCategoryController.createBlogCategory))
+// Update by manager
+router.patch('/:id', asyncHandler(blogCategoryController.updateBlogCategory))
+// Delete by manager
+router.delete('/:id', asyncHandler(blogCategoryController.deleteBlogCategory))
 
 
 

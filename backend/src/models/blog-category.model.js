@@ -41,6 +41,18 @@ blogCategorySchema.plugin(AutoIncrement, {
   id: 'blog_category_seq',
 })
 
+//  update (query)
+blogCategorySchema.pre(
+  ['findOneAndUpdate', 'updateOne', 'findByIdAndUpdate'],
+  function (next) {
+    const update = this.getUpdate()
+    if (update.name) {
+      update.slug = slugify(update.name, { lower: true, strict: true })
+    }
+    next()
+  },
+)
+
 // Run before save
 blogCategorySchema.pre('save', function (next) {
   // Auto generate slug if not

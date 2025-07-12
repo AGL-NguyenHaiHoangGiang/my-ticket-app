@@ -12,6 +12,22 @@ class BlogCategoryController {
     }).send(res)
   }
 
+  // PATCH update blogCategory by id
+  updateBlogCategory = async (req, res, next) => {
+    new OK({
+      message: 'Update blog Category success',
+      metadata: await blogCategoryService.updateBlogCategory(req.params.id, req.body),
+    }).send(res)
+  }
+
+  // Delete blogCategory by id
+  deleteBlogCategory = async (req, res, next) => {
+    new OK({
+      message: 'Delete blog Category success',
+      metadata: await blogCategoryService.deleteBlogCategory(req.params.id),
+    }).send(res)
+  }
+
   // GET
   getBlogCategoryBySlug = async (req, res, next) => {
     new OK({
