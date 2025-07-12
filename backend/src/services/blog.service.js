@@ -12,7 +12,9 @@ class BlogService {
 
   // Update
   static async updateBlog(blogId, payload) {
-    const blog = await blogModel.findByIdAndUpdate(blogId, payload, { new: true })
+    const blog = await blogModel.findByIdAndUpdate(blogId, payload, {
+      new: true,
+    })
     if (!blog) throw new BadRequestError(`Blog not found with Id: ${blogId}`)
 
     return blog
@@ -43,11 +45,16 @@ class BlogService {
       selectFields = select.split(',').map((field) => field.trim())
     }
 
+    // Convert string into object
+    let parsedFilter = filter
+    if (typeof filter === 'string') {
+      parsedFilter = JSON.parse(filter)
+    }
     return await blogRepository.findAllBlogs({
       limit,
       sort,
       page,
-      filter,
+      filter: parsedFilter,
       select: selectFields, // Tùy chỉnh ['title', 'author', ...],
     })
   }
