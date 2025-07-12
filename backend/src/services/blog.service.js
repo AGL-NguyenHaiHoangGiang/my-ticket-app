@@ -30,16 +30,14 @@ class BlogService {
   }
 
   // Query
-  // Lấy 3 blog mới nhất, trang 1, chỉ lấy title và author
-  // api/v1/blogs?limit=3&page=1&select=title,author
   static async findAllBlogs({
     limit = 10, // Số lượng blog mỗi trang
     sort = 'ctime', // Lấy thời gian mới nhất
     page = 1, // Trang hiện tại
-    filter = {}, // Lọc
+    filter = {}, // Lọc {"category":"6872570e9c0a4474ee9fb68d"}
     select = [], // Chọn fields cần trả về
   }) {
-    // Xử lý select parameter - nếu là string thì convert thành array
+    // Convert into array
     let selectFields = select
     if (typeof select === 'string') {
       selectFields = select.split(',').map((field) => field.trim())

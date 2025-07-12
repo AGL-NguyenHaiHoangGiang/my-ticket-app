@@ -8,7 +8,7 @@ class BlogCategoryController {
   createBlogCategory = async (req, res, next) => {
     new CREATED({
       message: 'Create new blog category success',
-      metadata: await blogCategoryService.createBlogCategory(req.body)
+      metadata: await blogCategoryService.createBlogCategory(req.body),
     }).send(res)
   }
 
@@ -16,7 +16,15 @@ class BlogCategoryController {
   getBlogCategoryBySlug = async (req, res, next) => {
     new OK({
       message: 'Get blog category success',
-      metadata: await blogCategoryService.findBlogCategoryBySlug({slug: req.params.slug})
+      metadata: await blogCategoryService.findBlogCategoryBySlug({
+        slug: req.params.slug,
+      }),
+    }).send(res)
+  }
+  getAllBlogCategories = async (req, res, next) => {
+    new OK({
+      message: 'Get all blog categories success',
+      metadata: await blogCategoryService.findAllBlogCategories(req.query),
     }).send(res)
   }
 }

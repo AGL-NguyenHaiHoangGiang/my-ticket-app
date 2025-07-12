@@ -2,9 +2,7 @@
 
 const blogCategoryModel = require('../models/blog-category.model')
 const { BadRequestError } = require('../core/error.response')
-const {
-  findBlogCategoryBySlug,
-} = require('../models/repositories/blog-category.repositoty')
+const blogCategoryRepository = require('../models/repositories/blog-category.repository')
 
 class BlogCategoryService {
   // Create
@@ -13,8 +11,33 @@ class BlogCategoryService {
   }
 
   // Query
-  static async findBlogCategoryBySlug({slug}) {
-    return await findBlogCategoryBySlug({slug})
+  static async findBlogCategoryBySlug({ slug }) {
+    return await blogCategoryRepository.findBlogCategoryBySlug({ slug })
+  }
+  static async findAllBlogCategories({
+    limit = 10,
+    sort = 'ctime',
+    page = 1,
+    filter = {},
+    select = [],
+  }) {
+    // Convert into array
+    let selectFields = select
+    if (typeof select === 'string') {
+      selectFields = select.split(',').map((field) => field.trim())
+    }
+     // Convert string into object
+        let parsedFilter = filter
+        if (typeof filter === 'string') {
+          parsedFilter = JSON.parse(filter)
+        }
+        return await blogCategoryRepository.findAllBlogCategories({
+          limit,
+          sort,
+          page,
+          filter: parsedFilter,
+          select: selectFields,
+        })
   }
 }
 
