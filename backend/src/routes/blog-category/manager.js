@@ -8,6 +8,10 @@ const router = express.Router()
 // GET - No permission
 router.get('/:slug', asyncHandler(blogCategoryController.getBlogCategoryBySlug))
 router.get('',asyncHandler(blogCategoryController.getAllBlogCategories))
+
+// Authentication
+
+
 // Create by manager
 router.post('', asyncHandler(blogCategoryController.createBlogCategory))
 // Update by manager

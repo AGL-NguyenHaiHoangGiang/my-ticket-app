@@ -10,12 +10,4 @@ router.get('/search/:keySearch', asyncHandler(blogController.getListSearchBlog))
 router.get('', asyncHandler(blogController.getAllBlogs))
 router.get('/:slug', asyncHandler(blogController.getBlogBySlug))
 
-// Create by manager
-router.post('', asyncHandler(blogController.createBlog))
-// Update by manager
-router.patch('/:id', asyncHandler(blogController.updateBlog))
-// Delete by manager
-router.delete('/:id', asyncHandler(blogController.deleteBlog))
-
-
 module.exports = router
