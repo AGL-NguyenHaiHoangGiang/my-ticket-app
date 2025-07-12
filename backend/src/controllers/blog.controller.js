@@ -1,7 +1,6 @@
 'use strict'
 
 const { CREATED, OK } = require('../core/success.response')
-const BlogService = require('../services/blog.service')
 const blogService = require('../services/blog.service')
 
 class BlogController {

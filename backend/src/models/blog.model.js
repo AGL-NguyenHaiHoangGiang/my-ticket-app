@@ -84,6 +84,7 @@ const blogSchema = new mongoose.Schema(
     category: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'BlogCategory',
+      required: true,
     },
   },
   {
@@ -101,18 +102,23 @@ blogSchema.plugin(AutoIncrement, {
 })
 
 //  update (query)
-blogSchema.pre(['findOneAndUpdate', 'updateOne', 'findByIdAndUpdate'], function (next) {
-  const update = this.getUpdate()
-  if (update.title) {
-    update.slug = slugify(update.title, { lower: true, strict: true })
-  }
-  if (update.article_datetime) {
-    update.article_friendly_time = generateFriendlyTime(update.article_datetime)
-    update.published_date = generatePublishedDate(update.article_datetime)
-  }
-  this.setUpdate(update)
-  next()
-})
+blogSchema.pre(
+  ['findOneAndUpdate', 'updateOne', 'findByIdAndUpdate'],
+  function (next) {
+    const update = this.getUpdate()
+    if (update.title) {
+      update.slug = slugify(update.title, { lower: true, strict: true })
+    }
+    if (update.article_datetime) {
+      update.article_friendly_time = generateFriendlyTime(
+        update.article_datetime,
+      )
+      update.published_date = generatePublishedDate(update.article_datetime)
+    }
+    this.setUpdate(update)
+    next()
+  },
+)
 
 // Run before save
 blogSchema.pre('save', function (next) {
