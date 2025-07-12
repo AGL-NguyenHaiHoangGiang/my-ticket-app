@@ -14,5 +14,8 @@ router.get('/:slug', asyncHandler(blogController.getBlogBySlug))
 router.post('', asyncHandler(blogController.createBlog))
 // Update by manager
 router.patch('/:id', asyncHandler(blogController.updateBlog))
+// Delete by manager
+router.delete('/:id', asyncHandler(blogController.deleteBlog))
+
 
 module.exports = router

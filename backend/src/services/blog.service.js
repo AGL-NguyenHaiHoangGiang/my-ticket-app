@@ -3,6 +3,7 @@
 const blogRepository = require('../models/repositories/blog.repository')
 const blogModel = require('../models/blog.model')
 const blogCategory = require('../models/blog-category.model')
+const { BadRequestError } = require('../core/error.response')
 class BlogService {
   // Create
   static async createBlog(payload) {
@@ -11,7 +12,19 @@ class BlogService {
 
   // Update
   static async updateBlog(blogId, payload) {
-    return await blogModel.findByIdAndUpdate(blogId, payload, { new: true })
+    const blog = await blogModel.findByIdAndUpdate(blogId, payload, { new: true })
+    if (!blog) throw new BadRequestError(`Blog not found with Id: ${blogId}`)
+
+    return blog
+  }
+
+  // Delete
+  static async deleteBlog(blogId) {
+    const blog = await blogModel.findByIdAndDelete(blogId)
+
+    if (!blog) throw new BadRequestError(`Blog not found with Id: ${blogId}`)
+
+    return blog
   }
 
   // Query

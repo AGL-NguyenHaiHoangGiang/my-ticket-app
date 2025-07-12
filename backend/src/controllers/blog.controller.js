@@ -1,6 +1,7 @@
 'use strict'
 
 const { CREATED, OK } = require('../core/success.response')
+const BlogService = require('../services/blog.service')
 const blogService = require('../services/blog.service')
 
 class BlogController {
@@ -16,6 +17,14 @@ class BlogController {
     new OK({
       message: 'Update blog success',
       metadata: await blogService.updateBlog(req.params.id, req.body),
+    }).send(res)
+  }
+
+  // Delete blog by id
+  deleteBlog = async (req, res, next) =>{
+    new OK({
+      message: 'Delete blog success',
+      metadata: await blogService.deleteBlog(req.params.id),
     }).send(res)
   }
 
