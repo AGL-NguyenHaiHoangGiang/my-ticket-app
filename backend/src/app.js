@@ -26,7 +26,12 @@ app.use(cors({
 require('./dbs/init.mongodb')
 
 // Define routes
+app.use('/api/v0/auth', authRoutes);
+app.use('/api/v0/event', eventRoutes);
+app.use('/api/v0/admin/auth', adminAuthRoutes);
+app.use('/api/v0/admin/event', adminEventRoutes);
 app.use('/', require('./routes'))
+
 
 // handle errors
 app.use((req, res, next) => {
@@ -39,15 +44,8 @@ app.use((error, req, res, next) => {
   const statusCode = error.status || 500 // error server code
   return res.status(statusCode).json({
     status: 'error',
-    code: statusCode,
     message: error.message || 'Internal server error',
   })
 })
-
-//routes
-app.use('/api/v0/auth', authRoutes);
-app.use('/api/v0/event', eventRoutes);
-app.use('/api/v0/admin/auth', adminAuthRoutes);
-app.use('/api/v0/admin/event', adminEventRoutes);
 
 module.exports = app

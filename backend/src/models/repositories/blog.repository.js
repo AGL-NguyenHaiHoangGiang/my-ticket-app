@@ -19,7 +19,7 @@ const findAllBlogs = async ({
   // Filter by category
   if (category) {
     const blogCategory = await blogCategoryModel.findOne({
-      name: category,
+      name: { $regex: category, $options: 'i' }
     })
 
     if (blogCategory) {
