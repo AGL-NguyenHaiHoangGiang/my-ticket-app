@@ -2,9 +2,8 @@ import iconCalendar from '../../assets/images/common/icon-calendar.png';
 import iconLocation from '../../assets/images/common/icon-location.png';
 import iconDollar from '../../assets/images/common/icon-dollar.png';
 import iconDoubleArrowDown from '../../assets/images/common/icon-double-arrow-down.png';
-import bannerImage from '../../assets/images/event-detail/banner.jpg';
 
-const SingleEventHead = () => {
+const SingleEventHead = ({title, date, address, priceFrom, priceTo, banner}) => {
   return (
     <>
       <section className="event__head">
@@ -12,21 +11,21 @@ const SingleEventHead = () => {
           <div className="e-ticket">
             <div className="e-ticket--left">
               <h1 className="e-ticket__title title">
-                Chuyến Tàu Mùa Đông - Phan Mạnh Quỳnh The First Live Concert
+                {title}
               </h1>
               <ul className="e-ticket__info">
                 <li className="e-ticket__info-item">
                   <span className="e-ticket__info-icon">
                     <img src={iconCalendar} alt="Date" />
                   </span>
-                  <p className="e-ticket__info-text">19:00 - 22:00, 04 tháng 1, 2025</p>
+                  <p className="e-ticket__info-text">{date ? date : 'Chưa có thời gian cụ thể'}</p>
                 </li>
                 <li className="e-ticket__info-item">
                   <span className="e-ticket__info-icon">
                     <img src={iconLocation} alt="Location" />
                   </span>
                   <p className="e-ticket__info-text">
-                    Nhà Thi Đấu Nguyễn Du - 116 Nguyễn Du, Phường Bến Thành, Quận 1, Hồ Chí Minh
+                    {address ? address : 'Chưa có địa điểm cụ thể'}
                   </p>
                 </li>
                 <li className="e-ticket__info-item">
@@ -34,8 +33,7 @@ const SingleEventHead = () => {
                     <img src={iconDollar} alt="Price" />
                   </span>
                   <p className="e-ticket__info-text">
-                    Giá vé: Từ <span className="color--secondary">1.000.000đ</span> đến{' '}
-                    <span className="color--secondary">3.900.000đ</span>
+                    Giá vé: Từ <span className="color--secondary">{priceFrom}</span> đến <span className="color--secondary">{priceTo}</span>
                   </p>
                 </li>
               </ul>
@@ -51,7 +49,7 @@ const SingleEventHead = () => {
               </div>
             </div>
             <div className="e-ticket--right">
-              <img className="e-ticket__img" src={bannerImage} alt="Banner" />
+              <img className="e-ticket__img" src={banner} alt="Banner" />
             </div>
           </div>
         </div>
