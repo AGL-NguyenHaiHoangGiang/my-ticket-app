@@ -81,7 +81,7 @@ const blogSchema = new mongoose.Schema(
       type: [String],
       default: [],
     },
-    category: {
+    category_id: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'BlogCategory',
       required: true,
