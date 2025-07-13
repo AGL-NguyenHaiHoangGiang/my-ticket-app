@@ -34,25 +34,24 @@ class BlogService {
     limit = 10, // Số lượng blog mỗi trang
     sort = 'ctime', // Lấy thời gian mới nhất
     page = 1, // Trang hiện tại
-    filter = {}, // Lọc {"category":"6872570e9c0a4474ee9fb68d"}
     select = [], // Chọn fields cần trả về
+    category, // Filter theo danh mục
   }) {
     // Convert into array
     let selectFields = select
     if (typeof select === 'string') {
       selectFields = select.split(',').map((field) => field.trim())
     }
+    
+    const filter = {}
+    
 
-    // Convert string into object
-    let parsedFilter = filter
-    if (typeof filter === 'string') {
-      parsedFilter = JSON.parse(filter)
-    }
     return await blogRepository.findAllBlogs({
       limit,
       sort,
       page,
-      filter: parsedFilter,
+      filter,
+      category,
       select: selectFields, // Tùy chỉnh ['title', 'author', ...],
     })
   }
