@@ -1,25 +1,45 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import VerticalPostItem from "./verticalPostItem";
-import DataBlog from "./data/dataBlog";
 import { Link } from "react-router-dom";
+import { getAllBlogCategories } from "../../services/blog";
 
 const BlogSection1 = () => {
-  const section1News = DataBlog.slice(0, 5);
+  const [blogs, setBlogs] = useState([]);
 
-  const blogArrayDom = section1News.map((item) => {
-    if (item.id == 0) return null;
-    return (
-      <VerticalPostItem
-        key={item.id}
-        img={item.image}
-        title={item.title}
-        author={item.author}
-        date={item.date}
-        category={item.category}
-        id={item.id}
-      />
-    );
-  });
+  useEffect(() => {
+    getAllBlogCategories()
+      .then((res) => {
+        setBlogs(res.data.metadata || []);
+        console.log("Blogs fetched successfully:", res.data.metadata);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }, []);
+
+  if (!blogs.length) return null;
+
+  // Sắp xếp theo ngày mới nhất
+  const sortedBlogs = [...blogs].sort(
+    (a, b) =>
+      new Date(b.article_datetime || b.updatedAt) -
+      new Date(a.article_datetime || a.updatedAt)
+  );
+
+  const mainBlog = sortedBlogs[0];
+  const section1News = sortedBlogs.slice(1, 6);
+
+  const blogArrayDom = section1News.map((item) => (
+    <VerticalPostItem
+      key={item._id}
+      img={item.thumpnail}
+      title={item.title}
+      author={item.author}
+      date={item.article_friendly_time}
+      category={item.category_id?.name}
+      id={item._id}
+    />
+  ));
 
   return (
     <section className="blog1">
@@ -28,18 +48,23 @@ const BlogSection1 = () => {
           <div className="blog1__left">
             <div className="post__card--large">
               <Link
-                to={"/tin-tuc/" + DataBlog[0].category + "/" + DataBlog[0].id}
+                to={
+                  "/tin-tuc/" +
+                  (mainBlog.category_id?.name || "unknown") +
+                  "/" +
+                  mainBlog._id
+                }
                 className="post__card"
               >
                 <div className="post__img blog1__main-image">
-                  <img src={DataBlog[0].image} alt="blog" />
+                  <img src={mainBlog.thumpnail} alt="blog" />
                 </div>
                 <div className="post__content">
                   <h2 className="title txt-ellip txt-ellip--2">
-                    {DataBlog[0].title}
+                    {mainBlog.title}
                   </h2>
                   <p className="desc txt-ellip txt-ellip--2">
-                    {DataBlog[0].description}
+                    {mainBlog.short_description}
                   </p>
                 </div>
               </Link>
