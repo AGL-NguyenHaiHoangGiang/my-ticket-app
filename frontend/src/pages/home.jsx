@@ -1,86 +1,59 @@
-import { Link } from 'react-router-dom';
+import { data, Link } from 'react-router-dom';
 import Slide1 from '../components/slides/slide1';
 import Slide2 from '../components/slides/slide2';
 import Title from '../components/title';
 import EventList from '../components/event/event-list';
 
-const eventData = [
-    {
-        id: 1,
-        imageUrl: 'https://images.tkbcdn.com/2/608/332/ts/ds/06/c8/2b/eecfd23915973246255c93a58f97200d.png',
-        url: '/su-kien/live-concert/',
-        name: 'LULULOLA SHOW VŨ CÁT TƯỜNG - CHỈ CẦN CÓ NHAU',
-        price: '480.000đ',
-        location: 'TP. Đà Lạt',
-        date: '28 tháng 12, 2024',
-    },
-    {
-        id: 2,
-        imageUrl: 'https://images.tkbcdn.com/2/608/332/ts/ds/06/c8/2b/eecfd23915973246255c93a58f97200d.png',
-        url: '/su-kien/live-concert/',
-        name: 'LULULOLA SHOW VŨ CÁT TƯỜNG - CHỈ CẦN CÓ NHAU',
-        price: '480.000đ',
-        location: 'TP. Đà Lạt',
-        date: '28 tháng 12, 2024',
-    },
-    {
-        id: 3,
-        imageUrl: 'https://images.tkbcdn.com/2/608/332/ts/ds/06/c8/2b/eecfd23915973246255c93a58f97200d.png',
-        url: '/su-kien/live-concert/',
-        name: 'LULULOLA SHOW VŨ CÁT TƯỜNG - CHỈ CẦN CÓ NHAU',
-        price: '480.000đ',
-        location: 'TP. Đà Lạt',
-        date: '28 tháng 12, 2024',
-    },
-    {
-        id: 4,
-        imageUrl: 'https://images.tkbcdn.com/2/608/332/ts/ds/06/c8/2b/eecfd23915973246255c93a58f97200d.png',
-        url: '/su-kien/live-concert/',
-        name: 'LULULOLA SHOW VŨ CÁT TƯỜNG - CHỈ CẦN CÓ NHAU',
-        price: '480.000đ',
-        location: 'TP. Đà Lạt',
-        date: '28 tháng 12, 2024',
-    }
-];
-
-const newsData = [
-    {
-        id: 1,
-        imageUrl: 'https://ticketgo.vn/uploads/images/blog/1716192664.jpg',
-        url: '/tin-tuc/live-concert/',
-        name: 'Tiểu sử và sự nghiệp của ca sĩ Jimmii Nguyễn | Jimmii Nguyễn hội ngộ khán giả thủ đô',
-        date: '28 tháng 12, 2024',
-    },
-    {
-        id: 2,
-        imageUrl: 'https://ticketgo.vn/uploads/images/blog/1716192664.jpg',
-        url: '/tin-tuc/live-concert/',
-        name: 'Tiểu sử và sự nghiệp của ca sĩ Jimmii Nguyễn | Jimmii Nguyễn hội ngộ khán giả thủ đô',
-        date: '28 tháng 12, 2024',
-    },
-    {
-        id: 3,
-        imageUrl: 'https://ticketgo.vn/uploads/images/blog/1716192664.jpg',
-        url: '/tin-tuc/live-concert/',
-        name: 'Tiểu sử và sự nghiệp của ca sĩ Jimmii Nguyễn | Jimmii Nguyễn hội ngộ khán giả thủ đô',
-        date: '28 tháng 12, 2024',
-    },
-    {
-        id: 4,
-        imageUrl: 'https://ticketgo.vn/uploads/images/blog/1716192664.jpg',
-        url: '/tin-tuc/live-concert/',
-        name: 'Tiểu sử và sự nghiệp của ca sĩ Jimmii Nguyễn | Jimmii Nguyễn hội ngộ khán giả thủ đô',
-        date: '28 tháng 12, 2024',
-    }
-];
+import React, { useEffect, useState } from 'react';
+import EventService from '../services/events';
 
 const Home = () => {
+    const categories = ['music', 'theatersandart', 'sport', 'others'];
+
+    const categoryDisplayMap = {
+        music: "Live Concert",
+        theatersandart: "Sân khấu & Nghệ thuật",
+        sport: "Thể thao",
+        others: "Thể loại khác"
+    };
+
+    const categorySlugMap = {
+        music: "live-concert",
+        theatersandart: "san-khau-nghe-thuat",
+        sport: "the-thao",
+        others: "khac"
+    };
+
+    const [eventData, setEventData] = useState([]);
+
+    const fetchData = async () => {
+        try {
+            const results = await Promise.all(
+                categories.map(async (cat) => {
+                    const response = await EventService.getAll(8, 1, cat, null, null, 'all', false);
+                    return { category: cat, events: response.body };
+                })
+            );
+            setEventData(results);
+        } catch (error) {
+            console.error('Lỗi khi fetch sự kiện:', error);
+            return [];
+        }
+    };
+
+    useEffect(() => {
+        fetchData();
+        scrollTo(0, 0);
+    }, []);
+
+    console.log('Event Data:', eventData);
+
     return (
         <>
             <div className="mainvisual">
                 <div className="container">
                     <div className="slideshow">
-                        <Slide1 />
+                        <Slide1 slideList={eventData.find(item => item.category === 'music')?.events.slice(0, 5)} />
                     </div>
                 </div>
             </div>
@@ -92,45 +65,18 @@ const Home = () => {
                     </div>
                 </div>
             </section>
-            <section className="home-section" id="live-concert">
-                <div className="container">
-                    <div className="heading">
-                        <Title className='title' text='Live Concert' />
-                        <Link to="/loai-su-kien/live-concert/" className="readmore">Xem thêm</Link>
-                    </div>
-                    <EventList className="" data={eventData} />
-                </div>
-            </section>
 
-            <section className="home-section" id="san-khau-nghe-thuat">
-                <div className="container">
-                    <div className="heading">
-                        <Title className='title' text='Sân Khấu Nghệ Thuật' />
-                        <Link to="/loai-su-kien/san-khau-nghe-thuat/" className="readmore">Xem thêm</Link>
+            {eventData.map((data, index) => (
+                <section className="home-section" key={index}>
+                    <div className="container">
+                        <div className="heading">
+                            <Title className='title' text={`${categoryDisplayMap[data.category]}`} />
+                            <Link to={`/loai-su-kien/${categorySlugMap[data.category]}/`} className="readmore">Xem thêm</Link>
+                        </div>
+                        <EventList className="" data={data.events} />
                     </div>
-                    <EventList className="" data={eventData} />
-                </div>
-            </section>
-
-            <section className="home-section" id="the-thao">
-                <div className="container">
-                    <div className="heading">
-                        <Title className='title' text='Thể Thao' />
-                        <Link to="/loai-su-kien/the-thao/" className="readmore">Xem thêm</Link>
-                    </div>
-                    <EventList className="" data={eventData} />
-                </div>
-            </section>
-
-            <section className="home-section" id="the-loai-khac">
-                <div className="container">
-                    <div className="heading">
-                        <Title className='title' text='Thể Loại Khác' />
-                        <Link to="/loai-su-kien/the-loai-khac/" className="readmore">Xem thêm</Link>
-                    </div>
-                    <EventList className="" data={eventData} />
-                </div>
-            </section>
+                </section>
+            ))}
 
             <section className="home-section" id="tin-tuc-su-kien">
                 <div className="container">
@@ -138,7 +84,7 @@ const Home = () => {
                         <Title className='title' text='Tin Tức Sự Kiện' />
                         <Link to="/tin-tuc/" className="readmore">Xem thêm</Link>
                     </div>
-                    <EventList className="" data={newsData} />
+                    {/* <EventList className="" data={newsData} /> */}
                 </div>
             </section>
         </>
