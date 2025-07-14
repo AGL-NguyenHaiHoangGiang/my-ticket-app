@@ -46,7 +46,7 @@ const Home = () => {
         scrollTo(0, 0);
     }, []);
 
-    console.log('Event Data:', eventData);
+    // console.log('Event Data:', eventData);
 
     return (
         <>
