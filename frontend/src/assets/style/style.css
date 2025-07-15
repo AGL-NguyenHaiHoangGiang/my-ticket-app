@@ -607,6 +607,33 @@ main {
     transition: 0.3s ease;
 }
 
+.search__result {
+    max-height: 300px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-primary) #222;
+}
+
+.search__result::-webkit-scrollbar {
+    width: 8px;
+    background: #222;
+    border-radius: 8px;
+}
+
+.search__result::-webkit-scrollbar-thumb {
+    background: var(--color-primary);
+    border-radius: 8px;
+}
+
+.search__result::-webkit-scrollbar-thumb:hover {
+    background: #0082e0;
+}
+
+.search__result::-webkit-scrollbar-track {
+    background: #222;
+    border-radius: 8px;
+}
+
 @media screen and (max-width: 767px) {
     .search__result > div {
         margin-bottom: 10px;

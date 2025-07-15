@@ -28,7 +28,7 @@ const EventDetail = () => {
     window.scrollTo(0, 0);
   }, [slug]);
 
-  console.log('Event Detail:', detail);
+  // console.log('Event Detail:', detail);
   const startTime = detail.startTime ? new Date(detail.startTime) : null;
   const endTime = detail.endTime ? new Date(detail.endTime) : null;
 

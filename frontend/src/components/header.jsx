@@ -1,6 +1,8 @@
-import React, { useState, useRef, useEffect } from 'react';
-
+import { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import SearchBox from './searchbox';
+import EventService from '../services/events';
+
 import logo from '../assets/images/common/logo.svg';
 import iconSearch from '../assets/images/common/icon-search.svg';
 import iconUser from '../assets/images/common/icon-user.png';
@@ -10,7 +12,7 @@ import iconFlagVi from '../assets/images/common/flag-vi.svg';
 import iconFlagEn from '../assets/images/common/flag-en.svg';
 import iconArrowDown from '../assets/images/common/icon-arrow-down.svg';
 
-import SearchBox from './searchbox';
+
 
 function Header() {
     const [navigationOpen, setNavigationOpen] = useState(false);
@@ -22,18 +24,7 @@ function Header() {
     const searchRef = useRef(null);
     const searchBoxRef = useRef(null);
 
-    const handleClickOutside = (e) => {
-        // Kiểm tra nếu click không phải trong search form hoặc search box
-        if (
-            searchRef.current &&
-            !searchRef.current.contains(e.target) &&
-            searchBoxRef.current &&
-            !searchBoxRef.current.contains(e.target)
-        ) {
-            setOpenSearchBox(false);
-        }
-    };
-
+    // Xử lý sự kiện click vào search form
     const handleSearchClick = (e) => {
         if (e.target.type === 'submit') {
             e.preventDefault();
@@ -44,18 +35,19 @@ function Header() {
         setOpenSearchBox(true);
     };
 
+    // Xử lý sự kiện submit search form
     const handleSubmitSearch = (e) => {
         e.preventDefault();
         // Logic tìm kiếm ở đây
         console.log('Search submitted');
     };
 
+    // Đóng search box khi click vào nút close
     const handleCloseSearchBox = () => {
         setOpenSearchBox(false);
     };
 
     useEffect(() => {
-        // Thêm event listener cho click outside
         document.addEventListener('mousedown', handleClickOutside);
 
         // Cleanup event listener
@@ -63,6 +55,56 @@ function Header() {
             document.removeEventListener('mousedown', handleClickOutside);
         };
     }, []);
+
+    // Đóng search box khi click bên ngoài
+    const handleClickOutside = (e) => {
+        if (
+            searchRef.current &&
+            !searchRef.current.contains(e.target) &&
+            searchBoxRef.current &&
+            !searchBoxRef.current.contains(e.target)
+        ) {
+            setOpenSearchBox(false);
+        }
+    };
+
+    // State quản lý nội dung tìm kiếm
+    const [searchText, setSearchText] = useState('');
+    const [searchResults, setSearchResults] = useState([]);
+
+    const handleSearchChange = (e) => {
+        setSearchText(e.target.value);
+    };
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            const trimmedText = searchText.trim();
+
+            if (trimmedText.length === 0) {
+                setSearchResults([]);
+                return;
+            }
+
+            if (trimmedText.length >= 2) {
+                fetchSearch(trimmedText);
+            } else {
+                setSearchResults([]);
+            }
+        }, 800);
+
+        return () => clearTimeout(timer);
+    }, [searchText]);
+
+    const fetchSearch = async (text) => {
+        try {
+            const response = await EventService.searchByKeyword(text);
+            setSearchResults(response.body);
+        } catch (e) {
+            console.error(e);
+        }
+    };
+
+    // console.log('Search Results:', searchResults);
 
     return (
         <header className="header">
@@ -82,7 +124,7 @@ function Header() {
                                     onSubmit={handleSubmitSearch}
                                 >
                                     <img src={iconSearch} alt="Search" />
-                                    <input ref={searchRef} type="text" placeholder="Bạn tìm gì hôm nay?" />
+                                    <input ref={searchRef} type="text" placeholder="Bạn tìm gì hôm nay?" onChange={handleSearchChange} />
                                     <button type="submit">Tìm kiếm</button>
                                 </form>
                             </div>
@@ -93,7 +135,7 @@ function Header() {
 
                             {openSearchBox && (
                                 <div ref={searchBoxRef}>
-                                    <SearchBox onClose={handleCloseSearchBox} />
+                                    <SearchBox onClose={handleCloseSearchBox} searchText={searchText} searchResults={searchResults} />
                                 </div>
                             )}
                         </div>
@@ -144,7 +186,7 @@ function Header() {
                             </ul>
                         </div>
 
-                        <div className={`hamburger ${navigationOpen ? 'is-active' : ''}`} onClick={() => { handleNavigationToggle()}}>
+                        <div className={`hamburger ${navigationOpen ? 'is-active' : ''}`} onClick={() => { handleNavigationToggle() }}>
                             <div className="hamburger__item"></div>
                         </div>
 
