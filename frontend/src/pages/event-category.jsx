@@ -13,7 +13,7 @@ const EventCategory = () => {
   const [page, setPage] = useState(1); // Current page for pagination
   const [totalPages, setTotalPages] = useState(0); // Total pages for pagination
   const { categorySlug } = useParams();
-  const [category, setCategory] = useState('music');
+  const [category, setCategory] = useState(null);
   const categorySlugMap = {
     "live-concert": "music",
     "san-khau-nghe-thuat": "theatersandart",
@@ -48,10 +48,6 @@ const EventCategory = () => {
   };
 
   useEffect(() => {
-    fetchData(page, dateRange, location, isFree);
-  }, [page, category, dateRange, location, isFree]);
-
-  useEffect(() => {
     const mappedCategory = categorySlugMap[categorySlug];
     if (mappedCategory) {
       setCategory(mappedCategory);
@@ -59,7 +55,15 @@ const EventCategory = () => {
     } else {
       console.warn("Slug không hợp lệ:", categorySlug);
     }
+    window.scrollTo(0, 0);
   }, [categorySlug]);
+
+  useEffect(() => {
+    if (!category) return;
+    fetchData(page, dateRange, location, isFree);
+  }, [page, category, dateRange, location, isFree]);
+
+
 
   return (
     <>
@@ -68,7 +72,7 @@ const EventCategory = () => {
 
           {/* tiêu đề và bộ lọc */}
           <div className="heading">
-            <Title className='title' text={categoryDisplayMap[category]} />
+            <Title className='title' text={`${categoryDisplayMap[category]}${location !== 'all' ? ` - ${location}` : ''}`} />
             <div className="filter">
               <TypePicker
                 setLocation={setLocation}

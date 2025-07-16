@@ -9,7 +9,7 @@ const REQ_LOCATIONS = {
 const RES_LOCATIONS = {
     TOAN_QUOC: "Toàn quốc",
     HN: "Hà Nội",
-    HCM: "Ho Chi Minh City",
+    HCM: "Hồ Chí Minh",
     DL: "Đà Lạt",
     DN: "Đà Nẵng",
 }

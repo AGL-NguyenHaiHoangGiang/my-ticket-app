@@ -38,7 +38,27 @@ class EventService {
     }
 
     async getBySlug(slug) {
-        const response = await this.api.get(`/${slug}`);
+        const response = await this.api.get(`/slug/${slug}`);
+        console.log('Response data:', response.data);
+        return response.data;
+    }
+
+    async searchByKeyword(text) {
+        const response = await this.api.get(`/search`, {
+            params: {
+                keyword: text
+            }
+        });
+        return response.data;
+    }
+
+    async getBannerEvents() {
+        const response = await this.api.get(`/banner`);
+        return response.data;
+    }
+
+    async getFeatureEvents() {
+        const response = await this.api.get(`/feature`);
         return response.data;
     }
 }

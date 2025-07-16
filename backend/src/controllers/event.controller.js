@@ -2,6 +2,8 @@ const {CATEGORIES, RES_LOCATIONS} = require('../utils/enums')
 const {requestToresponseLocation} = require('../utils/location.mapper');
 
 const Event = require('../models/event.model');
+const BannerEvent = require('../models/banner-events.model');
+const SpecialEvent = require('../models/special-event.model');
 const EventDetails = require('../models/event-details.model');
 
 const bcrypt = require('bcrypt');
@@ -68,7 +70,7 @@ exports.getAllEvents = async (req, res) => {
     })
     
   } catch (err) {
-      res.status(500).json({ error: err.message });
+      res.status(404).json({ error: "Service not supported" });
   }
 };
 
@@ -78,7 +80,7 @@ exports.getEventBySlug = async (req, res) => {
     const eventDetails = await EventDetails.findOne({ url: req.params.slug });
     
     if (!eventDetails) {
-      return res.status(404).json({ error: 'Event not found' });
+      return res.status(201).json({ error: 'Event not found' });
     }
     
     res.status(200).json({
@@ -86,6 +88,63 @@ exports.getEventBySlug = async (req, res) => {
       body: eventDetails,
     });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(404).json({ error: "Service not supported" });
   }
 };
+
+exports.getEventByKeyword = async (req, res) => {
+  try {
+    const keyword = req.query.keyword;
+
+    const regex = new RegExp(keyword, 'i'); // 'i' for case-insensitive search
+
+    const events = await Event.find({ name: {$regex : regex} });
+    
+    if (!events) {
+      return res.status(201).json({ error: 'Event not found' });
+    }
+    
+    if (events.length === 0) {
+      res.status(200).json({
+        message: 'No events matched the keyword',
+        body: events,
+      });
+    }
+    
+    res.status(200).json({
+      message: 'Events retrieved successfully',
+      body: events,
+    });
+  } catch (err) {
+    res.status(404).json({ error: "Service not supported" });
+  }
+};
+
+exports.getBannerEvents = async (req, res) => {
+
+  try {
+    const bannerEvents = await BannerEvent.find({}).sort({ showingTime: -1 });
+    
+    res.status(200).json({
+      message: 'Banner events retrieved successfully',
+      body: bannerEvents,
+    });
+  }
+  catch (err) {
+    res.status(404).json({ error: "Service not supported" });
+  }
+}
+
+exports.getSpecialEvents = async (req, res) => {
+  try {
+    const specialEvents = await SpecialEvent.find({});
+  
+    res.status(200).json({
+      message: 'Banner events retrieved successfully',
+      body: specialEvents,
+    });
+  }
+  catch (err) {
+    res.status(404).json({ error: "Service not supported" });
+  }
+}
