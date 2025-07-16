@@ -20,9 +20,17 @@ const userSchema = new mongoose.Schema(
       enum: ['ACTIVE', 'INACTIVE'],
       default: 'ACTIVE',
     },
+    name: {
+      type: String,
+      default: 'user',
+    },
+    avatar: {
+      type: String,
+      default: 'https://images.tkbcdn.com/2/608/332/ts/ds/0f/dd/22/af053e21394812a4e0226b6e843a2f57.png',
+    },
     roles: {
       type: Array,
-      default: [],
+      default: 'CUSTOMER',
     },
   },
   {
