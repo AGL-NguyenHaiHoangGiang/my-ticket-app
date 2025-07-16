@@ -37,7 +37,7 @@ const BlogSection1 = () => {
       author={item.author}
       date={item.article_friendly_time}
       category={item.category_id?.name}
-      id={item._id}
+      id={item.slug}
     />
   ));
 
@@ -48,12 +48,9 @@ const BlogSection1 = () => {
           <div className="blog1__left">
             <div className="post__card--large">
               <Link
-                to={
-                  "/tin-tuc/" +
-                  (mainBlog.category_id?.name || "unknown") +
-                  "/" +
-                  mainBlog._id
-                }
+                to={`/tin-tuc/${mainBlog.category_id?.name || "unknown"}/${
+                  mainBlog.slug
+                }`}
                 className="post__card"
               >
                 <div className="post__img blog1__main-image">
