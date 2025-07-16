@@ -41,12 +41,22 @@ const Home = () => {
         }
     };
 
+    const [featureEvents, setFeatureEvents] = useState([]);
+    const fetchFeatureEvents = async () => {
+        try {
+            const response = await EventService.getFeatureEvents();
+            const data = response.body.slice(0, 9);
+            setFeatureEvents(data);
+        } catch (error) {
+            console.error('Lỗi khi fetch sự kiện nổi bật:', error);
+        }
+    };
+
     useEffect(() => {
         fetchData();
+        fetchFeatureEvents();
         scrollTo(0, 0);
     }, []);
-
-    // console.log('Event Data:', eventData);
 
     return (
         <>
@@ -61,7 +71,7 @@ const Home = () => {
                 <div className="container">
                     <Title className="title" text="Sự kiện nổi bật" />
                     <div className="feature">
-                        <Slide2 />
+                        <Slide2 slideList={featureEvents} />
                     </div>
                 </div>
             </section>
