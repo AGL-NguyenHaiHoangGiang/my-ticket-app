@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 const PostItemTrendingNews = (post) => {
   return (
     <li className="post__item">
-      <Link to={"/tin-tuc/" + post.category + "/" + post.id}>
+      <Link to={`/tin-tuc/${post.category}/${post.id}`}>
         <div className="post__img">
           <img src={post.image} alt="post" />
         </div>
@@ -21,4 +21,3 @@ const PostItemTrendingNews = (post) => {
 };
 
 export default PostItemTrendingNews;
-// This component is used to display a single post item in the trending news section.

@@ -3,7 +3,7 @@
 const mongoose = require('mongoose')
 
 const DOCUMENT_NAME = 'Key'
-const COLLECTIONS_NAME = 'Keys'
+const COLLECTIONS_NAME = 'keys'
 
 const keyTokenSchema = new mongoose.Schema(
   {
