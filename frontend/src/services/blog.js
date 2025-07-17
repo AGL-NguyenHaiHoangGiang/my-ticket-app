@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_BASE_URL = "http://localhost:3052/api/v1/blogs";
+const API_BASE_URL = "http://localhost:3052/api/v0/blogs";
 
 export const getAllBlogCategories = (limit = 50) => {
   return axios.get(`${API_BASE_URL}?limit=${limit}`);

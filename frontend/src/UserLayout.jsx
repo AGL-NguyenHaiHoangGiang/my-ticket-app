@@ -45,7 +45,7 @@ export default function UserLayout() {
           <Route path="/" element={<Home />} />
           <Route path="/tin-tuc" element={<News />} />
           <Route path="/tin-tuc/:category" element={<NewsCategory />} />
-          <Route path="/tin-tuc/:category/:id" element={<NewDetail />} />
+          <Route path="/tin-tuc/:category/:slug" element={<NewDetail />} />
           <Route path="/loai-su-kien/:categorySlug" element={<EventCategory />} />
           <Route path="/su-kien/:slug" element={<EventDetail />} />
           <Route path="/su-kien" element={<Events />} />
