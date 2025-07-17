@@ -12,19 +12,31 @@ class BlogCategoryService {
 
   // Update
   static async updateBlogCategory(blogCategoryId, payload) {
-    const blogCategory = await blogCategoryModel.findByIdAndUpdate(blogCategoryId, payload, {
-      new: true,
-    })
-    if (!blogCategory) throw new BadRequestError(`Blog Category not found with Id: ${blogCategoryId}`)
+    const blogCategory = await blogCategoryModel.findByIdAndUpdate(
+      blogCategoryId,
+      payload,
+      {
+        new: true,
+      },
+    )
+    if (!blogCategory)
+      throw new BadRequestError(
+        `Blog Category not found with Id: ${blogCategoryId}`,
+      )
 
     return blogCategory
   }
 
   // Delete
   static async deleteBlogCategory(blogCategoryId) {
-    const blogCategory = await blogCategoryModel.findByIdAndDelete(blogCategoryId)
+    const blogCategory = await blogCategoryModel.findByIdAndDelete(
+      blogCategoryId,
+    )
 
-    if (!blogCategory) throw new BadRequestError(`Blog Category not found with Id: ${blogCategoryId}`)
+    if (!blogCategory)
+      throw new BadRequestError(
+        `Blog Category not found with Id: ${blogCategoryId}`,
+      )
 
     return blogCategory
   }
@@ -37,7 +49,6 @@ class BlogCategoryService {
     limit = 10,
     sort = 'ctime',
     page = 1,
-    filter = {},
     select = [],
   }) {
     // Convert into array
@@ -45,16 +56,13 @@ class BlogCategoryService {
     if (typeof select === 'string') {
       selectFields = select.split(',').map((field) => field.trim())
     }
-    // Convert string into object
-    let parsedFilter = filter
-    if (typeof filter === 'string') {
-      parsedFilter = JSON.parse(filter)
-    }
+    const filter = {}
+
     return await blogCategoryRepository.findAllBlogCategories({
       limit,
       sort,
       page,
-      filter: parsedFilter,
+      filter,
       select: selectFields,
     })
   }
