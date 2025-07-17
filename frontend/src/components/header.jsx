@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import SearchBox from './searchbox';
+import Login from './login';
 import EventService from '../services/events';
 
 import logo from '../assets/images/common/logo.svg';
@@ -106,126 +107,135 @@ function Header() {
 
     // console.log('Search Results:', searchResults);
 
+    // Login
+    const [loginOpen, setLoginOpen] = useState(false);
+    const handleLoginToggle = () => {
+        setLoginOpen(!loginOpen);
+    }
+
     return (
-        <header className="header">
-            <div className="header__top">
-                <div className="container--1428 header__inner">
-                    <div className="logo">
-                        <Link to="/" className="logo__link">
-                            <img src={logo} alt="Logo" />
-                        </Link>
-                    </div>
-                    <div className="header__support">
-                        <div className="header__search">
-                            <div className={`js-search ${openSearchBox ? 'show' : ''}`}>
-                                <form
-                                    className="search"
-                                    onClick={handleSearchClick}
-                                    onSubmit={handleSubmitSearch}
-                                >
-                                    <img src={iconSearch} alt="Search" />
-                                    <input ref={searchRef} type="text" placeholder="Bạn tìm gì hôm nay?" onChange={handleSearchChange} />
-                                    <button type="submit">Tìm kiếm</button>
-                                </form>
-                            </div>
-
-                            <div className="search--sp js-search-sp" onClick={handleSearchClick}>
-                                <img src={iconSearch} width="20" height="20" alt="Search" />
-                            </div>
-
-                            {openSearchBox && (
-                                <div ref={searchBoxRef}>
-                                    <SearchBox onClose={handleCloseSearchBox} searchText={searchText} searchResults={searchResults} />
+        <>
+            <header className="header">
+                <div className="header__top">
+                    <div className="container--1428 header__inner">
+                        <div className="logo">
+                            <Link to="/" className="logo__link">
+                                <img src={logo} alt="Logo" />
+                            </Link>
+                        </div>
+                        <div className="header__support">
+                            <div className="header__search">
+                                <div className={`js-search ${openSearchBox ? 'show' : ''}`}>
+                                    <form
+                                        className="search"
+                                        onClick={handleSearchClick}
+                                        onSubmit={handleSubmitSearch}
+                                    >
+                                        <img src={iconSearch} alt="Search" />
+                                        <input ref={searchRef} type="text" placeholder="Bạn tìm gì hôm nay?" onChange={handleSearchChange} />
+                                        <button>Tìm kiếm</button>
+                                    </form>
                                 </div>
-                            )}
-                        </div>
 
-                        <a href="javascript:void(0)" className="login--sp js-modal-open" data-id="login">
-                            <img src={iconUser} width="20" height="20" alt="Login" />
-                        </a>
+                                <div className="search--sp js-search-sp" onClick={handleSearchClick}>
+                                    <img src={iconSearch} width="20" height="20" alt="Search" />
+                                </div>
 
-                        <a href="javascript:void(0)" className="ticket js-modal-open js-header-ticket" data-id="login">
-                            <img src={iconTicket} alt="ticket" />
-                            Vé đã mua
-                        </a>
-
-                        <ul className="login__nav pc-only">
-                            <li>
-                                <a href="javascript:void(0)" className="js-modal-open" data-id="login">Đăng nhập</a>
-                            </li>
-                            <li>
-                                <a href="javascript:void(0)" className="js-modal-open" data-id="signin">Đăng ký</a>
-                            </li>
-                        </ul>
-
-                        <div className="header__account">
-                            <a href="javascript:void(0)" className="header__account-link">
-                                <img
-                                    className="header__account-icon"
-                                    src={avatar}
-                                    loading="lazy"
-                                    alt="avatar" />
-                                <span id="account-email">&nbsp;</span>
-                            </a>
-                        </div>
-
-                        <div className="lang">
-                            <div className="lang__active">
-                                <img className="lang__flag js-lang-flag" src={iconFlagVi} alt="VN" />
-                                <img className="lang__icon" src={iconArrowDown} alt="icon" width="13" height="8" />
+                                {openSearchBox && (
+                                    <div ref={searchBoxRef}>
+                                        <SearchBox onClose={handleCloseSearchBox} searchText={searchText} searchResults={searchResults} />
+                                    </div>
+                                )}
                             </div>
-                            <ul className="lang__nav">
+
+                            <a href="javascript:void(0)" className="login--sp js-modal-open" data-id="login">
+                                <img src={iconUser} width="20" height="20" alt="Login" />
+                            </a>
+
+                            <a href="javascript:void(0)" className="ticket js-modal-open js-header-ticket" data-id="login">
+                                <img src={iconTicket} alt="ticket" />
+                                Vé đã mua
+                            </a>
+
+                            <ul className="login__nav pc-only">
+                                <li>
+                                    <button className="js-modal-open" onClick={handleLoginToggle}>Đăng nhập</button>
+                                </li>
+                                <li>
+                                    <button className="js-modal-open" data-id="signin">Đăng ký</button>
+                                </li>
+                            </ul>
+
+                            <div className="header__account">
+                                <a href="javascript:void(0)" className="header__account-link">
+                                    <img
+                                        className="header__account-icon"
+                                        src={avatar}
+                                        loading="lazy"
+                                        alt="avatar" />
+                                    <span id="account-email">&nbsp;</span>
+                                </a>
+                            </div>
+
+                            <div className="lang">
+                                <div className="lang__active">
+                                    <img className="lang__flag js-lang-flag" src={iconFlagVi} alt="VN" />
+                                    <img className="lang__icon" src={iconArrowDown} alt="icon" width="13" height="8" />
+                                </div>
+                                <ul className="lang__nav">
+                                    <li className="js-lang-item">
+                                        <img src={iconFlagVi} alt="VN" />
+                                        <span>Tiếng Việt</span>
+                                    </li>
+                                    <li className="js-lang-item">
+                                        <img src={iconFlagEn} alt="EN" />
+                                        <span>English</span>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div className={`hamburger ${navigationOpen ? 'is-active' : ''}`} onClick={() => { handleNavigationToggle() }}>
+                                <div className="hamburger__item"></div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div className={`header__bottom ${navigationOpen ? 'is-active' : ''}`}>
+                    <div className="container">
+                        <nav className="nav">
+                            <ul className="nav__lang">
                                 <li className="js-lang-item">
                                     <img src={iconFlagVi} alt="VN" />
-                                    <span>Tiếng Việt</span>
                                 </li>
                                 <li className="js-lang-item">
                                     <img src={iconFlagEn} alt="EN" />
-                                    <span>English</span>
                                 </li>
                             </ul>
-                        </div>
-
-                        <div className={`hamburger ${navigationOpen ? 'is-active' : ''}`} onClick={() => { handleNavigationToggle() }}>
-                            <div className="hamburger__item"></div>
-                        </div>
-
+                            <ul className="nav__list">
+                                <li>
+                                    <Link to="/loai-su-kien/live-concert/">Live Concert</Link>
+                                </li>
+                                <li>
+                                    <Link to="/loai-su-kien/san-khau-nghe-thuat/">Sân khấu & Nghệ thuật</Link>
+                                </li>
+                                <li>
+                                    <Link to="/loai-su-kien/the-thao/">Thể thao</Link>
+                                </li>
+                                <li>
+                                    <Link to="/tin-tuc/">Tin tức</Link>
+                                </li>
+                                <li>
+                                    <Link to="/loai-su-kien/khac/">Khác</Link>
+                                </li>
+                            </ul>
+                        </nav>
                     </div>
                 </div>
-            </div>
-
-            <div className={`header__bottom ${navigationOpen ? 'is-active' : ''}`}>
-                <div className="container">
-                    <nav className="nav">
-                        <ul className="nav__lang">
-                            <li className="js-lang-item">
-                                <img src={iconFlagVi} alt="VN" />
-                            </li>
-                            <li className="js-lang-item">
-                                <img src={iconFlagEn} alt="EN" />
-                            </li>
-                        </ul>
-                        <ul className="nav__list">
-                            <li>
-                                <Link to="/loai-su-kien/live-concert/">Live Concert</Link>
-                            </li>
-                            <li>
-                                <Link to="/loai-su-kien/san-khau-nghe-thuat/">Sân khấu & Nghệ thuật</Link>
-                            </li>
-                            <li>
-                                <Link to="/loai-su-kien/the-thao/">Thể thao</Link>
-                            </li>
-                            <li>
-                                <Link to="/tin-tuc/">Tin tức</Link>
-                            </li>
-                            <li>
-                                <Link to="/loai-su-kien/khac/">Khác</Link>
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
-            </div>
-        </header >
+            </header >
+            {loginOpen && <Login setLoginOpen={setLoginOpen} />}
+        </>
     )
 }
 
