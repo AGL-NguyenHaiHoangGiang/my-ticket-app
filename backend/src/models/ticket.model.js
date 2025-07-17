@@ -4,7 +4,7 @@ const mongoose = require('mongoose')
 const AutoIncrement = require('mongoose-sequence')(mongoose)
 
 const DOCUMENT_NAME = 'Ticket'
-const COLLECTION_NAME = 'Tickets'
+const COLLECTION_NAME = 'tickets'
 
 const ticketSchema = new mongoose.Schema(
   {
@@ -14,7 +14,7 @@ const ticketSchema = new mongoose.Schema(
       required: true,
     },
     ticket_id: {
-      type: String,
+      type: Number,
       unique: true,
     },
     min_price: {

@@ -2,23 +2,23 @@ const mongoose = require('mongoose')
 const AutoIncrement = require('mongoose-sequence')(mongoose)
 
 const DOCUMENT_NAME = 'EventCategory'
-const COLLECTION_NAME = 'EventCategories'
+const COLLECTION_NAME = 'event_categories'
 
 const eventCategorySchema = new mongoose.Schema(
   {
-    event_category_id: {
-      type: String,
+    id: {
+      type: Number,
       unique: true,
     },
-    event_category_name: {
+    name: {
       type: String,
       required: true,
       unique: true,
     },
-    event_category_description: {
+    description: {
       type: String,
     },
-    event_category_status: {
+    status: {
       type: String,
       enum: ['ACTIVE', 'INACTIVE'],
       default: 'ACTIVE',
@@ -30,6 +30,9 @@ const eventCategorySchema = new mongoose.Schema(
   },
 )
 
-eventCategorySchema.plugin(AutoIncrement, { inc_field: 'event_category_id' })
+eventCategorySchema.plugin(AutoIncrement, {
+  inc_field: 'id',
+  id: 'event_category_seq',
+})
 
 module.exports = mongoose.model(DOCUMENT_NAME, eventCategorySchema)

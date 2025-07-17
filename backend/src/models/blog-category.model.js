@@ -2,24 +2,29 @@
 
 const mongoose = require('mongoose')
 const AutoIncrement = require('mongoose-sequence')(mongoose)
+const slugify = require('slugify')
 
 const DOCUMENT_NAME = 'BlogCategory'
-const COLLECTION_NAME = 'BlogCategories'
+const COLLECTION_NAME = 'blog_categories'
 
 const blogCategorySchema = new mongoose.Schema(
   {
-    blog_category_id: {
+    id: {
+      type: Number,
+      unique: true,
+    },
+    slug: {
       type: String,
       unique: true,
     },
-    blog_category_name: {
+    name: {
       type: String,
       required: true,
     },
-    blog_category_description: {
+    description: {
       type: String,
     },
-    blog_category_status: {
+    status: {
       type: String,
       enum: ['ACTIVE', 'INACTIVE'],
       default: 'ACTIVE',
@@ -30,7 +35,31 @@ const blogCategorySchema = new mongoose.Schema(
     collection: COLLECTION_NAME,
   },
 )
-// AutoIncrement ID
-blogCategorySchema.plugin(AutoIncrement, { inc_field: 'blog_category_id' })
+// AutoIncrement ID with unique counter name
+blogCategorySchema.plugin(AutoIncrement, {
+  inc_field: 'id',
+  id: 'blog_category_seq',
+})
+
+//  update (query)
+blogCategorySchema.pre(
+  ['findOneAndUpdate', 'updateOne', 'findByIdAndUpdate'],
+  function (next) {
+    const update = this.getUpdate()
+    if (update.name) {
+      update.slug = slugify(update.name, { lower: true, strict: true })
+    }
+    next()
+  },
+)
+
+// Run before save
+blogCategorySchema.pre('save', function (next) {
+  // Auto generate slug if not
+  if (!this.slug || this.isModified('name')) {
+    this.slug = slugify(this.name, { lower: true, strict: true })
+  }
+  next()
+})
 
 module.exports = mongoose.model(DOCUMENT_NAME, blogCategorySchema)

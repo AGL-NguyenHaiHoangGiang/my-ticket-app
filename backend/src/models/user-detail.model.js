@@ -4,31 +4,31 @@ const mongoose = require('mongoose')
 const AutoIncrement = require('mongoose-sequence')(mongoose)
 
 const DOCUMENT_NAME = 'UserDetail'
-const COLLECTION_NAME = 'UserDetails'
+const COLLECTION_NAME = 'user_details'
 const userDetailSchema = new mongoose.Schema(
   {
-    user_id: {
+    id: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
       ref: 'User',
     },
-    user_avatar: {
+    avatar: {
       type: String,
       default: null,
     },
-    user_name: {
+    name: {
       type: String,
       required: true,
     },
-    user_dob: {
+    dob: {
       type: Date,
       default: null,
     },
-    user_phone: {
+    phone: {
       type: String,
       default: null,
     },
-    user_address: {
+    address: {
       type: String,
       default: null,
     },
