@@ -5,6 +5,7 @@ import "./assets/style/home.css";
 import "./assets/style/blog.css";
 import "./assets/style/event.css";
 import "./assets/style/detail.css";
+import "./assets/style/account.css";
 
 import Header from "./components/header";
 import Footer from "./components/footer";
@@ -17,6 +18,7 @@ import NewDetail from "./pages/newsDetail";
 import EventCategory from "./pages/event-category";
 import EventDetail from "./pages/event-detail";
 import Events from "./pages/events";
+import Account from "./pages/account";
 import NotFound from "./pages/404";
 
 export default function UserLayout() {
@@ -34,6 +36,7 @@ export default function UserLayout() {
       return "event single";
     else if (path.startsWith("/loai-su-kien/") || path.startsWith("/su-kien"))
       return "page-event";
+    else if (path === "/tai-khoan") return "account";
     else return "pages";
   };
 
@@ -53,6 +56,7 @@ export default function UserLayout() {
           />
           <Route path="/su-kien/:slug" element={<EventDetail />} />
           <Route path="/su-kien" element={<Events />} />
+          <Route path="/tai-khoan" element={<Account />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
