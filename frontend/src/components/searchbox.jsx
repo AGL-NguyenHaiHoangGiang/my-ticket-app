@@ -25,7 +25,6 @@ const SearchBox = ({ onClose, searchText = '', searchResults = [], isSearching =
             </div>
         );
     } else if (searchResults.length === 0) {
-        console.log(searchText.trim());
         if (searchText.trim() === '') {
             resultsContent = <span className="no-result">Xin vui lòng nhập từ khóa tìm kiếm.</span>;
         } else {

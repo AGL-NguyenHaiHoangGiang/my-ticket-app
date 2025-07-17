@@ -162,11 +162,17 @@ main {
 .login__nav li:not(:last-child)::after {
     content: "|";
     position: relative;
-    margin: 0 6px 0 3px;
+    margin: 0 6px;
 }
 
-.login__nav li a {
+.login__nav li a,
+.login__nav li button {
     padding: 15px 0;
+    background: unset;
+    color: #fff;
+    font-family: var(--font-inter);
+    font-size: 1.6rem;
+    font-weight: 600;
 }
 
 .header__search {
@@ -1096,12 +1102,12 @@ main {
     width: 100%;
     height: 100vh;
     z-index: 9999;
-    display: none;
+    /* display: none; */
 }
 
-.modal.is-active {
+/* .modal.is-active {
     display: block;
-}
+} */
 
 .modal__bg {
     position: absolute;
