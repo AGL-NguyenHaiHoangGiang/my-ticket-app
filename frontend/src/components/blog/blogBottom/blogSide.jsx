@@ -1,10 +1,44 @@
+import React, { useEffect, useState } from "react";
 import SideItem from "../../../components/blog/sideItem";
-import DataBlog from "../data/dataBlog";
+import { getAllBlogCategories } from "../../../services/blog";
 import adsBanner from "../../../assets/images/blog/ad-banner.png";
 
 const BlogSide = () => {
-  const blogSideData = DataBlog.slice(0, 5).map((item) => (
-    <SideItem title={item.title} />
+  const [blogs, setBlogs] = useState([]);
+
+  useEffect(() => {
+    getAllBlogCategories(100)
+      .then((res) => {
+        setBlogs(res.data.metadata || []);
+      })
+      .catch((err) => {
+        console.error("Error fetching blogs:", err);
+      });
+  }, []);
+
+  // Lấy ngẫu nhiên 5 tin
+  const getRandomBlogs = (arr, n) => {
+    const result = [];
+    const taken = new Set();
+    while (result.length < n && result.length < arr.length) {
+      const idx = Math.floor(Math.random() * arr.length);
+      if (!taken.has(idx)) {
+        result.push(arr[idx]);
+        taken.add(idx);
+      }
+    }
+    return result;
+  };
+
+  const randomBlogs = getRandomBlogs(blogs, 5);
+
+  const blogSideData = randomBlogs.map((item) => (
+    <SideItem
+      key={item._id}
+      title={item.title}
+      id={item.slug}
+      category={item.category_id?.name}
+    />
   ));
 
   return (

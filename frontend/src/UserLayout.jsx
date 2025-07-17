@@ -5,6 +5,7 @@ import './assets/style/home.css';
 import "./assets/style/blog.css";
 import './assets/style/event.css';
 import './assets/style/detail.css';
+import "./assets/style/account.css";
 
 import Header from './components/header';
 import Footer from './components/footer';
@@ -18,38 +19,41 @@ import EventCategory from './pages/event-category';
 import EventDetail from './pages/event-detail';
 import Events from './pages/events';
 import NotFound from './pages/404';
+import Account from "./pages/account";
 
 export default function UserLayout() {
-    const location = useLocation();
+  const location = useLocation();
 
-    const getMainClass = () => {
-        const path = location.pathname;
-        if (path === '/') return 'home';
-        else if (path === '/tin-tuc/') return 'blog';
-        else if (path.startsWith('/tin-tuc/') && path.split('/').length === 3) return 'blog category';
-        else if (path.startsWith('/tin-tuc/') && path.split('/').length === 4) return 'blog blog-single';
-        else if (path.startsWith('/su-kien/') && path.split('/').length === 4) return 'event single';
-        else if (path.startsWith('/loai-su-kien/') || path.startsWith('/su-kien')) return 'page-event';
-        else return 'pages';
-    };
+  const getMainClass = () => {
+    const path = location.pathname;
+    if (path === '/') return 'home';
+    else if (path === '/tin-tuc/') return 'blog';
+    else if (path.startsWith('/tin-tuc/') && path.split('/').length === 3) return 'blog category';
+    else if (path.startsWith('/tin-tuc/') && path.split('/').length === 4) return 'blog blog-single';
+    else if (path.startsWith('/su-kien/') && path.split('/').length === 4) return 'event single';
+    else if (path.startsWith('/loai-su-kien/') || path.startsWith('/su-kien')) return 'page-event';
+    else if (path === "/tai-khoan") return "account";
+    else return 'pages';
+  };
 
-    return (
-        <>
-            <Loading />
-            <Header />
-            <main className={getMainClass()}>
-                <Routes>
-                    <Route path="/" element={<Home />} />
-                    <Route path="/tin-tuc" element={<News />} />
-                    <Route path="/tin-tuc/:category" element={<NewsCategory />} />
-                    <Route path="/tin-tuc/:category/:id" element={<NewDetail />} />
-                    <Route path="/loai-su-kien/:categorySlug" element={<EventCategory />} />
-                    <Route path="/su-kien/:slug" element={<EventDetail />} />
-                    <Route path="/su-kien" element={<Events />} />
-                    <Route path="*" element={<NotFound />} />
-                </Routes>
-            </main>
-            <Footer />
-        </>
-    );
+  return (
+    <>
+      <Loading />
+      <Header />
+      <main className={getMainClass()}>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/tin-tuc" element={<News />} />
+          <Route path="/tin-tuc/:category" element={<NewsCategory />} />
+          <Route path="/tin-tuc/:category/:id" element={<NewDetail />} />
+          <Route path="/loai-su-kien/:categorySlug" element={<EventCategory />} />
+          <Route path="/su-kien/:slug" element={<EventDetail />} />
+          <Route path="/su-kien" element={<Events />} />
+          <Route path="*" element={<NotFound />} />
+          <Route path="/tai-khoan" element={<Account />} />
+        </Routes>
+      </main>
+      <Footer />
+    </>
+  );
 }
