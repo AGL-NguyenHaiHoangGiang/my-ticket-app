@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Form, Input, Button, Select, DatePicker, InputNumber, Upload, Card, message, Row, Col, Table, Space, Modal } from 'antd';
 import { PlusOutlined, ArrowLeftOutlined, EditOutlined, DeleteOutlined, FileImageOutlined } from '@ant-design/icons';
 import dayjs from 'dayjs';
+import { Link } from 'react-router-dom';
 
 const { Option } = Select;
 const { TextArea } = Input;
@@ -9,7 +10,7 @@ const { RangePicker } = DatePicker;
 
 const AddTicket = ({ onMenuClick, mode = 'add', ticketData = null }) => {
     console.log('AddTicket props:', { mode, ticketData });
-    
+
     const [form] = Form.useForm();
     const [loading, setLoading] = useState(false);
     const [fileList, setFileList] = useState([]);
@@ -42,21 +43,21 @@ const AddTicket = ({ onMenuClick, mode = 'add', ticketData = null }) => {
                 organizer: ticketData.organizer,
                 organizerDescription: ticketData.organizerDescription,
             };
-            
+
             // Set form fields
             form.setFieldsValue(formData);
-            
+
             // Set description
             setDescription(ticketData.description || '');
-            
+
             // Set ticket tiers if available
             setTicketTiers(ticketData.ticketTiers || []);
-            
+
             // Set file list if available
             if (ticketData.images) {
                 setFileList(ticketData.images);
             }
-            
+
             console.log('Loading ticket data:', ticketData);
             console.log('Mapped form data:', formData);
         }
@@ -244,8 +245,8 @@ const AddTicket = ({ onMenuClick, mode = 'add', ticketData = null }) => {
         <div className="admin-container">
             <div className="admin-header-section">
                 <h1 className="admin-page-title">
-                    {isViewing ? 'Chi tiết sự kiện' : 
-                     isEditing ? 'Chỉnh sửa sự kiện' : 'Thêm sự kiện mới'}
+                    {isViewing ? 'Chi tiết sự kiện' :
+                        isEditing ? 'Chỉnh sửa sự kiện' : 'Thêm sự kiện mới'}
                 </h1>
                 <div className="admin-actions">
                     {isViewing && (
@@ -258,12 +259,11 @@ const AddTicket = ({ onMenuClick, mode = 'add', ticketData = null }) => {
                             Chỉnh sửa
                         </Button>
                     )}
-                    <Button
-                        icon={<ArrowLeftOutlined />}
-                        onClick={() => onMenuClick && onMenuClick('ticket-list')}
-                    >
-                        Quay lại
-                    </Button>
+                    <Link to="/admin/ticket-list">
+                        <Button icon={<ArrowLeftOutlined />}>
+                            Quay lại
+                        </Button>
+                    </Link>
                 </div>
             </div>
 
@@ -506,12 +506,14 @@ const AddTicket = ({ onMenuClick, mode = 'add', ticketData = null }) => {
 
                         <Form.Item>
                             <div className="admin-form-actions">
-                                <Button
-                                    size="large"
-                                    onClick={() => onMenuClick && onMenuClick('ticket-list')}
-                                >
-                                    {isViewing ? 'Quay lại' : 'Hủy'}
-                                </Button>
+                                <Link to="/admin/ticket-list">
+                                    <Button
+                                        size="large"
+                                        onClick={() => onMenuClick && onMenuClick('ticket-list')}
+                                    >
+                                        Quay lại
+                                    </Button>
+                                </Link>
                                 {!isViewing && (
                                     <Button
                                         type="primary"
@@ -519,8 +521,8 @@ const AddTicket = ({ onMenuClick, mode = 'add', ticketData = null }) => {
                                         loading={loading}
                                         size="large"
                                     >
-                                        {loading 
-                                            ? (isEditing ? 'Đang cập nhật...' : 'Đang tạo...') 
+                                        {loading
+                                            ? (isEditing ? 'Đang cập nhật...' : 'Đang tạo...')
                                             : (isEditing ? 'Cập nhật sự kiện' : 'Tạo sự kiện')
                                         }
                                     </Button>

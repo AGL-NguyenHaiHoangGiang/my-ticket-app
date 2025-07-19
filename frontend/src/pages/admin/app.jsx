@@ -12,7 +12,7 @@ import '../../assets/style/admin.css';
 import Dashboard from './dashboard';
 import TicketList from './ticket-list';
 import TicketCategories from './ticket-categories';
-import AddTicket from './add-ticket';
+import AddTicket from './ticket-detail';
 import BlogList from './blog-list';
 import BlogCategories from './blog-categories';
 import OrderList from './order-list';

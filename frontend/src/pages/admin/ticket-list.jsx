@@ -1,10 +1,30 @@
+import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Table, Button, Space, Tag } from 'antd';
 import { EditOutlined, DeleteOutlined, EyeOutlined, PlusOutlined } from '@ant-design/icons';
 
 import AdminEventService from '../../services/adminEvents';
-import { useEffect, useState } from 'react';
 
-const TicketList = ({ onMenuClick }) => {
+const TicketList = () => {
+    const [loading, setLoading] = useState(false);
+    const [data, setData] = useState([]);
+
+    const fetchData = async () => {
+        setLoading(true);
+        try {
+            const response = await AdminEventService.getAll();
+            setData(response.body);
+        } catch (error) {
+            console.error("Error fetching events:", error);
+            return [];
+        }
+        setLoading(false);
+    };
+
+    useEffect(() => {
+        fetchData();
+    }, []);
+
     // Define the columns for the ticket list table (Ant Design)
     const columns = [
         {
@@ -22,6 +42,10 @@ const TicketList = ({ onMenuClick }) => {
             title: 'Danh mục',
             dataIndex: 'categories',
             key: 'categories',
+            render: (categories) =>
+                Array.isArray(categories)
+                    ? categories.map((cat) => <Tag key={cat}>{cat}</Tag>)
+                    : <Tag>{categories}</Tag>,
         },
         {
             title: 'Ngày diễn ra',
@@ -52,12 +76,16 @@ const TicketList = ({ onMenuClick }) => {
             width: 200,
             render: (_, record) => (
                 <Space size="middle">
-                    <Button type="primary" icon={<EyeOutlined />} size="small" onClick={() => onMenuClick('view-ticket', mode='view', ticketData=record)}>
-                        Xem
-                    </Button>
-                    <Button type="default" icon={<EditOutlined />} size="small">
-                        Sửa
-                    </Button>
+                    <Link to={`/admin/view-ticket/${record.id}`}>
+                        <Button type="primary" icon={<EyeOutlined />} size="small">
+                            Xem
+                        </Button>
+                    </Link>
+                    <Link to={`/admin/edit-ticket/${record.id}`}>
+                        <Button type="default" icon={<EditOutlined />} size="small">
+                            Sửa
+                        </Button>
+                    </Link>
                     <Button type="primary" danger icon={<DeleteOutlined />} size="small">
                         Xóa
                     </Button>
@@ -66,22 +94,7 @@ const TicketList = ({ onMenuClick }) => {
         },
     ];
 
-    // Tickets data
-    const [data, setData] = useState([]);
 
-    const fetchData = async () => {
-        try {
-            const response = await AdminEventService.getAll();
-            setData(response.body);
-        } catch (error) {
-            console.error("Error fetching events:", error);
-            return [];
-        }
-    };
-
-    useEffect(() => {
-        fetchData();
-    }, []);
 
     return (
         <div className="admin-container">
@@ -91,14 +104,13 @@ const TicketList = ({ onMenuClick }) => {
                     <Button
                         type="primary"
                         icon={<PlusOutlined />}
-                        onClick={() => onMenuClick && onMenuClick('add-ticket')}
                     >
-                        Thêm sự kiện
+                        <Link to="/admin/add-ticket">Thêm sự kiện</Link>
                     </Button>
                 </div>
             </div>
             <div className="admin-table-container">
-                <Table columns={columns} dataSource={data} rowKey="id" />
+                <Table columns={columns} dataSource={data} rowKey="id" loading={loading} />
             </div>
             <p style={{ textAlign: 'right', marginTop: '16px' }}>Tổng cộng: {data.length} sự kiện</p>
         </div>
