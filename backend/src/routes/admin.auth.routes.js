@@ -9,6 +9,10 @@ router.post('/login', adminAuthController.login);
 router.post('/manager/add', 
     authMiddleware,
     authorizeRoles(['ADMIN']),
-    adminAuthController.createManager);
+    adminAuthController.createManager
+);
+router.post('/refresh-token', adminAuthController.refreshToken);
+router.post('/verify-token', adminAuthController.verifyToken);
+router.post('/logout', adminAuthController.logout);
 
 module.exports = router;

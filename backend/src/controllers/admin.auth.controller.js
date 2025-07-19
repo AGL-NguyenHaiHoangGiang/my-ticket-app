@@ -1,6 +1,12 @@
-const Admin = require('../models/admin.model');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const {v4: uuidv4} = require('uuid');
+
+const Admin = require('../models/admin.model');
+const Session = require('../models/session.model');
+
+const { jwtSecret, jwtExpiresIn } = require('../configs/jwt.config');
+
 
 exports.login = async (req, res) => {
   try {
@@ -17,17 +23,44 @@ exports.login = async (req, res) => {
     
     if (!isPasswordValid) 
       return res.status(401).json({ error: 'Invalid username or password' });
+      
+    const existingSession = await Session.findOne({ userId: existingUser._id });
+      
+    if (existingSession) {
+      await Session.deleteOne({ userId: existingUser._id });
+      
+      console.log('Deleted existing session for user:', existingUser.username);
+    }  
     
-    const payload = {
-      username: existingUser.username,
-      roles: existingUser.roles,
-    }
+    const sessionToken = uuidv4();
+    const accessToken = jwt.sign(
+      { 
+        userId: existingUser._id, 
+        username: existingUser.username,
+        roles: existingUser.roles,
+        sessionToken
+      },
+      jwtSecret,
+      { expiresIn: jwtExpiresIn }
+    );
     
-    const token = jwt.sign(payload, jwtSecret, { expiresIn: jwtExpiresIn });
+    const refreshToken = jwt.sign(
+      { userId: existingUser._id, sessionToken },
+      jwtSecret,
+      { expiresIn: '30d' } // Refresh token expires in 30 days
+    );
+    
+    await Session.create({
+      userId: existingUser._id,
+      sessionToken,
+      refreshToken,
+      expiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000) // 30 days from now
+    });
     
     return res.status(200).json({
       message: 'Login successful',
-      token: token
+      accessToken,
+      refreshToken,
     })
     
   } catch (err) {
@@ -35,8 +68,6 @@ exports.login = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
-
-const { jwtSecret, jwtExpiresIn } = require('../configs/jwt.config');
 
 exports.createManager = async (req, res) => {
   try {
@@ -73,3 +104,83 @@ exports.createManager = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+exports.refreshToken = async (req, res) => {
+  try {
+    const { refreshToken } = req.body;
+
+    if (!refreshToken) {
+      return res.status(401).json({ error: 'Refresh token is required' });
+    }
+
+    const decoded = jwt.verify(refreshToken, jwtSecret);
+
+    const session = await Session.findOne({ 
+      sessionToken: decoded.sessionToken,
+      refreshToken : refreshToken
+    }, {});
+
+    if (!session) {
+      return res.status(401).json({ error: 'Invalid refresh token' });
+    }
+  
+    const existingUser = await Admin.findById( {_id: decoded.userId});
+    
+    const newAccessToken = jwt.sign(
+      { 
+        userId: existingUser._id, 
+        username: existingUser.username,
+        roles: existingUser.roles,
+        sessionToken: session.sessionToken
+      },
+      jwtSecret,
+      { expiresIn: jwtExpiresIn }
+    );
+
+    res.status(200).json({
+      accessToken: newAccessToken,
+      message: 'Access token refreshed successfully',
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.logout = async (req, res) => {
+  try {
+    const { sessionToken } = req.body;
+
+    if (!sessionToken) {
+      return res.status(400).json({ error: 'Session token is required' });
+    }
+
+    await Session.deleteOne({ sessionToken });
+
+    res.status(200).json({ message: 'Logged out successfully' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+}
+
+exports.verifyToken = (req, res, next) => {
+  const token = req.headers['authorization']?.split(' ')[1];
+
+  if (!token) {
+    return res.status(401).json({ error: 'Access token is required' });
+  }
+   
+  try {
+    const decoded = jwt.verify(token, jwtSecret);
+    req.user = decoded;
+    // Check if session exists
+    const session = Session.findOne({ sessionToken: decoded.sessionToken });
+     if (!session) {
+      return res.status(401).json({ error: 'Session not found' });
+    }
+    req.session = session;
+     
+    next();
+  } catch (err) {
+    return res.status(401).json({ error: 'Invalid access token' });
+  }
+}
