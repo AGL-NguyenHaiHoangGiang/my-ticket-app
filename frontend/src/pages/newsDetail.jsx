@@ -7,7 +7,7 @@ import duckAvatar from "../assets/images/blog/duck.jpg";
 import adBanner from "../assets/images/blog/ad-banner.png";
 
 const NewDetail = () => {
-  const { category, slug } = useParams();
+  const { slug } = useParams();
   const [news, setNews] = useState(null);
   const [relatedNews, setRelatedNews] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -18,7 +18,6 @@ const NewDetail = () => {
     // Lấy chi tiết bài viết theo slug
     getBlogBySlug(slug)
       .then((res) => {
-        console.log("Blog response:", res.data);
         if (res.data.metadata) {
           setNews(res.data.metadata);
         }
@@ -182,9 +181,7 @@ const NewDetail = () => {
                 {relatedNews.slice(0, 4).map((item) => (
                   <li key={item._id} className="side__item">
                     <div className="side__content">
-                      <Link
-                        to={`/tin-tuc/${item.category_id?.name}/${item.slug}`}
-                      >
+                      <Link to={`/tin-tuc/${item.slug}`}>
                         <h3 className="side__title">{item.title}</h3>
                       </Link>
                     </div>

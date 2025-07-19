@@ -12,10 +12,7 @@ const OtherNews = (prop) => {
       </div>
       <div className="flex-box">
         <div className="flex-item">
-          <Link
-            to={`/tin-tuc/${prop.bigCard.category_id?.name}/${prop.bigCard.slug}`}
-            className="post__card"
-          >
+          <Link to={`/tin-tuc/${prop.bigCard.slug}`} className="post__card">
             <div className="post__img">
               <img src={prop.bigCard.thumpnail} alt={prop.bigCard.title} />
             </div>

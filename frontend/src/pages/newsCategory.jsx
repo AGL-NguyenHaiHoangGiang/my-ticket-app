@@ -92,7 +92,7 @@ const NewsCategory = () => {
       category={item.category_id?.name}
       author={item.author}
       date={item.article_friendly_time}
-      id={item._id}
+      id={item.slug}
     />
   ));
 
@@ -111,7 +111,7 @@ const NewsCategory = () => {
   const sidebarNewsList = sidebarNews.map((item) => (
     <li key={item._id} className="side__item">
       <div className="side__content">
-        <Link to={`/tin-tuc/${item.category_id?.name}/${item.slug}`}>
+        <Link to={`/tin-tuc/${item.slug}`}>
           <h3 className="side__title">{item.title}</h3>
         </Link>
       </div>
@@ -137,10 +137,7 @@ const NewsCategory = () => {
           <ul className="flex-box">
             {sportsBigCard.map((item) => (
               <li key={item._id} className="flex-item">
-                <Link
-                  to={`/tin-tuc/${item.category_id?.name}/${item.slug}`}
-                  className="post__card"
-                >
+                <Link to={`/tin-tuc/${item.slug}`} className="post__card">
                   <div className="post__img">
                     <img src={item.thumpnail} alt={item.title} />
                   </div>
@@ -166,7 +163,7 @@ const NewsCategory = () => {
             {sportsSmallCard.map((item) => (
               <li key={item._id} className="flex-item">
                 <Link
-                  to={`/tin-tuc/${item.category_id?.name}/${item.slug}`}
+                  to={`/tin-tuc/${item.slug}`}
                   className="verticle-post__item"
                 >
                   <div className="verticle-post__img">
@@ -211,10 +208,7 @@ const NewsCategory = () => {
           <ul className="flex-box">
             {entertainmentBigCard.map((item) => (
               <li key={item._id} className="flex-item">
-                <Link
-                  to={`/tin-tuc/${item.category_id?.name}/${item.slug}`}
-                  className="post__card"
-                >
+                <Link to={`/tin-tuc/${item.slug}`} className="post__card">
                   <div className="post__img">
                     <img src={item.thumpnail} alt={item.title} />
                   </div>
@@ -240,7 +234,7 @@ const NewsCategory = () => {
             {entertainmentSmallCard.map((item) => (
               <li key={item._id} className="flex-item">
                 <Link
-                  to={`/tin-tuc/${item.category_id?.name}/${item.slug}`}
+                  to={`/tin-tuc/${item.slug}`}
                   className="verticle-post__item"
                 >
                   <div className="verticle-post__img">
@@ -276,7 +270,7 @@ const NewsCategory = () => {
             <div className="post-grid__col flex-item">
               {mainFeaturedNews && (
                 <Link
-                  to={`/tin-tuc/${mainFeaturedNews.category_id?.name}/${mainFeaturedNews.slug}`}
+                  to={`/tin-tuc/${mainFeaturedNews.slug}`}
                   className="card-overlay card-overlay--large"
                 >
                   <div className="card-overlay__img">

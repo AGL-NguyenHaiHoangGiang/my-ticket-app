@@ -3,10 +3,7 @@ import { Link } from "react-router-dom";
 const SmallCardNews = (prop) => {
   return (
     <li className="flex-item">
-      <Link
-        to={`/tin-tuc/${prop.category}/${prop.id}`}
-        className="verticle-post__item"
-      >
+      <Link to={`/tin-tuc/${prop.id}`} className="verticle-post__item">
         <div className="verticle-post__img">
           <img src={prop.image} alt={prop.title} />
         </div>

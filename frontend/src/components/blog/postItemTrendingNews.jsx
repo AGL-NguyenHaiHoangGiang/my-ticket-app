@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 const PostItemTrendingNews = (post) => {
   return (
     <li className="post__item">
-      <Link to={`/tin-tuc/${post.category}/${post.id}`}>
+      <Link to={`/tin-tuc/${post.id}`}>
         <div className="post__img">
           <img src={post.image} alt="post" />
         </div>

@@ -10,7 +10,6 @@ const BlogSection1 = () => {
     getAllBlogCategories()
       .then((res) => {
         setBlogs(res.data.metadata || []);
-        console.log("Blogs fetched successfully:", res.data.metadata);
       })
       .catch((err) => {
         console.error(err);
@@ -47,12 +46,7 @@ const BlogSection1 = () => {
         <div className="flex-box">
           <div className="blog1__left">
             <div className="post__card--large">
-              <Link
-                to={`/tin-tuc/${mainBlog.category_id?.name || "unknown"}/${
-                  mainBlog.slug
-                }`}
-                className="post__card"
-              >
+              <Link to={`/tin-tuc/${mainBlog.slug}`} className="post__card">
                 <div className="post__img blog1__main-image">
                   <img src={mainBlog.thumpnail} alt="blog" />
                 </div>
