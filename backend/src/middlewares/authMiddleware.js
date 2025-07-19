@@ -1,9 +1,11 @@
 const jwt = require('jsonwebtoken');
 
+const { jwtSecret, jwtExpiresIn } = require('../configs/jwt.config');
+
 const authMiddleware = (req, res, next) => {
     const authHeader = req.headers['authorization'];
 
-    if (!authHeader?.startsWith('Bearer ')) {
+    if (!authHeader || !authHeader?.startsWith('Bearer ')) {
         return res.status(401).json({ error: 'Unauthorized' });
     } 
 
@@ -19,6 +21,7 @@ const authMiddleware = (req, res, next) => {
         }
     
         req.user = decoded;
+        console.log(decoded);
         next();
     });
 }
