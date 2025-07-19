@@ -57,7 +57,7 @@ const Login = ({ setLoginOpen }) => {
             .then((response) => {
                 if (response.message === "Login successful") {
                     console.log("Đăng nhập thành công!");
-                    localStorage.setItem("token", response.token);
+                    localStorage.setItem("adminToken", response.token);
                     setLoginOpen(false);
                 } else {
                     setLoginError("Đăng nhập thất bại!");

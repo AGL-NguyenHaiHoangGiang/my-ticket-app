@@ -32,15 +32,15 @@ const items = [
     children: [
       {
         key: 'ticket-list',
-        label: 'Ticket List',
+        label: 'Danh sách sự kiện',
       },
       {
         key: 'add-ticket',
-        label: 'Add Ticket',
+        label: 'Thêm sự kiện',
       },
       {
         key: 'ticket-categories',
-        label: 'Ticket Categories',
+        label: 'Danh mục sự kiện',
       }
     ],
   },
@@ -51,15 +51,15 @@ const items = [
     children: [
       {
         key: 'blog-list',
-        label: 'Blog List',
+        label: 'Danh sách blog',
       },
       {
         key: 'add-blog',
-        label: 'Add Blog',
+        label: 'Thêm blog',
       },
       {
         key: 'blog-categories',
-        label: 'Blog Categories',
+        label: 'Danh mục blog',
       }
     ],
   },
@@ -70,11 +70,11 @@ const items = [
     children: [
       {
         key: 'order-list',
-        label: 'Order List',
+        label: 'Danh sách đơn hàng',
       },
       {
         key: 'add-order',
-        label: 'Add Order',
+        label: 'Thêm đơn hàng',
       },
       // {
       //   key: 'order-status',
@@ -93,11 +93,11 @@ const items = [
     children: [
       {
         key: 'user-list',
-        label: 'User List',
+        label: 'Danh sách User',
       },
       {
         key: 'add-user',
-        label: 'Add User',
+        label: 'Thêm User',
       },
       // {
       //   key: 'user-roles',
