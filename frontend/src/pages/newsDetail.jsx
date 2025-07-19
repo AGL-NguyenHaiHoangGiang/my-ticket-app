@@ -53,9 +53,9 @@ const NewDetail = () => {
         <div className="container">
           <div className="flex-box">
             <div className="blog-single__main">
-              <div className="blog-single__featured">
+              {/* <div className="blog-single__featured">
                 <img src={news.thumpnail} alt={news.title} />
-              </div>
+              </div> */}
               <h1 className="blog-single__title">{news.title}</h1>
               <div className="post__date">
                 <span>

@@ -1,4 +1,5 @@
 import { Routes, Route, useLocation } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 
 import './assets/style/style.css';
 import './assets/style/home.css';
@@ -36,9 +37,19 @@ export default function UserLayout() {
     else return 'pages';
   };
 
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if(location.pathname === '/') {
+      setLoading(true);
+    } else {
+      setLoading(false);
+    } 
+  }, [location.pathname]);
+
   return (
     <>
-      <Loading />
+      {loading && <Loading />}
       <Header />
       <main className={getMainClass()}>
         <Routes>
