@@ -52,7 +52,7 @@ const TicketList = ({ onMenuClick }) => {
             width: 200,
             render: (_, record) => (
                 <Space size="middle">
-                    <Button type="primary" icon={<EyeOutlined />} size="small">
+                    <Button type="primary" icon={<EyeOutlined />} size="small" onClick={() => onMenuClick('view-ticket', mode='view', ticketData=record)}>
                         Xem
                     </Button>
                     <Button type="default" icon={<EditOutlined />} size="small">
