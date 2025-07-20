@@ -12,14 +12,17 @@ const authorizeRoles = (allowedRoles) => {
         
         console.log(allowedRoles, userRole);
         
+        let authorized = false;
+        
         for (role of allowedRoles) {
-            if (!userRole.includes(role)) {
-                console.log(`User role ${userRole} is not allowed. Required roles: ${allowedRoles}`);
-                return res.status(403).json({ message: 'Access denied. You do not have the required role.' });
+            if (userRole.includes(role)) {
+                authorized = true;
+                break;
             }
         }
             
-                
+        if (!authorized)    
+            return res.status(403).json({ message: 'Access denied. You do not have the required role.' });        
 
         next();
     };
