@@ -62,6 +62,10 @@ exports.login = async (req, res) => {
       accessToken,
       refreshToken,
       sessionToken,
+      body: {
+        username: existingUser.username,
+        avatar: existingUser.avatar,
+      }
     })
     
   } catch (err) {
@@ -155,30 +159,41 @@ exports.logout = async (req, res) => {
       return res.status(400).json({ error: 'Session token is required' });
     }
 
-    await Session.deleteOne({ sessionToken });
+    const deleteResponse = await Session.deleteOne({ sessionToken });
+    console.log('Deleted session:', deleteResponse);
 
-    res.status(200).json({ message: 'Logged out successfully' });
+    if (deleteResponse.deletedCount === 0) 
+      return res.status(404).json({ error: 'Session not found' });
+    else
+      return res.status(200).json({ message: 'Logged out successfully' });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 }
 
-exports.verifyToken = (req, res, next) => {
-  // const token = req.headers['authorization']?.split(' ')[1];
-
-  // if (!token) {
-  //   return res.status(401).json({ error: 'Access token is required' });
-  // }
-   
+exports.verifyToken = async (req, res, next) => {
+  
   try {
-    // const decoded = jwt.verify(token, jwtSecret);
-    const sessionToken = req.user.sessionToken;   // Check if session exists
-    const session = Session.findOne({ sessionToken});
-     if (!session) {
+    console.log(req.user);
+  
+    if (!req.user || !req.user.sessionToken) {
+      return res.status(401).json({ error: 'Unauthorized access' });
+    }
+  
+    if (new Date(req.user.exp * 1000) < Date.now() ) 
+      return res.status(401).json({ error: 'Session expired' });
+  
+    const sessionToken = req.user.sessionToken;
+    
+    const session = await Session.findOne({ userId: req.user.userId});
+    
+    console.log('Found session:', session);
+    
+    if (!session) {
       return res.status(401).json({ error: 'Session not found' });
     }
-    
-    if (!session || session.expiresAt < new Date()) {
+      
+    if (session.expiresAt < new Date()) {
       return res.status(401).json({ error: 'Session expired' });
     }
     
