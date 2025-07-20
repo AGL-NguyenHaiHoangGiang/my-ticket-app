@@ -1,21 +1,29 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Layout, Menu, Dropdown, Avatar, Space } from 'antd';
 import { UserOutlined, SettingOutlined, LogoutOutlined, DownOutlined } from '@ant-design/icons';
 import logo from '../../assets/images/common/logo.svg';
+import Auth from '../../services/adminAuth';
 const { Header } = Layout;
 
 const AdminHeader = () => {
+    const navigate = useNavigate();
+
     const handleMenuClick = (e) => {
         if (e.key === 'logout') {
-            // Handle logout logic here
-            console.log('Logout clicked');
-            // You can add logout logic like clearing tokens, redirecting, etc.
+            logout();
         } else if (e.key === 'account') {
             console.log('Account clicked');
         } else if (e.key === 'settings') {
             console.log('Settings clicked');
         }
     };
+
+    const logout = () => {
+        Auth.logout(localStorage.getItem('adminToken'));
+        localStorage.removeItem('adminToken');
+        localStorage.removeItem('adminUsername');
+        navigate('/admin/login');
+    }
 
     const userMenuItems = [
         {
@@ -63,7 +71,7 @@ const AdminHeader = () => {
                                 icon={<UserOutlined />} 
                                 style={{ backgroundColor: '#1890ff' }}
                             />
-                            Admin User
+                            {localStorage.getItem('adminUsername') || 'No name'}
                             <DownOutlined />
                         </Space>
                     </a>

@@ -1,9 +1,9 @@
-import { useState } from 'react';
 import { Routes, Route, Link, useLocation } from 'react-router-dom';
 import { EditOutlined, UserOutlined, ShoppingCartOutlined, DashboardOutlined } from '@ant-design/icons';
-import { Breadcrumb, Layout, Menu, theme } from 'antd';
+import { Breadcrumb, Layout, Menu } from 'antd';
 import AdminFooter from '../../components/admin/footer';
 import AdminHeader from '../../components/admin/header';
+import ProtectedRoute from './ProtectedRoute';
 
 //style
 import '../../assets/style/admin.css';
@@ -113,14 +113,10 @@ const items = [
 const App = () => {
   const location = useLocation();
 
-  const {
-    token: { colorBgContainer, borderRadiusLG },
-  } = theme.useToken();
-
   const getBreadcrumbItems = () => {
     const path = location.pathname;
-    if (path.includes('ticket-list')) return [{title: 'Trang chủ'}, { title: 'Quản lý vé' }, { title: 'Danh sách sự kiện' }];
-    if (path.includes('add-ticket')) return [{title: 'Trang chủ'}, { title: 'Quản lý vé' }, { title: 'Thêm sự kiện' }];
+    if (path.includes('ticket-list')) return [{ title: 'Trang chủ' }, { title: 'Quản lý vé' }, { title: 'Danh sách sự kiện' }];
+    if (path.includes('add-ticket')) return [{ title: 'Trang chủ' }, { title: 'Quản lý vé' }, { title: 'Thêm sự kiện' }];
     if (path.includes('ticket-categories')) return [{ title: 'Trang chủ' }, { title: 'Quản lý vé' }, { title: 'Danh mục' }];
     if (path.includes('blog-list')) return [{ title: 'Trang chủ' }, { title: 'Quản lý blog' }, { title: 'Danh sách blog' }];
     if (path.includes('add-blog')) return [{ title: 'Trang chủ' }, { title: 'Quản lý blog' }, { title: 'Thêm blog' }];
@@ -132,43 +128,45 @@ const App = () => {
   };
 
   return (
-    <Layout className='admin-main'>
-      <AdminHeader />
-      <Layout>
-        <Sider className='admin-sider' width={230}>
-          <Menu
-            mode="inline"
-            selectedKeys={[location.pathname]}
-            defaultOpenKeys={['dashboard']}
-            style={{ height: '100%' }}
-            items={items}
-          />
-        </Sider>
-        <Layout style={{ padding: '0 24px' }}>
-          <Breadcrumb
-            items={getBreadcrumbItems()}
-            style={{ margin: '16px 0' }}
-          />
-          <Content className='admin-content'>
-            <Routes>
-              <Route path="/" element={<Dashboard />} />
-              <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/ticket-list" element={<TicketList />} />
-              <Route path="/add-ticket" element={<AddTicket mode="add" />} />
-              <Route path="/edit-ticket/:id" element={<AddTicket mode="edit" />} />
-              <Route path="/view-ticket/:id" element={<AddTicket mode="view" />} />
-              <Route path="/ticket-categories" element={<TicketCategories />} />
-              <Route path="/blog-list" element={<BlogList />} />
-              <Route path="/blog-categories" element={<BlogCategories />} />
-              <Route path="/order-list" element={<OrderList />} />
-              <Route path="/add-order" element={<AddOrder />} />
-              <Route path="/user-list" element={<UserList />} />
-            </Routes>
-          </Content>
+    <ProtectedRoute>
+      <Layout className='admin-main'>
+        <AdminHeader />
+        <Layout>
+          <Sider className='admin-sider' width={230}>
+            <Menu
+              mode="inline"
+              selectedKeys={[location.pathname]}
+              defaultOpenKeys={['dashboard']}
+              style={{ height: '100%' }}
+              items={items}
+            />
+          </Sider>
+          <Layout style={{ padding: '0 24px' }}>
+            <Breadcrumb
+              items={getBreadcrumbItems()}
+              style={{ margin: '16px 0' }}
+            />
+            <Content className='admin-content'>
+              <Routes>
+                <Route path="/" element={<Dashboard />} />
+                <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/ticket-list" element={<TicketList />} />
+                <Route path="/add-ticket" element={<AddTicket mode="add" />} />
+                <Route path="/edit-ticket/:id" element={<AddTicket mode="edit" />} />
+                <Route path="/view-ticket/:id" element={<AddTicket mode="view" />} />
+                <Route path="/ticket-categories" element={<TicketCategories />} />
+                <Route path="/blog-list" element={<BlogList />} />
+                <Route path="/blog-categories" element={<BlogCategories />} />
+                <Route path="/order-list" element={<OrderList />} />
+                <Route path="/add-order" element={<AddOrder />} />
+                <Route path="/user-list" element={<UserList />} />
+              </Routes>
+            </Content>
+          </Layout>
         </Layout>
+        <AdminFooter />
       </Layout>
-      <AdminFooter />
-    </Layout>
+    </ProtectedRoute>
   );
 };
 export default App;
