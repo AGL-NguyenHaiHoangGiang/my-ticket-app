@@ -26,7 +26,7 @@ const eventSchema = new mongoose.Schema(
     },
     day: {
       type: Date,
-      default: new Date(Date.now()).toISOString,
+      default: new Date(Date.now()),
     },
     price: {
       type: mongoose.Schema.Types.Int32,
@@ -53,13 +53,22 @@ const eventSchema = new mongoose.Schema(
     description: {
       type: String,
     },
-    // badge: {
-    //   type: String, // Assuming badge can be of any type, adjust as necessary
-    // },
     categories: {
       type: Array,
       default: ['others'],
     },
+    location: {
+      type: String,
+      default: "Hồ Chí Minh",
+    },
+    deletedAt: {
+      type: Date,
+      default: null,
+    },
+    version: {
+      type: String,
+      default: '1.0.0',
+    }
   },
   {
     timestamps: false, // Disable automatic timestamps
