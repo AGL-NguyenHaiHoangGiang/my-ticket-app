@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import EventService from '../services/events';
 
 import SingleEventHead from "../components/event/event-single-head";
@@ -10,7 +10,7 @@ import adsImageSp from '../assets/images/event-detail/ads-sp.png';
 
 import RelatedEvents from '../components/related';
 
-const EventDetail = () => {
+const EventDetail = ({ auth, setLoginOpen }) => {
   const [detail, setDetail] = useState({});
   const { slug } = useParams();
 
@@ -82,9 +82,15 @@ const EventDetail = () => {
                     />
                     {formattedDate}
                   </time>
-                  <a href="#" className="js-booking-btn js-modal-open button button--primary" data-id="login">
-                    Đăng nhập
-                  </a>
+                  {auth ? (
+                    <Link to={`/su-kien/${slug}/dat-ve`} className="button button--primary">
+                      Đặt vé
+                    </Link>
+                  ) : (
+                    <button className="button button--primary" data-id="login" onClick={() => setLoginOpen(true)}>
+                      Đăng nhập
+                    </button>
+                  )}
                 </div>
                 {ticketList.length > 0 && (
                   <table className="e-ticket-info__table">

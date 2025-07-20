@@ -22,6 +22,7 @@ import EventDetail from './pages/event-detail';
 import Events from './pages/events';
 import NotFound from './pages/404';
 import Account from "./pages/account";
+import Booking from "./pages/booking";
 
 export default function UserLayout() {
   const location = useLocation();
@@ -32,6 +33,7 @@ export default function UserLayout() {
     else if (path === '/tin-tuc/') return 'blog';
     else if (path.startsWith('/tin-tuc/') && path.split('/').length === 3) return 'blog category';
     else if (path.startsWith('/tin-tuc/') && path.split('/').length === 4) return 'blog blog-single';
+    else if (path.startsWith('/su-kien/') && path.endsWith('/dat-ve')) return 'booking';
     else if (path.startsWith('/su-kien/') && path.split('/').length === 4) return 'event single';
     else if (path.startsWith('/loai-su-kien/') || path.startsWith('/su-kien')) return 'page-event';
     else if (path === "/tai-khoan") return "account";
@@ -78,11 +80,14 @@ export default function UserLayout() {
     checkAuth();
   }, [navigate]);
 
+  // Modal login
+  const [loginOpen, setLoginOpen] = useState(false);
+
 
   return (
     <>
       {loading && <Loading />}
-      <Header setAuth={setAuth} auth={auth} />
+      <Header setAuth={setAuth} auth={auth} setLoginOpen={setLoginOpen} loginOpen={loginOpen} />
       <main className={getMainClass()}>
         <Routes>
           <Route path="/" element={<Home />} />
@@ -90,10 +95,11 @@ export default function UserLayout() {
           <Route path="/tin-tuc/:category" element={<NewsCategory />} />
           <Route path="/tin-tuc/:category/:slug" element={<NewDetail />} />
           <Route path="/loai-su-kien/:categorySlug" element={<EventCategory />} />
-          <Route path="/su-kien/:slug" element={<EventDetail />} />
+          <Route path="/su-kien/:slug" element={<EventDetail auth={auth} setLoginOpen={setLoginOpen} />} />
+          <Route path="/su-kien/:slug/dat-ve" element={<Booking auth={auth} setLoginOpen={setLoginOpen} />} />
           <Route path="/su-kien" element={<Events />} />
           <Route path="*" element={<NotFound />} />
-          <Route path="/tai-khoan" element={<Account />} auth={auth} />
+          <Route path="/tai-khoan" element={<Account auth={auth} />} />
         </Routes>
       </main>
       <Footer />

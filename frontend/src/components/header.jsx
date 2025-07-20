@@ -14,7 +14,7 @@ import iconArrowDown from '../assets/images/common/icon-arrow-down.svg';
 import noAvatar from '../assets/images/account/avatar.jpg';
 
 
-function Header({setAuth, auth}) {
+function Header({setAuth, auth, setLoginOpen, loginOpen}) {
     const [navigationOpen, setNavigationOpen] = useState(false);
     const handleNavigationToggle = () => {
         setNavigationOpen(!navigationOpen);
@@ -106,8 +106,7 @@ function Header({setAuth, auth}) {
 
     // console.log('Search Results:', searchResults);
 
-    // Login
-    const [loginOpen, setLoginOpen] = useState(false);
+    // Toggle login modal
     const handleLoginToggle = () => {
         setLoginOpen(!loginOpen);
     }
