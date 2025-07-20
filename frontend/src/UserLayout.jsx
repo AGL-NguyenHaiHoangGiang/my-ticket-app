@@ -1,5 +1,6 @@
-import { Routes, Route, useLocation } from 'react-router-dom';
+import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import Auth from './services/auth';
 
 import './assets/style/style.css';
 import './assets/style/home.css';
@@ -40,17 +41,48 @@ export default function UserLayout() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if(location.pathname === '/') {
+    if (location.pathname === '/') {
       setLoading(true);
     } else {
       setLoading(false);
-    } 
+    }
   }, [location.pathname]);
+
+
+  //check login
+  const [auth, setAuth] = useState(null);
+  const navigate = useNavigate();
+  useEffect(() => {
+    // check token tồn tại và hợp lệ
+    const checkAuth = async () => {
+      // lấy token từ localStorage
+      const token = localStorage.getItem('customerToken');
+      if (!token) {
+        setAuth(false);
+        return;
+      }
+
+      try {
+        const response = await Auth.verifyToken(token);
+        // console.log("Token verified:", response);
+        if (response && response.message === 'Token is valid') {
+          setAuth(true);
+        }
+      } catch (error) {
+        console.error("Token verification failed:", error);
+        localStorage.removeItem('adminToken');
+        setAuth(false);
+      }
+    }
+
+    checkAuth();
+  }, [navigate]);
+
 
   return (
     <>
       {loading && <Loading />}
-      <Header />
+      <Header setAuth={setAuth} auth={auth} />
       <main className={getMainClass()}>
         <Routes>
           <Route path="/" element={<Home />} />
@@ -61,7 +93,7 @@ export default function UserLayout() {
           <Route path="/su-kien/:slug" element={<EventDetail />} />
           <Route path="/su-kien" element={<Events />} />
           <Route path="*" element={<NotFound />} />
-          <Route path="/tai-khoan" element={<Account />} />
+          <Route path="/tai-khoan" element={<Account />} auth={auth} />
         </Routes>
       </main>
       <Footer />

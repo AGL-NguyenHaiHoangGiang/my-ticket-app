@@ -212,16 +212,6 @@ main {
     }
 }
 
-.header__account {
-    display: none;
-}
-
-@media screen and (max-width: 1024px) {
-    .header__account {
-        display: none !important;
-    }
-}
-
 .header__account-icon {
     width: 40px;
     height: 40px;
@@ -230,11 +220,28 @@ main {
     margin-right: 10px;
 }
 
+@media screen and (max-width: 1024px) {
+    .header__account-icon {
+        margin-right: 0;
+    }
+
+    .header__account span {
+        display: none;
+    }
+}
+
 .header__account-link {
     display: flex;
     align-items: center;
     padding: 15px 0;
     margin-right: 30px;
+}
+
+@media screen and (max-width: 1024px) {
+    .header__account-link {
+        margin-right: 0;
+        margin-left: 20px;
+    }
 }
 
 .header__account span {

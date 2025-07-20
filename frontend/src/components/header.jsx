@@ -8,14 +8,13 @@ import logo from '../assets/images/common/logo.svg';
 import iconSearch from '../assets/images/common/icon-search.svg';
 import iconUser from '../assets/images/common/icon-user.png';
 import iconTicket from '../assets/images/common/icon-ticket.svg';
-import avatar from '../assets/images/account/avatar.jpg';
 import iconFlagVi from '../assets/images/common/flag-vi.svg';
 import iconFlagEn from '../assets/images/common/flag-en.svg';
 import iconArrowDown from '../assets/images/common/icon-arrow-down.svg';
+import noAvatar from '../assets/images/account/avatar.jpg';
 
 
-
-function Header() {
+function Header({setAuth, auth}) {
     const [navigationOpen, setNavigationOpen] = useState(false);
     const handleNavigationToggle = () => {
         setNavigationOpen(!navigationOpen);
@@ -148,34 +147,35 @@ function Header() {
                                 )}
                             </div>
 
-                            <a href="javascript:void(0)" className="login--sp js-modal-open" data-id="login">
-                                <img src={iconUser} width="20" height="20" alt="Login" />
-                            </a>
+
 
                             <a href="javascript:void(0)" className="ticket js-modal-open js-header-ticket" data-id="login">
                                 <img src={iconTicket} alt="ticket" />
                                 Vé đã mua
                             </a>
 
-                            <ul className="login__nav pc-only">
-                                <li>
-                                    <button className="js-modal-open" onClick={handleLoginToggle}>Đăng nhập</button>
-                                </li>
-                                <li>
-                                    <button className="js-modal-open" data-id="signin">Đăng ký</button>
-                                </li>
-                            </ul>
-
-                            <div className="header__account">
-                                <a href="javascript:void(0)" className="header__account-link">
-                                    <img
-                                        className="header__account-icon"
-                                        src={avatar}
-                                        loading="lazy"
-                                        alt="avatar" />
-                                    <span id="account-email">&nbsp;</span>
-                                </a>
-                            </div>
+                            {!auth ? (
+                                <>
+                                    <ul className="login__nav pc-only">
+                                        <li>
+                                            <button onClick={handleLoginToggle}>Đăng nhập</button>
+                                        </li>
+                                        <li>
+                                            <button data-id="signin">Đăng ký</button>
+                                        </li>
+                                    </ul>
+                                    <button className="login--sp" onClick={handleLoginToggle}>
+                                        <img src={iconUser} width="20" height="20" alt="Login" />
+                                    </button>
+                                </>
+                            ) : (
+                                <div className="header__account">
+                                    <Link to="/tai-khoan" className="header__account-link">
+                                        <img className="header__account-icon" src={noAvatar} loading="lazy" alt="avatar" /><span
+                                            id="account-email">Hoàng Giang</span>
+                                    </Link>
+                                </div>
+                            )}
 
                             <div className="lang">
                                 <div className="lang__active">
@@ -234,7 +234,7 @@ function Header() {
                     </div>
                 </div>
             </header >
-            {loginOpen && <Login setLoginOpen={setLoginOpen} />}
+            {loginOpen && <Login setAuth={setAuth} setLoginOpen={setLoginOpen} />}
         </>
     )
 }

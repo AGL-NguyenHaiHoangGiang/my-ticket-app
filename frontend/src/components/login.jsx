@@ -4,13 +4,13 @@ import iconEyeOn from '..//assets/images/common/icon-eye.svg';
 import iconFacebook from '..//assets/images/common/icon-facebook.svg';
 import iconGoogle from '..//assets/images/common/icon-google.svg';
 
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import Auth from '../services/auth';
 
-const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+// const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
 const schema = yup.object().shape({
@@ -26,7 +26,7 @@ const schema = yup.object().shape({
 });
 
 
-const Login = ({ setLoginOpen }) => {
+const Login = ({setAuth, setLoginOpen }) => {
 
     //close modal
     const handleClose = () => {
@@ -56,11 +56,12 @@ const Login = ({ setLoginOpen }) => {
         Auth.login(data.email, data.password)
             .then((response) => {
                 if (response.message === "Login successful") {
-                    console.log("Đăng nhập thành công!");
-                    localStorage.setItem("adminToken", response.token);
+                    localStorage.setItem("customerToken", response.accessToken);
                     setLoginOpen(false);
+                    setAuth(true);
                 } else {
                     setLoginError("Đăng nhập thất bại!");
+                    setAuth(false);
                 };
             })
             .catch((error) => {

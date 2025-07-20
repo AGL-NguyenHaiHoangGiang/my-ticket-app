@@ -14,7 +14,7 @@ Cài đặt các phụ thuộc:
 pnpm install
 ```
 
-## 🛠️ Khởi động server phát triển
+## 🛠️ Khởi động server develop
 
 ```bash
 pnpm run dev

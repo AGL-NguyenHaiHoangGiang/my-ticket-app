@@ -21,6 +21,15 @@ class Auth {
         const response = await this.api.post("/logout");
         return response.data;
     }
+
+    async verifyToken(token) {
+        const response = await this.api.post("/verify-token", null, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        return response.data;
+    }
 }
 
 export default new Auth();
