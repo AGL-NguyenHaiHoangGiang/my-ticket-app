@@ -97,6 +97,11 @@ exports.login = async (req, res) => {
       accessToken,
       refreshToken,
       sessionToken,
+      body: {
+        avatar: existingUser.avatar,
+        name: existingUser.name,
+        email: existingUser.email,
+      }
     })
 
   } catch (err) {

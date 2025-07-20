@@ -62,6 +62,10 @@ exports.login = async (req, res) => {
       accessToken,
       refreshToken,
       sessionToken,
+      body: {
+        username: existingUser.username,
+        avatar: existingUser.avatar,
+      }
     })
     
   } catch (err) {
