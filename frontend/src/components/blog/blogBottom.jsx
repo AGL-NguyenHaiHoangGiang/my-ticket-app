@@ -60,7 +60,7 @@ const BlogBottom = () => {
               />
             ))
         : [],
-    path: "/tin-tuc/the-thao",
+    path: "/loai-tin-tuc/the-thao",
   };
 
   const movieNews = {
@@ -82,7 +82,7 @@ const BlogBottom = () => {
               />
             ))
         : [],
-    path: "/tin-tuc/giai-tri",
+    path: "/loai-tin-tuc/giai-tri",
   };
 
   return (

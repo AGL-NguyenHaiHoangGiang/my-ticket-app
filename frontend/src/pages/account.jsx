@@ -67,9 +67,9 @@ const Account = () => {
             <AccountMainContent
               userInfo={userInfo}
               isEditing={isEditing}
-              notifications={notifications}
+              // notifications={notifications}
               onToggleEdit={toggleEditable}
-              onInputChange={handleInputChange}
+              // onInputChange={handleInputChange}
               onToggleSwitch={toggleSwitch}
             />
             {/* End Main content */}

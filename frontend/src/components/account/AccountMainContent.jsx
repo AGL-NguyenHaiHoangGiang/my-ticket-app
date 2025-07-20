@@ -20,11 +20,11 @@ const AccountMainContent = ({
         onInputChange={onInputChange}
       />
 
-      {/* Settings Section */}
+      {/* Settings Section
       <AccountSettings
         notifications={notifications}
         onToggleSwitch={onToggleSwitch}
-      />
+      /> */}
     </div>
   );
 };

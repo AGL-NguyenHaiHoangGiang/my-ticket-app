@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import SideItem from "../../../components/blog/sideItem";
 import { getAllBlogCategories } from "../../../services/blog";
 import adsBanner from "../../../assets/images/blog/ad-banner.png";
+import BlogAds from "../blog-ads";
 
 const BlogSide = () => {
   const [blogs, setBlogs] = useState([]);
@@ -47,11 +48,7 @@ const BlogSide = () => {
         <h2 className="title">Đọc nhiều</h2>
       </div>
       <ul className="side__block">{blogSideData}</ul>
-      <div className="side__block pc-only">
-        <a href="#" className="add-banner">
-          <img src={adsBanner} alt="ads" />
-        </a>
-      </div>
+      <BlogAds />
     </div>
   );
 };
