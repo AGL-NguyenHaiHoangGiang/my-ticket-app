@@ -113,24 +113,43 @@ exports.logout = async (req, res) => {
       return res.status(400).json({ error: 'Session token is required' });
     }
 
-    await Session.deleteOne({ sessionToken });
+    const deleteResponse = await Session.deleteOne({ sessionToken });
+    console.log('Deleted session:', deleteResponse);
 
-    res.status(200).json({ message: 'Logged out successfully' });
+    if (deleteResponse.deletedCount === 0) 
+      return res.status(404).json({ error: 'Session not found' });
+    else
+      return res.status(200).json({ message: 'Logged out successfully' });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 }
 
-exports.verifyToken = (req, res, next) => {
-   
+exports.verifyToken = async (req, res, next) => {
+  
   try {
-    const sessionToken = req.user.sessionToken;   
-    const session = Session.findOne({ sessionToken});
-     if (!session) {
-      return res.status(401).json({ error: 'Session not found' });
+    console.log(req.user);
+  
+    if (!req.user || !req.user.sessionToken) {
+      return res.status(401).json({ error: 'Unauthorized access' });
     }
     
-    if (!session || session.expiresAt < new Date()) {
+    console.log('Verifying session token:', req.user.sessionToken);
+  
+    if (new Date(req.user.exp * 1000) < Date.now() ) 
+      return res.status(401).json({ error: 'Session expired' });
+  
+    const sessionToken = req.user.sessionToken;
+    
+    const session = await Session.findOne({ userId: req.user.userId});
+    
+    console.log('Found session:', session);
+    
+    if (!session) {
+      return res.status(401).json({ error: 'Session not found' });
+    }
+      
+    if (session.expiresAt < new Date()) {
       return res.status(401).json({ error: 'Session expired' });
     }
     
