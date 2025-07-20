@@ -12,7 +12,9 @@ router.post('/manager/add',
     adminAuthController.createManager
 );
 router.post('/refresh-token', adminAuthController.refreshToken);
-router.post('/verify-token', adminAuthController.verifyToken);
+router.post('/verify-token', 
+    authMiddleware,
+    adminAuthController.verifyToken);
 router.post('/logout', adminAuthController.logout);
 
 module.exports = router;

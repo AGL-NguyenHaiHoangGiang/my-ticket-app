@@ -61,6 +61,7 @@ exports.login = async (req, res) => {
       message: 'Login successful',
       accessToken,
       refreshToken,
+      sessionToken,
     })
     
   } catch (err) {
@@ -163,21 +164,25 @@ exports.logout = async (req, res) => {
 }
 
 exports.verifyToken = (req, res, next) => {
-  const token = req.headers['authorization']?.split(' ')[1];
+  // const token = req.headers['authorization']?.split(' ')[1];
 
-  if (!token) {
-    return res.status(401).json({ error: 'Access token is required' });
-  }
+  // if (!token) {
+  //   return res.status(401).json({ error: 'Access token is required' });
+  // }
    
   try {
-    const decoded = jwt.verify(token, jwtSecret);
-    req.user = decoded;
-    // Check if session exists
-    const session = Session.findOne({ sessionToken: decoded.sessionToken });
+    // const decoded = jwt.verify(token, jwtSecret);
+    const sessionToken = req.user.sessionToken;   // Check if session exists
+    const session = Session.findOne({ sessionToken});
      if (!session) {
       return res.status(401).json({ error: 'Session not found' });
     }
-    req.session = session;
+    
+    if (!session || session.expiresAt < new Date()) {
+      return res.status(401).json({ error: 'Session expired' });
+    }
+    
+    return res.status(200).json({ message: 'Token is valid'});
      
     next();
   } catch (err) {
