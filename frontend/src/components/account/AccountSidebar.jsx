@@ -38,12 +38,12 @@ const AccountSidebar = ({ userName, onLogout }) => {
             <strong>Vé đã mua</strong>
           </a>
         </li>
-        <li className="nav__item">
+        {/* <li className="nav__item">
           <a href="payment.html">
             <img src={iconWallet} alt="icon" />
             <strong>Tài khoản thanh toán</strong>
           </a>
-        </li>
+        </li> */}
         <li className="nav__item">
           <a href="#" onClick={onLogout}>
             <img src={iconLogout} alt="icon" />

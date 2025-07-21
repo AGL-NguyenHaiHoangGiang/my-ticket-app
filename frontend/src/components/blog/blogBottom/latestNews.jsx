@@ -56,7 +56,7 @@ const LatestNews = () => {
     <section>
       <div className="heading">
         <h2 className="title">Tin mới nhất</h2>
-        <Link to="/tin-tuc/tin-moi-nhat" className="readmore">
+        <Link to="/loai-tin-tuc/tin-moi-nhat" className="readmore">
           Xem thêm
         </Link>
       </div>

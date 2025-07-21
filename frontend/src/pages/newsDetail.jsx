@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { getBlogBySlug, getAllBlogCategories } from "../services/blog";
-import avatar from "../assets/images/blog/avatar.jpg";
-import catAvatar from "../assets/images/blog/cat.jpg";
-import duckAvatar from "../assets/images/blog/duck.jpg";
-import adBanner from "../assets/images/blog/ad-banner.png";
+// import avatar from "../assets/images/blog/avatar.jpg";
+// import catAvatar from "../assets/images/blog/cat.jpg";
+// import duckAvatar from "../assets/images/blog/duck.jpg";
+// import adBanner from "../assets/images/blog/ad-banner.png";
+import BlogAds from "../components/blog/blog-ads";
 import RelatedEvents from '../components/related';
 
 const NewDetail = () => {
-  const { category, slug } = useParams();
+  const { slug } = useParams();
   const [news, setNews] = useState(null);
   const [relatedNews, setRelatedNews] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -19,7 +20,6 @@ const NewDetail = () => {
     // Lấy chi tiết bài viết theo slug
     getBlogBySlug(slug)
       .then((res) => {
-        console.log("Blog response:", res.data);
         if (res.data.metadata) {
           setNews(res.data.metadata);
         }
@@ -72,7 +72,7 @@ const NewDetail = () => {
                     />
                   ))}
               </div>
-              <div className="comment-section">
+              {/* <div className="comment-section">
                 <form className="user-input">
                   <div className="user-profile">
                     <div className="user-avatar ">
@@ -173,7 +173,7 @@ const NewDetail = () => {
                     </button>
                   </div>
                 </div>
-              </div>
+              </div> */}
             </div>
             <div className="blog-single__side">
               <div className="heading">
@@ -183,20 +183,14 @@ const NewDetail = () => {
                 {relatedNews.slice(0, 4).map((item) => (
                   <li key={item._id} className="side__item">
                     <div className="side__content">
-                      <Link
-                        to={`/tin-tuc/${item.category_id?.name}/${item.slug}`}
-                      >
+                      <Link to={`/tin-tuc/${item.slug}`}>
                         <h3 className="side__title">{item.title}</h3>
                       </Link>
                     </div>
                   </li>
                 ))}
               </ul>
-              <div className="side__block pc-only">
-                <a href="#" className="add-banner">
-                  <img src={adBanner} alt="ads" />
-                </a>
-              </div>
+              <BlogAds />
             </div>
           </div>
         </div>

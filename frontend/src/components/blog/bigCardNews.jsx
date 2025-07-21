@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 const BigCardNews = (prop) => {
   return (
     <li className="flex-item">
-      <Link to={`/tin-tuc/${prop.category}/${prop.id}`} className="post__card">
+      <Link to={`/tin-tuc/${prop.id}`} className="post__card">
         <div className="image post__img">
           <img src={prop.image} alt={prop.title} />
         </div>

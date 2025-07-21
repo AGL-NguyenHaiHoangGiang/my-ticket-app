@@ -2,10 +2,7 @@ import { Link } from "react-router-dom";
 
 const CategoryNewsTop = (props) => {
   return (
-    <Link
-      to={`/tin-tuc/${props.category}/${props.id}`}
-      class="card-overlay flex-item"
-    >
+    <Link to={`/tin-tuc/${props.id}`} class="card-overlay flex-item">
       <div class="card-overlay__img">
         <img src={props.image} alt={props.title} />
       </div>

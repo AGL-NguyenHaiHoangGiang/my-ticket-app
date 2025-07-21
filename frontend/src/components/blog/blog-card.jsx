@@ -11,7 +11,7 @@ function BlogCard({ blog }) {
 
     return (
         <li className="post__item">
-            <Link to={`/tin-tuc/${blog.category}/${blog.slug}`} className="post__card">
+            <Link to={`/tin-tuc/${blog.slug}`} className="post__card">
                 <div className="post__img">
                     <img src={blog.thumpnail} alt={blog.title} loading="lazy" />
                 </div>
