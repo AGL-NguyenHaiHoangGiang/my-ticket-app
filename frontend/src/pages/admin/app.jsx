@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { Routes, Route, Link, useLocation } from 'react-router-dom';
 import { EditOutlined, UserOutlined, ShoppingCartOutlined, DashboardOutlined } from '@ant-design/icons';
-import { Breadcrumb, Layout, Menu, theme } from 'antd';
+import { Breadcrumb, Layout, Menu } from 'antd';
 import AdminFooter from '../../components/admin/footer';
 import AdminHeader from '../../components/admin/header';
+import ProtectedRoute from './ProtectedRoute';
 
 //style
 import '../../assets/style/admin.css';
@@ -11,19 +12,21 @@ import '../../assets/style/admin.css';
 import Dashboard from './dashboard';
 import TicketList from './ticket-list';
 import TicketCategories from './ticket-categories';
-import AddTicket from './add-ticket';
+import AddTicket from './ticket-detail';
 import BlogList from './blog-list';
 import BlogCategories from './blog-categories';
 import OrderList from './order-list';
+import AddOrder from './add-order';
 import UserList from './user-list';
+
 
 const { Content, Sider } = Layout;
 
 const items = [
-  { 
-    key: 'dashboard', 
-    icon: <DashboardOutlined />, 
-    label: 'Dashboard' 
+  {
+    key: 'dashboard',
+    icon: <DashboardOutlined />,
+    label: <Link to="/admin">Dashboard</Link>,
   },
   {
     key: 'tickets',
@@ -32,15 +35,15 @@ const items = [
     children: [
       {
         key: 'ticket-list',
-        label: 'Ticket List',
+        label: <Link to="/admin/ticket-list">Danh sách sự kiện</Link>,
       },
       {
         key: 'add-ticket',
-        label: 'Add Ticket',
+        label: <Link to="/admin/add-ticket">Thêm sự kiện</Link>,
       },
       {
         key: 'ticket-categories',
-        label: 'Ticket Categories',
+        label: <Link to="/admin/ticket-categories">Danh mục sự kiện</Link>,
       }
     ],
   },
@@ -51,15 +54,15 @@ const items = [
     children: [
       {
         key: 'blog-list',
-        label: 'Blog List',
+        label: <Link to="/admin/blog-list">Danh sách blog</Link>,
       },
       {
         key: 'add-blog',
-        label: 'Add Blog',
+        label: <Link to="/admin/add-blog">Thêm blog</Link>,
       },
       {
         key: 'blog-categories',
-        label: 'Blog Categories',
+        label: <Link to="/admin/blog-categories">Danh mục blog</Link>,
       }
     ],
   },
@@ -70,11 +73,11 @@ const items = [
     children: [
       {
         key: 'order-list',
-        label: 'Order List',
+        label: <Link to="/admin/order-list">Danh sách đơn hàng</Link>,
       },
       {
         key: 'add-order',
-        label: 'Add Order',
+        label: <Link to="/admin/add-order">Thêm đơn hàng</Link>,
       },
       // {
       //   key: 'order-status',
@@ -93,11 +96,11 @@ const items = [
     children: [
       {
         key: 'user-list',
-        label: 'User List',
+        label: <Link to="/admin/user-list">Danh sách người dùng</Link>,
       },
       {
         key: 'add-user',
-        label: 'Add User',
+        label: <Link to="/admin/add-user">Thêm User</Link>,
       },
       // {
       //   key: 'user-roles',
@@ -108,77 +111,62 @@ const items = [
 ];
 
 const App = () => {
-  const [selectedKey, setSelectedKey] = useState('dashboard');
-  const {
-    token: { colorBgContainer, borderRadiusLG },
-  } = theme.useToken();
-
-  const handleMenuClick = (e) => {
-    setSelectedKey(e.key);
-  };
-
-  const renderContent = () => {
-    switch (selectedKey) {
-      case 'dashboard':
-        return <Dashboard />;
-      case 'ticket-list':
-        return <TicketList onMenuClick={(key) => setSelectedKey(key)} />;
-      case 'add-ticket':
-        return <AddTicket onMenuClick={(key) => setSelectedKey(key)} />;
-      case 'ticket-categories':
-        return <TicketCategories />;
-      case 'blog-list':
-        return <BlogList />;
-      case 'blog-categories':
-        return <BlogCategories />;
-      case 'order-list':
-        return <OrderList />;
-      case 'user-list':
-        return <UserList />;
-      default:
-        return <Dashboard />;
-    }
-  };
+  const location = useLocation();
 
   const getBreadcrumbItems = () => {
-    const breadcrumbMap = {
-      'dashboard': [{ title: 'Trang chủ' }, { title: 'Dashboard' }],
-      'ticket-list': [{ title: 'Trang chủ' }, { title: 'Quản lý vé' }, { title: 'Danh sách vé' }],
-      'add-ticket': [{ title: 'Trang chủ' }, { title: 'Quản lý vé' }, { title: 'Thêm vé mới' }],
-      'ticket-categories': [{ title: 'Trang chủ' }, { title: 'Quản lý vé' }, { title: 'Danh mục vé' }],
-      'blog-list': [{ title: 'Trang chủ' }, { title: 'Quản lý blog' }, { title: 'Danh sách blog' }],
-      'blog-categories': [{ title: 'Trang chủ' }, { title: 'Quản lý blog' }, { title: 'Danh mục blog' }],
-      'order-list': [{ title: 'Trang chủ' }, { title: 'Đơn hàng' }, { title: 'Danh sách đơn hàng' }],
-      'user-list': [{ title: 'Trang chủ' }, { title: 'Quản lý người dùng' }, { title: 'Danh sách người dùng' }],
-    };
-    return breadcrumbMap[selectedKey] || [{ title: 'Trang chủ' }, { title: 'Dashboard' }];
+    const path = location.pathname;
+    if (path.includes('ticket-list')) return [{ title: 'Trang chủ' }, { title: 'Quản lý vé' }, { title: 'Danh sách sự kiện' }];
+    if (path.includes('add-ticket')) return [{ title: 'Trang chủ' }, { title: 'Quản lý vé' }, { title: 'Thêm sự kiện' }];
+    if (path.includes('ticket-categories')) return [{ title: 'Trang chủ' }, { title: 'Quản lý vé' }, { title: 'Danh mục' }];
+    if (path.includes('blog-list')) return [{ title: 'Trang chủ' }, { title: 'Quản lý blog' }, { title: 'Danh sách blog' }];
+    if (path.includes('add-blog')) return [{ title: 'Trang chủ' }, { title: 'Quản lý blog' }, { title: 'Thêm blog' }];
+    if (path.includes('blog-categories')) return [{ title: 'Trang chủ' }, { title: 'Quản lý blog' }, { title: 'Danh mục blog' }];
+    if (path.includes('order-list')) return [{ title: 'Trang chủ' }, { title: 'Đơn hàng' }, { title: 'Danh sách đơn hàng' }];
+    if (path.includes('add-order')) return [{ title: 'Trang chủ' }, { title: 'Đơn hàng' }, { title: 'Thêm đơn hàng' }];
+    if (path.includes('user-list')) return [{ title: 'Trang chủ' }, { title: 'Người dùng' }, { title: 'Danh sách' }];
+    return [{ title: 'Dashboard' }];
   };
+
   return (
-    <Layout className='admin-main'>
-      <AdminHeader />
-      <Layout>
-        <Sider className='admin-sider' width={230}>
-          <Menu
-            mode="inline"
-            selectedKeys={[selectedKey]}
-            defaultOpenKeys={['dashboard']}
-            style={{ height: '100%'}}
-            items={items}
-            onClick={handleMenuClick}
-          />
-        </Sider>
-        <Layout style={{ padding: '0 24px' }}>
-          <Breadcrumb
-            items={getBreadcrumbItems()}
-            style={{ margin: '16px 0' }}
-          />
-          <Content className='admin-content'>
-            {renderContent()}
-          </Content>
+    <ProtectedRoute>
+      <Layout className='admin-main'>
+        <AdminHeader />
+        <Layout>
+          <Sider className='admin-sider' width={230}>
+            <Menu
+              mode="inline"
+              selectedKeys={[location.pathname]}
+              defaultOpenKeys={['dashboard']}
+              style={{ height: '100%' }}
+              items={items}
+            />
+          </Sider>
+          <Layout style={{ padding: '0 24px' }}>
+            <Breadcrumb
+              items={getBreadcrumbItems()}
+              style={{ margin: '16px 0' }}
+            />
+            <Content className='admin-content'>
+              <Routes>
+                <Route path="/" element={<Dashboard />} />
+                <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/ticket-list" element={<TicketList />} />
+                <Route path="/add-ticket" element={<AddTicket mode="add" />} />
+                <Route path="/edit-ticket/:id" element={<AddTicket mode="edit" />} />
+                <Route path="/view-ticket/:id" element={<AddTicket mode="view" />} />
+                <Route path="/ticket-categories" element={<TicketCategories />} />
+                <Route path="/blog-list" element={<BlogList />} />
+                <Route path="/blog-categories" element={<BlogCategories />} />
+                <Route path="/order-list" element={<OrderList />} />
+                <Route path="/add-order" element={<AddOrder />} />
+                <Route path="/user-list" element={<UserList />} />
+              </Routes>
+            </Content>
+          </Layout>
         </Layout>
+        <AdminFooter />
       </Layout>
-      <AdminFooter />
-    </Layout>
+    </ProtectedRoute>
   );
 };
 export default App;

@@ -3,6 +3,8 @@ import Slide1 from '../components/slides/slide1';
 import Slide2 from '../components/slides/slide2';
 import Title from '../components/title';
 import EventList from '../components/event/event-list';
+import BlogList from '../components/blog/blog-list';
+import {getAllBlogCategories} from '../services/blog';
 
 import React, { useEffect, useState } from 'react';
 import EventService from '../services/events';
@@ -58,6 +60,21 @@ const Home = () => {
         scrollTo(0, 0);
     }, []);
 
+    // Blog
+    const [newsData, setNewsData] = useState([]);
+    const fetchBlogCategories = async () => {
+        try {
+            const response = await getAllBlogCategories(8);
+            setNewsData(response.data.metadata);
+        } catch (error) {
+            console.error('Lỗi khi fetch danh mục blog:', error);
+        }
+    };
+
+    useEffect(() => {
+        fetchBlogCategories();
+    }, []);
+
     return (
         <>
             <div className="mainvisual">
@@ -94,7 +111,7 @@ const Home = () => {
                         <Title className='title' text='Tin Tức Sự Kiện' />
                         <Link to="/tin-tuc/" className="readmore">Xem thêm</Link>
                     </div>
-                    {/* <EventList className="" data={newsData} /> */}
+                    <BlogList className="" data={newsData} />
                 </div>
             </section>
         </>

@@ -3,7 +3,7 @@ import iconLocation from '../../assets/images/common/icon-location.png';
 import iconDollar from '../../assets/images/common/icon-dollar.png';
 import iconDoubleArrowDown from '../../assets/images/common/icon-double-arrow-down.png';
 
-const SingleEventHead = ({title, date, address, priceFrom, priceTo, banner}) => {
+const SingleEventHead = ({ title, date, address, priceFrom, priceTo, banner, expired }) => {
   return (
     <>
       <section className="event__head">
@@ -38,14 +38,21 @@ const SingleEventHead = ({title, date, address, priceFrom, priceTo, banner}) => 
                 </li>
               </ul>
               <div className="e-ticket__btn">
-                <a href="#ticket-detail" className="button button--gradient">
-                  Chi tiết các hạng vé
-                </a>
-                <img 
-                  className="e-ticket__arrow" 
-                  src={iconDoubleArrowDown} 
-                  alt="arrow down" 
-                />
+                {expired ? (
+                  <button disabled className="button">Sự kiện đã kết thúc</button>
+                ) : (
+                  <>
+                    <a href="#ticket-detail" className="button button--gradient">
+                      Chi tiết các hạng vé
+                    </a>
+                    <img
+                      className="e-ticket__arrow"
+                      src={iconDoubleArrowDown}
+                      alt="arrow down"
+                    />
+                  </>
+                )}
+
               </div>
             </div>
             <div className="e-ticket--right">

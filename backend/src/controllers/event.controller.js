@@ -77,7 +77,14 @@ exports.getAllEvents = async (req, res) => {
 exports.getEventBySlug = async (req, res) => {
   try {
 
-    const eventDetails = await EventDetails.findOne({ url: req.params.slug });
+    const { slug } = req.params;
+    
+    const event = await Event.findOne({ url : slug, deletedAt: null});
+    
+    if (!event)
+      return res.status(201).json({ error: 'Event not found' });
+
+    const eventDetails = await EventDetails.findOne({ url: slug });
     
     if (!eventDetails) {
       return res.status(201).json({ error: 'Event not found' });

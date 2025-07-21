@@ -15,6 +15,10 @@ const adminSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    avatar: {
+      type: String,
+      default: 'https://images.tkbcdn.com/2/608/332/ts/ds/d7/ca/da/05869cacf8a20ea0871833237856ba07.png',
+    },
     status: {
       type: String,
       enum: ['ACTIVE', 'INACTIVE'],

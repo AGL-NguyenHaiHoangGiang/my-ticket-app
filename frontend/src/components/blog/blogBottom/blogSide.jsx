@@ -37,7 +37,7 @@ const BlogSide = () => {
     <SideItem
       key={item._id}
       title={item.title}
-      id={item.slug}
+      slug={item.slug}
       category={item.category_id?.name}
     />
   ));

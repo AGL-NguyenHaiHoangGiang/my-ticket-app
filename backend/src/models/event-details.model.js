@@ -14,7 +14,7 @@ const eventSchema = new mongoose.Schema(
     },
     title: {
       type: String,
-      required: true, 
+      default: "",
     },
     bannerURL: {
       type: String,
@@ -29,13 +29,16 @@ const eventSchema = new mongoose.Schema(
       default: "", 
     },
     type:{
-        type: Number
+        type: Number,
+        default: 0,
     },
     venue : {
       type: String,
+      default: "", 
     },
     address: {
         type: String,
+        default: "", 
     },
     day: {
       type: Date,
@@ -99,15 +102,19 @@ const eventSchema = new mongoose.Schema(
     },
     startTime: {
       type: Date,
-      default: Date.now,
+      default: new Date(Date.now()),
     },
     endTime: {
         type: Date,
-        default: Date.now + 30* 48600000, // Default to 30 days from now
+        default: new Date(Date.now()) + 30* 48600000, // Default to 30 days from now
     },
     originalId: {
       type: Number,
       // Reference to the event's own id
+    },
+    originalId_v2: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Event',
     },
     categoriesV2: {
         type: Array,

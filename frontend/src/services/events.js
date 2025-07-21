@@ -39,7 +39,6 @@ class EventService {
 
     async getBySlug(slug) {
         const response = await this.api.get(`/slug/${slug}`);
-        console.log('Response data:', response.data);
         return response.data;
     }
 

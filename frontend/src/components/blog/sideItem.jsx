@@ -1,10 +1,11 @@
+import { Link } from "react-router-dom";
 const SideItem = (prop) => {
   return (
     <li className="side__item">
       <div className="side__content">
-        <a href="/tin-tuc-detail/">
+        <Link to={`/tin-tuc/${prop.category}/${prop.slug}`}>
           <h3 className="side__title">{prop.title}</h3>
-        </a>
+        </Link>
       </div>
     </li>
   );

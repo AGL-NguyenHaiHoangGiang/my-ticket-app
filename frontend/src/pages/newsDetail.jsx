@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { getBlogBySlug, getAllBlogCategories } from "../services/blog";
-import avatar from "../assets/images/blog/avatar.jpg";
-import catAvatar from "../assets/images/blog/cat.jpg";
-import duckAvatar from "../assets/images/blog/duck.jpg";
-import adBanner from "../assets/images/blog/ad-banner.png";
+// import avatar from "../assets/images/blog/avatar.jpg";
+// import catAvatar from "../assets/images/blog/cat.jpg";
+// import duckAvatar from "../assets/images/blog/duck.jpg";
+// import adBanner from "../assets/images/blog/ad-banner.png";
 import BlogAds from "../components/blog/blog-ads";
+import RelatedEvents from '../components/related';
 
 const NewDetail = () => {
   const { slug } = useParams();
@@ -52,9 +53,9 @@ const NewDetail = () => {
         <div className="container">
           <div className="flex-box">
             <div className="blog-single__main">
-              <div className="blog-single__featured">
+              {/* <div className="blog-single__featured">
                 <img src={news.thumpnail} alt={news.title} />
-              </div>
+              </div> */}
               <h1 className="blog-single__title">{news.title}</h1>
               <div className="post__date">
                 <span>
@@ -195,171 +196,7 @@ const NewDetail = () => {
         </div>
       </article>
       {/* related post */}
-      <div className="related">
-        <div className="container">
-          <h2 className="title center">Có thể bạn quan tâm</h2>
-          <ul className="post__list">
-            <li className="post__item">
-              <a href="/event-detail/" className="post__card">
-                <div className="post__img">
-                  <img
-                    src="../assets/images/event/event2.jpg"
-                    alt="Live Concert"
-                    loading="lazy"
-                  />
-                </div>
-                <div className="post__content">
-                  <h3 className="post__title">
-                    LULULOLA SHOW VŨ CÁT TƯỜNG - CHỈ CẦN CÓ NHAU
-                  </h3>
-                  <div className="post__meta">
-                    <div className="post__price">
-                      <span>Từ 480.000đ</span>
-                    </div>
-                    <div className="post__location">
-                      <span>TP.Đà Lạt</span>
-                    </div>
-                  </div>
-                  <div className="post__date">28 tháng 12, 2024</div>
-                </div>
-              </a>
-            </li>
-            <li className="post__item">
-              <a href="/event-detail/" className="post__card">
-                <div className="post__img">
-                  <img
-                    src="../assets/images/event/event4.jpg"
-                    alt="Live Concert"
-                    loading="lazy"
-                  />
-                </div>
-                <div className="post__content">
-                  <h3 className="post__title">
-                    MADAME SHOW - NHỮNG ĐƯỜNG CHIM BAY
-                  </h3>
-                  <div className="post__meta">
-                    <div className="post__price">
-                      <span>Từ 480.000đ</span>
-                    </div>
-                    <div className="post__location">
-                      <span>TP.Đà Lạt</span>
-                    </div>
-                  </div>
-                  <div className="post__date">28 tháng 12, 2024</div>
-                </div>
-              </a>
-            </li>
-            <li className="post__item">
-              <a href="/event-detail/" className="post__card">
-                <div className="post__img">
-                  <img
-                    src="../assets/images/event/event1.jpg"
-                    alt="Live Concert"
-                    loading="lazy"
-                  />
-                </div>
-                <div className="post__content">
-                  <h3 className="post__title">
-                    [BẾN THÀNH] Đêm nhạc Uyên Linh's Birthday
-                  </h3>
-                  <div className="post__meta">
-                    <div className="post__price">
-                      <span>Từ 500.000đ</span>
-                    </div>
-                    <div className="post__location">
-                      <span>Quận 1, TP.HCM</span>
-                    </div>
-                  </div>
-                  <div className="post__date">28 tháng 12, 2024</div>
-                </div>
-              </a>
-            </li>
-            <li className="post__item">
-              <a href="/event-detail/" className="post__card">
-                <div className="post__img">
-                  <img
-                    src="../assets/images/event/event3.jpg"
-                    alt="Live Concert"
-                    loading="lazy"
-                  />
-                </div>
-                <div className="post__content">
-                  <h3 className="post__title">
-                    MÂY CONCERT #2 IN HANOI - THE DUETS
-                  </h3>
-                  <div className="post__meta">
-                    <div className="post__price">
-                      <span>Từ 1.000.000đ</span>
-                    </div>
-                    <div className="post__location">
-                      <span>TP.Hà Nội</span>
-                    </div>
-                  </div>
-                  <div className="post__date">28 tháng 12, 2024</div>
-                </div>
-              </a>
-            </li>
-            <li className="post__item">
-              <a href="/event-detail/" className="post__card">
-                <div className="post__img">
-                  <img
-                    src="../assets/images/event/event2.jpg"
-                    alt="Live Concert"
-                    loading="lazy"
-                  />
-                </div>
-                <div className="post__content">
-                  <h3 className="post__title">
-                    LULULOLA SHOW VŨ CÁT TƯỜNG - CHỈ CẦN CÓ NHAU
-                  </h3>
-                  <div className="post__meta">
-                    <div className="post__price">
-                      <span>Từ 480.000đ</span>
-                    </div>
-                    <div className="post__location">
-                      <span>TP.Đà Lạt</span>
-                    </div>
-                  </div>
-                  <div className="post__date">28 tháng 12, 2024</div>
-                </div>
-              </a>
-            </li>
-            <li className="post__item">
-              <a href="/event-detail/" className="post__card">
-                <div className="post__img">
-                  <img
-                    src="../assets/images/event/event4.jpg"
-                    alt="Live Concert"
-                    loading="lazy"
-                  />
-                </div>
-                <div className="post__content">
-                  <h3 className="post__title">
-                    MADAME SHOW - NHỮNG ĐƯỜNG CHIM BAY
-                  </h3>
-                  <div className="post__meta">
-                    <div className="post__price">
-                      <span>Từ 480.000đ</span>
-                    </div>
-                    <div className="post__location">
-                      <span>TP.Đà Lạt</span>
-                    </div>
-                  </div>
-                  <div className="post__date">28 tháng 12, 2024</div>
-                </div>
-              </a>
-            </li>
-          </ul>
-          <div className="related__btn">
-            <a
-              href="/live-concert/"
-              className="button button--gradient button--radius"
-            >
-              Xem thêm
-            </a>
-          </div>
-        </div>
-      </div>
+      <RelatedEvents  />
       {/* end related post */}
     </React.Fragment>
   );
