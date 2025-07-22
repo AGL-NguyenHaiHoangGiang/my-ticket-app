@@ -7,7 +7,7 @@ import iconTicket from "../../assets/images/account/ticket.svg";
 import iconWallet from "../../assets/images/account/wallet.svg";
 import iconLogout from "../../assets/images/account/icon-logout.svg";
 
-const AccountSidebar = ({ userName, onLogout }) => {
+const AccountSidebar = ({ userName, onLogout, activeTab = "account" }) => {
   return (
     <div className="account__side">
       <div className="welcome__container">
@@ -26,13 +26,17 @@ const AccountSidebar = ({ userName, onLogout }) => {
       <div className="horizontal__bar"></div>
 
       <ul className="nav__tag">
-        <li className="nav__item text__blue">
+        <li
+          className={`nav__item ${activeTab === "account" ? "text__blue" : ""}`}
+        >
           <a href="index.html">
             <img src={iconPerson} alt="icon" />
             <strong>Tài khoản</strong>
           </a>
         </li>
-        <li className="nav__item">
+        <li
+          className={`nav__item ${activeTab === "ticket" ? "text__blue" : ""}`}
+        >
           <a href="ticket.html">
             <img src={iconTicket} alt="icon" />
             <strong>Vé đã mua</strong>

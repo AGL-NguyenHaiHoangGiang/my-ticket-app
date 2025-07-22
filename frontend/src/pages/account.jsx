@@ -21,13 +21,6 @@ const Account = () => {
     newsletter: false,
   });
 
-  useEffect(() => {
-    // Check if user is logged in - commented out for development
-    // if (sessionStorage.getItem("isLoggedIn") !== "true") {
-    //   window.location.href = "/";
-    // }
-  }, []);
-
   const toggleEditable = () => {
     setIsEditing(!isEditing);
   };
@@ -47,7 +40,6 @@ const Account = () => {
   };
 
   const logout = () => {
-    sessionStorage.removeItem("isLoggedIn");
     window.location.href = "/";
   };
 
@@ -55,24 +47,15 @@ const Account = () => {
     <main>
       <section>
         <div className="container">
-          {/* Breadcrumbs */}
           <AccountBreadcrumbs />
-
           <div className="account__wrapper">
-            {/* Side panel */}
             <AccountSidebar userName={userInfo.name} onLogout={logout} />
-            {/* End Side panel */}
-
-            {/* Main content */}
             <AccountMainContent
               userInfo={userInfo}
               isEditing={isEditing}
-              // notifications={notifications}
               onToggleEdit={toggleEditable}
-              // onInputChange={handleInputChange}
               onToggleSwitch={toggleSwitch}
             />
-            {/* End Main content */}
           </div>
         </div>
       </section>
