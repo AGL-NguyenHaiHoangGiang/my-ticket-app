@@ -3,7 +3,7 @@ const SideItem = (prop) => {
   return (
     <li className="side__item">
       <div className="side__content">
-        <Link to={`/tin-tuc/${prop.category}/${prop.slug}`}>
+        <Link to={`/tin-tuc/${prop.slug}`}>
           <h3 className="side__title">{prop.title}</h3>
         </Link>
       </div>

@@ -2,11 +2,13 @@ import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import CategoryNewsTop from "../components/blog/categoryNewsTop";
 import CategoryNewsBottom from "../components/blog/categoryNewsBottom";
+import SimpleLoading from "../components/SimpleLoading";
 import { getAllBlogCategories } from "../services/blog";
 
 const NewsCategory = () => {
   const { category } = useParams();
   const [blogs, setBlogs] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [displayedCount, setDisplayedCount] = useState(11); // 5 feature + 6 bottom
 
   useEffect(() => {
@@ -14,6 +16,7 @@ const NewsCategory = () => {
   }, [category]);
 
   useEffect(() => {
+    setLoading(true);
     getAllBlogCategories(1000)
       .then((res) => {
         const allBlogs = res.data.metadata || [];
@@ -41,9 +44,11 @@ const NewsCategory = () => {
             new Date(a.article_datetime || a.updatedAt)
         );
         setBlogs(sortedBlogs);
+        setLoading(false);
       })
       .catch((err) => {
         console.error("Error fetching blogs:", err);
+        setLoading(false);
       });
   }, [category]);
 
@@ -259,6 +264,10 @@ const NewsCategory = () => {
       </section>
     );
   };
+
+  if (loading) {
+    return <SimpleLoading />;
+  }
 
   return (
     <React.Fragment>
