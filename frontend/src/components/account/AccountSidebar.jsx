@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 // Import images
 import avatar from "../../assets/images/account/avatar.jpg";
@@ -29,25 +30,19 @@ const AccountSidebar = ({ userName, onLogout, activeTab = "account" }) => {
         <li
           className={`nav__item ${activeTab === "account" ? "text__blue" : ""}`}
         >
-          <a href="index.html">
+          <Link to="/tai-khoan">
             <img src={iconPerson} alt="icon" />
             <strong>Tài khoản</strong>
-          </a>
+          </Link>
         </li>
         <li
           className={`nav__item ${activeTab === "ticket" ? "text__blue" : ""}`}
         >
-          <a href="ticket.html">
+          <Link to="/tai-khoan-ticket">
             <img src={iconTicket} alt="icon" />
             <strong>Vé đã mua</strong>
-          </a>
+          </Link>
         </li>
-        {/* <li className="nav__item">
-          <a href="payment.html">
-            <img src={iconWallet} alt="icon" />
-            <strong>Tài khoản thanh toán</strong>
-          </a>
-        </li> */}
         <li className="nav__item">
           <a href="#" onClick={onLogout}>
             <img src={iconLogout} alt="icon" />

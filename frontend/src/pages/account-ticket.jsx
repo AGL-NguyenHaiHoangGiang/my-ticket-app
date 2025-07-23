@@ -7,13 +7,6 @@ const AccountTicket = () => {
   const [activeTab, setActiveTab] = useState("all");
   const [expandedTickets, setExpandedTickets] = useState({});
 
-  useEffect(() => {
-    // Check if user is logged in - commented out for development
-    // if (sessionStorage.getItem("isLoggedIn") !== "true") {
-    //   window.location.href = "/";
-    // }
-  }, []);
-
   const logout = () => {
     sessionStorage.removeItem("isLoggedIn");
     window.location.href = "/";

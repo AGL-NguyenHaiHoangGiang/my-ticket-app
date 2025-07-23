@@ -1,6 +1,6 @@
-import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
-import { useState, useEffect } from 'react';
-import Auth from './services/auth';
+import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import Auth from "./services/auth";
 
 import "./assets/style/style.css";
 import "./assets/style/home.css";
@@ -23,20 +23,24 @@ import Events from "./pages/events";
 import NotFound from "./pages/404";
 import Account from "./pages/account";
 import Booking from "./pages/booking";
+import AccountTicket from "./pages/account-ticket";
 
 export default function UserLayout() {
   const location = useLocation();
 
   const getMainClass = () => {
     const path = location.pathname;
-    if (path === '/') return 'home';
+    if (path === "/") return "home";
     else if (path === "/tin-tuc" || path === "/tin-tuc/") return "blog";
     else if (path.startsWith("/loai-tin-tuc/")) return "blog category";
-    else if (path.startsWith('/tin-tuc/') && path.split('/').length === 3) return 'blog blog-single';
-    else if (path.startsWith('/su-kien/') && path.endsWith('/dat-ve')) return 'booking';
+    else if (path.startsWith("/tin-tuc/") && path.split("/").length === 3)
+      return "blog blog-single";
+    else if (path.startsWith("/su-kien/") && path.endsWith("/dat-ve"))
+      return "booking";
     else if (path === "/su-kien/" || path === "/su-kien") return "page-event";
-    else if (path.startsWith('/su-kien/') && path.split('/').length === 3) return 'event single';
-    else if (path.startsWith('/loai-su-kien/')) return 'page-event';
+    else if (path.startsWith("/su-kien/") && path.split("/").length === 3)
+      return "event single";
+    else if (path.startsWith("/loai-su-kien/")) return "page-event";
     else if (path === "/tai-khoan") return "account";
     else return "pages";
   };
@@ -44,13 +48,12 @@ export default function UserLayout() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (location.pathname === '/') {
+    if (location.pathname === "/") {
       setLoading(true);
     } else {
       setLoading(false);
     }
   }, [location.pathname]);
-
 
   //check login
   const [auth, setAuth] = useState(null);
@@ -59,7 +62,7 @@ export default function UserLayout() {
     // check token tồn tại và hợp lệ
     const checkAuth = async () => {
       // lấy token từ localStorage
-      const token = localStorage.getItem('customerToken');
+      const token = localStorage.getItem("customerToken");
       if (!token) {
         setAuth(false);
         return;
@@ -68,15 +71,15 @@ export default function UserLayout() {
       try {
         const response = await Auth.verifyToken(token);
         // console.log("Token verified:", response);
-        if (response && response.message === 'Token is valid') {
+        if (response && response.message === "Token is valid") {
           setAuth(true);
         }
       } catch (error) {
         // console.error("Token verification failed:", error);
-        localStorage.removeItem('adminToken');
+        localStorage.removeItem("adminToken");
         setAuth(false);
       }
-    }
+    };
 
     checkAuth();
   }, [navigate]);
@@ -84,23 +87,40 @@ export default function UserLayout() {
   // Modal login
   const [loginOpen, setLoginOpen] = useState(false);
 
-
   return (
     <>
       {loading && <Loading />}
-      <Header setAuth={setAuth} auth={auth} setLoginOpen={setLoginOpen} loginOpen={loginOpen} />
+      <Header
+        setAuth={setAuth}
+        auth={auth}
+        setLoginOpen={setLoginOpen}
+        loginOpen={loginOpen}
+      />
       <main className={getMainClass()}>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/tin-tuc" element={<News />} />
           <Route path="/loai-tin-tuc/:category" element={<NewsCategory />} />
           <Route path="/tin-tuc/:slug" element={<NewDetail />} />
-          <Route path="/loai-su-kien/:categorySlug" element={<EventCategory />} />
-          <Route path="/su-kien/:slug" element={<EventDetail auth={auth} setLoginOpen={setLoginOpen} />} />
-          <Route path="/su-kien/:slug/dat-ve" element={<Booking auth={auth} setLoginOpen={setLoginOpen} />} />
+          <Route
+            path="/loai-su-kien/:categorySlug"
+            element={<EventCategory />}
+          />
+          <Route
+            path="/su-kien/:slug"
+            element={<EventDetail auth={auth} setLoginOpen={setLoginOpen} />}
+          />
+          <Route
+            path="/su-kien/:slug/dat-ve"
+            element={<Booking auth={auth} setLoginOpen={setLoginOpen} />}
+          />
           <Route path="/su-kien" element={<Events />} />
           <Route path="*" element={<NotFound />} />
           <Route path="/tai-khoan" element={<Account auth={auth} />} />
+          <Route
+            path="/tai-khoan-ticket"
+            element={<AccountTicket auth={auth} />}
+          />
         </Routes>
       </main>
       <Footer />
