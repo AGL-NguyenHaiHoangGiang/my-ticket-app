@@ -2,8 +2,10 @@ import React, { useState, useEffect } from "react";
 import AccountSidebar from "../components/account/AccountSidebar";
 import AccountBreadcrumbs from "../components/account/AccountBreadcrumbs";
 import AccountMainContent from "../components/account/AccountMainContent";
+import NotFound from "./404";
+import SimpleLoading from "../components/SimpleLoading";
 
-const Account = () => {
+const Account = ({ auth }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [userInfo, setUserInfo] = useState({
     name: "Nguyễn Vân Anh",
@@ -42,6 +44,16 @@ const Account = () => {
   const logout = () => {
     window.location.href = "/";
   };
+
+  // Kiểm tra auth, nếu không đăng nhập thì hiển thị 404
+  if (auth === false) {
+    return <NotFound />;
+  }
+
+  // Nếu auth vẫn đang loading (null), có thể hiển thị loading hoặc chờ
+  if (auth === null) {
+    return <SimpleLoading />;
+  }
 
   return (
     <main>

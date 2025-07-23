@@ -2,8 +2,10 @@ import React, { useState, useEffect } from "react";
 import AccountSidebar from "../components/account/AccountSidebar";
 import AccountBreadcrumbs from "../components/account/AccountBreadcrumbs";
 import TicketMainContent from "../components/account/TicketMainContent";
+import NotFound from "./404";
+import SimpleLoading from "../components/SimpleLoading";
 
-const AccountTicket = () => {
+const AccountTicket = ({ auth }) => {
   const [activeTab, setActiveTab] = useState("all");
   const [expandedTickets, setExpandedTickets] = useState({});
 
@@ -68,6 +70,16 @@ const AccountTicket = () => {
       },
     ],
   };
+
+  // Kiểm tra auth, nếu không đăng nhập thì hiển thị 404
+  if (auth === false) {
+    return <NotFound />;
+  }
+
+  // Nếu auth vẫn đang loading (null), có thể hiển thị loading hoặc chờ
+  if (auth === null) {
+    return <SimpleLoading />;
+  }
 
   return (
     <main>

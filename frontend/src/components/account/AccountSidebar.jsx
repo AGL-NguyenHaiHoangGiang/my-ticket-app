@@ -1,5 +1,6 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import Auth from "../../services/auth";
 
 // Import images
 import avatar from "../../assets/images/account/avatar.jpg";
@@ -9,6 +10,29 @@ import iconWallet from "../../assets/images/account/wallet.svg";
 import iconLogout from "../../assets/images/account/icon-logout.svg";
 
 const AccountSidebar = ({ userName, onLogout, activeTab = "account" }) => {
+  const navigate = useNavigate();
+
+  const handleLogout = async (e) => {
+    e.preventDefault();
+    try {
+      await Auth.logout();
+
+      localStorage.removeItem("customerToken");
+
+      if (onLogout) {
+        onLogout();
+      }
+
+      navigate("/");
+    } catch (error) {
+      console.error("Logout error:", error);
+      localStorage.removeItem("customerToken");
+      if (onLogout) {
+        onLogout();
+      }
+      navigate("/");
+    }
+  };
   return (
     <div className="account__side">
       <div className="welcome__container">
@@ -44,7 +68,7 @@ const AccountSidebar = ({ userName, onLogout, activeTab = "account" }) => {
           </Link>
         </li>
         <li className="nav__item">
-          <a href="#" onClick={onLogout}>
+          <a href="#" onClick={handleLogout}>
             <img src={iconLogout} alt="icon" />
             <strong>Đăng xuất</strong>
           </a>
