@@ -163,13 +163,16 @@ exports.getEventById = async (req, res) => {
 
 exports.getAllEvents = async (req, res) => {
   try {
-    const { page = 1, limit = 10 } = req.query;
+  
+    const page = parseInt(req.query.page) || 1; // Trang hiện tại
+    const limit = parseInt(req.query.limit) || 10; // Số lượng sự kiện mỗi trang
+    const skip = (page - 1) * limit; // Số lượng bản ghi cần bỏ qua
   
     const events = await EventDetail
       .find({})
-      .limit(limit)
       .skip((page - 1) * limit)
-      .sort({ createdAt: -1 });
+      .limit(limit)
+      .sort({startTime: -1 });
     
     if (!events || events.length === 0) {
       return res.status(404).json({ error: 'No events found' });
