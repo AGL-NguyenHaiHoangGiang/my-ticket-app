@@ -3,19 +3,19 @@
 const express = require('express')
 const blogController = require('../../controllers/blog.controller')
 const asyncHandler = require('../../utils/asyncHandler')
+const authMiddleware = require('../../middlewares/authMiddleware')
+const authorizeRoles = require('../../middlewares/authRolesMiddleware')
 const router = express.Router()
 
-// GET - No permission
-router.get('/search/:keySearch', asyncHandler(blogController.getListSearchBlog))
-router.get('', asyncHandler(blogController.getAllBlogs))
-router.get('/:slug', asyncHandler(blogController.getBlogBySlug))
 
 //Authentication
+router.use(authMiddleware) // Verify JWT token
+router.use(authorizeRoles(['MANAGER'])) // Check for MANAGER role
 
 // Create by manager
 router.post('', asyncHandler(blogController.createBlog))
 // Update by manager
-router.patch('/:id', asyncHandler(blogController.updateBlog))
+router.put('/:id', asyncHandler(blogController.updateBlog))
 // Delete by manager
 router.delete('/:id', asyncHandler(blogController.deleteBlog))
 
