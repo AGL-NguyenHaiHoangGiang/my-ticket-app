@@ -1,134 +1,78 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import DataBlog from "../components/blog/data/dataBlog";
-import detailImage from "../assets/images/blog/blog12.png";
-import avatar from "../assets/images/blog/avatar.jpg";
+import { getBlogBySlug, getAllBlogCategories } from "../services/blog";
+// import avatar from "../assets/images/blog/avatar.jpg";
+// import catAvatar from "../assets/images/blog/cat.jpg";
+// import duckAvatar from "../assets/images/blog/duck.jpg";
+// import adBanner from "../assets/images/blog/ad-banner.png";
+import BlogAds from "../components/blog/blog-ads";
+import RelatedEvents from '../components/related';
 
 const NewDetail = () => {
+  const { slug } = useParams();
+  const [news, setNews] = useState(null);
+  const [relatedNews, setRelatedNews] = useState([]);
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, []);
-  const { category, id } = useParams();
-  const news = DataBlog.find((item) => item.id === parseInt(id));
-  const newsCategory = DataBlog.find((item) => item.category === category);
+
+    // Lấy chi tiết bài viết theo slug
+    getBlogBySlug(slug)
+      .then((res) => {
+        if (res.data.metadata) {
+          setNews(res.data.metadata);
+        }
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Error fetching blog detail:", err);
+        setLoading(false);
+      });
+
+    // Lấy tin liên quan
+    getAllBlogCategories(5)
+      .then((res) => {
+        setRelatedNews(res.data.metadata || []);
+      })
+      .catch((err) => {
+        console.error("Error fetching related news:", err);
+      });
+  }, [slug]);
+
+  if (loading) {
+    return <div>Đang tải...</div>;
+  }
+
+  if (!news) {
+    return <div>Không tìm thấy bài viết</div>;
+  }
   return (
     <React.Fragment>
       <article className="blog-detail">
         <div className="container">
           <div className="flex-box">
             <div className="blog-single__main">
-              <div className="blog-single__featured">
-                <img src={news.image} alt="Kitaro và Hà Anh Tuấn" />
-              </div>
+              {/* <div className="blog-single__featured">
+                <img src={news.thumpnail} alt={news.title} />
+              </div> */}
               <h1 className="blog-single__title">{news.title}</h1>
               <div className="post__date">
                 <span>
-                  {news.author}, {news.date}
+                  {news.author}, {news.article_friendly_time}
                 </span>
               </div>
               <div className="content">
-                <h2>Lorem ipsum dolor sit amet</h2>
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin
-                  cursus arcu sed ultricies imperdiet. Proin at ante vitae nibh
-                  viverra interdum eget eget neque. Integer sit amet egestas
-                  ante, id fermentum tellus. Donec volutpat sollicitudin
-                  aliquam. Aliquam commodo enim eu ante semper auctor. Maecenas
-                  sodales hendrerit libero vitae tempus. Donec tincidunt sem a
-                  velit auctor accumsan eget at urna. Vestibulum id orci
-                  dignissim, auctor elit in, cursus libero. Sed ornare lorem et
-                  sapien ultricies tempus. Curabitur nulla massa, consequat a
-                  sodales nec, cursus non erat. Aenean facilisis lorem augue, eu
-                  posuere risus hendrerit in. Phasellus imperdiet suscipit
-                  pellentesque.
-                </p>
-                <img
-                  src={detailImage}
-                  alt="Kitaro và Hà Anh Tuấn"
-                  loading="lazy"
-                />
-                <h3>Lorem ipsum dolor sit amet</h3>
-                <p>
-                  <em>Praesent non metus ac nunc blandit efficitur.</em>{" "}
-                  Phasellus lobortis purus vitae suscipit ornare. Ut est libero,
-                  porta eu est vel, lacinia commodo quam. Sed diam risus, cursus
-                  nec elit in, pharetra tempus lacus. Phasellus ultrices mauris
-                  ligula, nec vehicula magna iaculis sit amet. Nunc ullamcorper
-                  lorem ante, nec condimentum augue hendrerit vitae. Aliquam
-                  viverra, sapien et mattis ultrices, diam massa dapibus lorem,
-                  eu porta est elit id ipsum. Integer eget rhoncus lacus.
-                  Pellentesque lobortis diam justo, vehicula volutpat orci
-                  efficitur vel. Aliquam lectus nisi, sodales non libero in,
-                  congue interdum diam. Vestibulum ac nunc nec massa faucibus
-                  blandit. Suspendisse non arcu diam.
-                </p>
-                <ul>
-                  <li>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  </li>
-                  <li>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  </li>
-                  <li>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  </li>
-                  <li>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  </li>
-                  <li>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  </li>
-                </ul>
-                <h3>Lorem ipsum dolor sit amet</h3>
-                <ol>
-                  <li>
-                    <strong>Lorem ipsum dolor sit amet</strong>, consectetur
-                    adipiscing elit.
-                  </li>
-                  <li>
-                    <b>Lorem ipsum dolor sit amet</b>, consectetur adipiscing
-                    elit.
-                  </li>
-                  <li>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  </li>
-                  <li>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  </li>
-                  <li>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  </li>
-                </ol>
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin
-                  cursus arcu sed ultricies imperdiet. Proin at ante vitae nibh
-                  viverra interdum eget eget neque. Integer sit amet egestas
-                  ante, id fermentum tellus. Donec volutpat sollicitudin
-                  aliquam. Aliquam commodo enim eu ante semper auctor. Maecenas
-                  sodales hendrerit libero vitae tempus. Donec tincidunt sem a
-                  velit auctor accumsan eget at urna. Vestibulum id orci
-                  dignissim, auctor elit in, cursus libero. Sed ornare lorem et
-                  sapien ultricies tempus. Curabitur nulla massa, consequat a
-                  sodales nec, cursus non erat. Aenean facilisis lorem augue, eu
-                  posuere risus hendrerit in. Phasellus imperdiet suscipit
-                  pellentesque.
-                </p>
-                <p>
-                  Praesent non metus ac nunc blandit efficitur. Phasellus
-                  lobortis purus vitae suscipit ornare. Ut est libero, porta eu
-                  est vel, lacinia commodo quam. Sed diam risus, cursus nec elit
-                  in, pharetra tempus lacus. Phasellus ultrices mauris ligula,
-                  nec vehicula magna iaculis sit amet. Nunc ullamcorper lorem
-                  ante, nec condimentum augue hendrerit vitae. Aliquam viverra,
-                  sapien et mattis ultrices, diam massa dapibus lorem, eu porta
-                  est elit id ipsum. Integer eget rhoncus lacus. Pellentesque
-                  lobortis diam justo, vehicula volutpat orci efficitur vel.
-                  Aliquam lectus nisi, sodales non libero in, congue interdum
-                  diam. Vestibulum ac nunc nec massa faucibus blandit.
-                  Suspendisse non arcu diam.
-                </p>
+                <p className="summary">{news.summary}</p>
+                {news.content &&
+                  news.content.map((paragraph, index) => (
+                    <div
+                      key={index}
+                      dangerouslySetInnerHTML={{ __html: paragraph }}
+                    />
+                  ))}
               </div>
-              <div className="comment-section">
+              {/* <div className="comment-section">
                 <form className="user-input">
                   <div className="user-profile">
                     <div className="user-avatar ">
@@ -159,7 +103,7 @@ const NewDetail = () => {
                     <li className="comment__item">
                       <div className="user-profile">
                         <div className="user-avatar">
-                          <img src={avatar} alt="avatar" />
+                          <img src={duckAvatar} alt="avatar" />
                         </div>
                         <div className="comment__main">
                           <div className="user__name">
@@ -192,7 +136,7 @@ const NewDetail = () => {
                     <li className="comment__item">
                       <div className="user-profile">
                         <div className="user-avatar">
-                          <img src="/assets/images/blog/cat.jpg" alt="avatar" />
+                          <img src={catAvatar} alt="avatar" />
                         </div>
                         <div className="comment__main">
                           <div className="user__name">
@@ -229,257 +173,30 @@ const NewDetail = () => {
                     </button>
                   </div>
                 </div>
-              </div>
+              </div> */}
             </div>
             <div className="blog-single__side">
               <div className="heading">
                 <h2 className="title">Đọc nhiều</h2>
               </div>
               <ul className="side__block">
-                <li className="side__item">
-                  <div className="side__content">
-                    <Link
-                      to={
-                        "/tin-tuc/" +
-                        DataBlog[0].category +
-                        "/" +
-                        DataBlog[0].id
-                      }
-                    >
-                      <h3 className="side__title">
-                        Ngôi sao điện ảnh Brad Pitt trong bộ phim điện ảnh MEET
-                        JOE BLACK 2025
-                      </h3>
-                    </Link>
-                  </div>
-                </li>
-                <li className="side__item">
-                  <div className="side__content">
-                    <Link
-                      to={
-                        "/tin-tuc/" +
-                        DataBlog[0].category +
-                        "/" +
-                        DataBlog[0].id
-                      }
-                    >
-                      <h3 className="side__title">
-                        Ngôi sao điện ảnh Brad Pitt trong bộ phim điện ảnh MEET
-                        JOE BLACK 2025
-                      </h3>
-                    </Link>
-                  </div>
-                </li>
-                <li className="side__item">
-                  <div className="side__content">
-                    <Link
-                      to={
-                        "/tin-tuc/" +
-                        DataBlog[0].category +
-                        "/" +
-                        DataBlog[0].id
-                      }
-                    >
-                      <h3 className="side__title">
-                        Ngôi sao điện ảnh Brad Pitt trong bộ phim điện ảnh MEET
-                        JOE BLACK 2025
-                      </h3>
-                    </Link>
-                  </div>
-                </li>
-                <li className="side__item">
-                  <div className="side__content">
-                    <Link
-                      to={
-                        "/tin-tuc/" +
-                        DataBlog[0].category +
-                        "/" +
-                        DataBlog[0].id
-                      }
-                    >
-                      <h3 className="side__title">
-                        Ngôi sao điện ảnh Brad Pitt trong bộ phim điện ảnh MEET
-                        JOE BLACK 2025
-                      </h3>
-                    </Link>
-                  </div>
-                </li>
+                {relatedNews.slice(0, 4).map((item) => (
+                  <li key={item._id} className="side__item">
+                    <div className="side__content">
+                      <Link to={`/tin-tuc/${item.slug}`}>
+                        <h3 className="side__title">{item.title}</h3>
+                      </Link>
+                    </div>
+                  </li>
+                ))}
               </ul>
-              <div className="side__block pc-only">
-                <a href="#" className="add-banner">
-                  <img src="/assets/images/blog/ad-banner.png" alt="ads" />
-                </a>
-              </div>
+              <BlogAds />
             </div>
           </div>
         </div>
       </article>
       {/* related post */}
-      <div className="related">
-        <div className="container">
-          <h2 className="title center">Có thể bạn quan tâm</h2>
-          <ul className="post__list">
-            <li className="post__item">
-              <a href="/event-detail/" className="post__card">
-                <div className="post__img">
-                  <img
-                    src="../assets/images/event/event2.jpg"
-                    alt="Live Concert"
-                    loading="lazy"
-                  />
-                </div>
-                <div className="post__content">
-                  <h3 className="post__title">
-                    LULULOLA SHOW VŨ CÁT TƯỜNG - CHỈ CẦN CÓ NHAU
-                  </h3>
-                  <div className="post__meta">
-                    <div className="post__price">
-                      <span>Từ 480.000đ</span>
-                    </div>
-                    <div className="post__location">
-                      <span>TP.Đà Lạt</span>
-                    </div>
-                  </div>
-                  <div className="post__date">28 tháng 12, 2024</div>
-                </div>
-              </a>
-            </li>
-            <li className="post__item">
-              <a href="/event-detail/" className="post__card">
-                <div className="post__img">
-                  <img
-                    src="../assets/images/event/event4.jpg"
-                    alt="Live Concert"
-                    loading="lazy"
-                  />
-                </div>
-                <div className="post__content">
-                  <h3 className="post__title">
-                    MADAME SHOW - NHỮNG ĐƯỜNG CHIM BAY
-                  </h3>
-                  <div className="post__meta">
-                    <div className="post__price">
-                      <span>Từ 480.000đ</span>
-                    </div>
-                    <div className="post__location">
-                      <span>TP.Đà Lạt</span>
-                    </div>
-                  </div>
-                  <div className="post__date">28 tháng 12, 2024</div>
-                </div>
-              </a>
-            </li>
-            <li className="post__item">
-              <a href="/event-detail/" className="post__card">
-                <div className="post__img">
-                  <img
-                    src="../assets/images/event/event1.jpg"
-                    alt="Live Concert"
-                    loading="lazy"
-                  />
-                </div>
-                <div className="post__content">
-                  <h3 className="post__title">
-                    [BẾN THÀNH] Đêm nhạc Uyên Linh's Birthday
-                  </h3>
-                  <div className="post__meta">
-                    <div className="post__price">
-                      <span>Từ 500.000đ</span>
-                    </div>
-                    <div className="post__location">
-                      <span>Quận 1, TP.HCM</span>
-                    </div>
-                  </div>
-                  <div className="post__date">28 tháng 12, 2024</div>
-                </div>
-              </a>
-            </li>
-            <li className="post__item">
-              <a href="/event-detail/" className="post__card">
-                <div className="post__img">
-                  <img
-                    src="../assets/images/event/event3.jpg"
-                    alt="Live Concert"
-                    loading="lazy"
-                  />
-                </div>
-                <div className="post__content">
-                  <h3 className="post__title">
-                    MÂY CONCERT #2 IN HANOI - THE DUETS
-                  </h3>
-                  <div className="post__meta">
-                    <div className="post__price">
-                      <span>Từ 1.000.000đ</span>
-                    </div>
-                    <div className="post__location">
-                      <span>TP.Hà Nội</span>
-                    </div>
-                  </div>
-                  <div className="post__date">28 tháng 12, 2024</div>
-                </div>
-              </a>
-            </li>
-            <li className="post__item">
-              <a href="/event-detail/" className="post__card">
-                <div className="post__img">
-                  <img
-                    src="../assets/images/event/event2.jpg"
-                    alt="Live Concert"
-                    loading="lazy"
-                  />
-                </div>
-                <div className="post__content">
-                  <h3 className="post__title">
-                    LULULOLA SHOW VŨ CÁT TƯỜNG - CHỈ CẦN CÓ NHAU
-                  </h3>
-                  <div className="post__meta">
-                    <div className="post__price">
-                      <span>Từ 480.000đ</span>
-                    </div>
-                    <div className="post__location">
-                      <span>TP.Đà Lạt</span>
-                    </div>
-                  </div>
-                  <div className="post__date">28 tháng 12, 2024</div>
-                </div>
-              </a>
-            </li>
-            <li className="post__item">
-              <a href="/event-detail/" className="post__card">
-                <div className="post__img">
-                  <img
-                    src="../assets/images/event/event4.jpg"
-                    alt="Live Concert"
-                    loading="lazy"
-                  />
-                </div>
-                <div className="post__content">
-                  <h3 className="post__title">
-                    MADAME SHOW - NHỮNG ĐƯỜNG CHIM BAY
-                  </h3>
-                  <div className="post__meta">
-                    <div className="post__price">
-                      <span>Từ 480.000đ</span>
-                    </div>
-                    <div className="post__location">
-                      <span>TP.Đà Lạt</span>
-                    </div>
-                  </div>
-                  <div className="post__date">28 tháng 12, 2024</div>
-                </div>
-              </a>
-            </li>
-          </ul>
-          <div className="related__btn">
-            <a
-              href="/live-concert/"
-              className="button button--gradient button--radius"
-            >
-              Xem thêm
-            </a>
-          </div>
-        </div>
-      </div>
+      <RelatedEvents  />
       {/* end related post */}
     </React.Fragment>
   );

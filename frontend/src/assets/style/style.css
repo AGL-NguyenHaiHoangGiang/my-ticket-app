@@ -162,11 +162,17 @@ main {
 .login__nav li:not(:last-child)::after {
     content: "|";
     position: relative;
-    margin: 0 6px 0 3px;
+    margin: 0 6px;
 }
 
-.login__nav li a {
+.login__nav li a,
+.login__nav li button {
     padding: 15px 0;
+    background: unset;
+    color: #fff;
+    font-family: var(--font-inter);
+    font-size: 1.6rem;
+    font-weight: 600;
 }
 
 .header__search {
@@ -206,16 +212,6 @@ main {
     }
 }
 
-.header__account {
-    display: none;
-}
-
-@media screen and (max-width: 1024px) {
-    .header__account {
-        display: none !important;
-    }
-}
-
 .header__account-icon {
     width: 40px;
     height: 40px;
@@ -224,11 +220,28 @@ main {
     margin-right: 10px;
 }
 
+@media screen and (max-width: 1024px) {
+    .header__account-icon {
+        margin-right: 0;
+    }
+
+    .header__account span {
+        display: none;
+    }
+}
+
 .header__account-link {
     display: flex;
     align-items: center;
     padding: 15px 0;
     margin-right: 30px;
+}
+
+@media screen and (max-width: 1024px) {
+    .header__account-link {
+        margin-right: 0;
+        margin-left: 20px;
+    }
 }
 
 .header__account span {
@@ -605,6 +618,33 @@ main {
     position: relative;
     margin-bottom: 15px;
     transition: 0.3s ease;
+}
+
+.search__result {
+    max-height: 300px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-primary) #222;
+}
+
+.search__result::-webkit-scrollbar {
+    width: 8px;
+    background: #222;
+    border-radius: 8px;
+}
+
+.search__result::-webkit-scrollbar-thumb {
+    background: var(--color-primary);
+    border-radius: 8px;
+}
+
+.search__result::-webkit-scrollbar-thumb:hover {
+    background: #0082e0;
+}
+
+.search__result::-webkit-scrollbar-track {
+    background: #222;
+    border-radius: 8px;
 }
 
 @media screen and (max-width: 767px) {
@@ -1069,12 +1109,12 @@ main {
     width: 100%;
     height: 100vh;
     z-index: 9999;
-    display: none;
+    /* display: none; */
 }
 
-.modal.is-active {
+/* .modal.is-active {
     display: block;
-}
+} */
 
 .modal__bg {
     position: absolute;

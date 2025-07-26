@@ -1,0 +1,581 @@
+/* Booking Page Styles */
+.booking-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  padding: 3rem 0 8rem;
+}
+
+.booking-header {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.booking-back-btn {
+  background: none;
+  border: none;
+  color: #666;
+  font-size: 1.6rem;
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+  transition: all 0.3s ease;
+  margin-bottom: 1rem;
+}
+
+.booking-back-btn:hover {
+  background: #f0f0f0;
+  color: #333;
+}
+
+.booking-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #2c3e50;
+  margin: 0;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.booking-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Event Info Card */
+.booking-event-info {
+  position: sticky;
+  top: 2rem;
+  height: fit-content;
+}
+
+.event-info-card {
+  background: white;
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease;
+}
+
+.event-info-card:hover {
+  transform: translateY(-5px);
+}
+
+.event-banner {
+  position: relative;
+  height: 200px;
+  overflow: hidden;
+}
+
+.event-banner img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.event-info-card:hover .event-banner img {
+  transform: scale(1.05);
+}
+
+.event-details {
+  padding: 1.5rem;
+}
+
+.event-booking-title {
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: #2c3e50;
+  margin: 0 0 1.5rem 0;
+  line-height: 1.4;
+}
+
+.event-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.event-meta-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #666;
+  font-size: 1.2rem;
+}
+
+.event-meta-item img {
+  width: 16px;
+  height: 16px;
+  opacity: 0.7;
+}
+
+/* Countdown Timer */
+.countdown-timer {
+  background: white;
+  border-radius: 1rem;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  padding: 1.5rem;
+  margin-top: 1rem;
+  text-align: center;
+  border: 2px solid #e74c3c;
+}
+
+.countdown-header h4 {
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: #e74c3c;
+  margin: 0 0 0.5rem 0;
+}
+
+.countdown-header p {
+  font-size: 1.4rem;
+  color: #666;
+  margin: 0 0 1rem 0;
+}
+
+.countdown-display {
+  margin: 1.5rem 0;
+}
+
+.time-box {
+  display: inline-block;
+  background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+  color: white;
+  padding: 1rem 2rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 5px 15px rgba(231, 76, 60, 0.3);
+}
+
+.time-value {
+  display: block;
+  font-size: 3rem;
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: 0.25rem;
+}
+
+.time-label {
+  font-size: 1.4rem;
+  opacity: 0.9;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.countdown-warning {
+  min-height: 1.5rem;
+}
+
+.warning-text {
+  color: #e74c3c;
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin: 0;
+  animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.6; }
+  100% { opacity: 1; }
+}
+
+/* Booking Form */
+.booking-form {
+  background: white;
+  border-radius: 1rem;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  overflow: hidden;
+}
+
+.booking-section {
+  padding: 2rem;
+  border-bottom: 1px solid #eee;
+}
+
+.booking-section:last-child {
+  border-bottom: none;
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #2c3e50;
+  margin: 0 0 1.5rem 0;
+}
+
+.section-title img {
+  width: 20px;
+  height: 20px;
+  /* SVG tự động sử dụng currentColor */
+}
+
+/* Ticket Selection */
+.ticket-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.ticket-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  border: 2px solid #eee;
+  border-radius: 0.75rem;
+  transition: all 0.3s ease;
+  background: #fafafa;
+}
+
+.ticket-item:hover {
+  border-color: #3498db;
+  background: white;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.ticket-info {
+  flex: 1;
+}
+
+.ticket-name {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #2c3e50;
+  margin: 0 0 0.5rem 0;
+}
+
+.ticket-price {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #e74c3c;
+  margin: 0 0 0.5rem 0;
+}
+
+.ticket-description {
+  font-size: 0.9rem;
+  color: #666;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.ticket-quantity {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: white;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  border: 1px solid #ddd;
+}
+
+.quantity-btn {
+  background: #3498db;
+  border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: white; /* Để SVG sử dụng currentColor */
+}
+
+.quantity-btn:hover:not(:disabled) {
+  background: #2980b9;
+  transform: scale(1.1);
+}
+
+.quantity-btn:disabled {
+  background: #bdc3c7;
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.quantity-btn img {
+  width: 12px;
+  height: 12px;
+  /* SVG sẽ tự động sử dụng color: white từ currentColor */
+}
+
+.quantity-display {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #2c3e50;
+  min-width: 30px;
+  text-align: center;
+}
+
+/* Form Groups */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.form-group-full {
+  grid-column: 1 / -1;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 0.5rem;
+  font-size: 1.4rem;
+}
+
+.form-group input,
+.form-group textarea {
+  padding: 0.75rem;
+  border: 2px solid #eee;
+  border-radius: 0.5rem;
+  font-size: 1.4rem;
+  transition: all 0.3s ease;
+  background: #fafafa;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #3498db;
+  background: white;
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+}
+
+.form-group input.error,
+.form-group textarea.error {
+  border-color: #e74c3c;
+  background: #fdf2f2;
+}
+
+.form-group input.error:focus,
+.form-group textarea.error:focus {
+  border-color: #e74c3c;
+  box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1);
+}
+
+.error-message {
+  color: #e74c3c;
+  font-size: 1.2rem;
+  margin-top: 0.25rem;
+  display: block;
+  font-weight: 500;
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+/* Payment Methods */
+.payment-methods {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.payment-method {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  border: 2px solid #eee;
+  border-radius: 0.75rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: #fafafa;
+}
+
+.payment-method:hover {
+  border-color: #3498db;
+  background: white;
+}
+
+.payment-method input {
+  margin-right: 0.75rem;
+  transform: scale(1.2);
+}
+
+.payment-method input:checked + .payment-label {
+  color: #3498db;
+  font-weight: 600;
+}
+
+.payment-label {
+  font-size: 1rem;
+  color: #2c3e50;
+  transition: all 0.3s ease;
+}
+
+/* Order Summary */
+.booking-summary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.booking-summary .section-title {
+  color: white;
+}
+
+.booking-summary .section-title {
+  color: white;
+}
+
+.summary-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.summary-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.4rem;
+}
+
+.summary-total {
+  padding-top: 1.4rem;
+  border-top: 1px solid rgba(255,255,255,0.3);
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.total-amount {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #f1c40f;
+}
+
+.security-note {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(255,255,255,0.1);
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  margin-bottom: 1.5rem;
+  font-size: 1.2rem;
+}
+
+.security-note img {
+  width: 16px;
+  height: 16px;
+  /* SVG tự động sử dụng currentColor (white) */
+}
+
+.booking-submit-btn {
+  width: 100%;
+  padding: 1rem 2rem;
+  background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+  border: none;
+  border-radius: 0.75rem;
+  color: white;
+  font-size: 1.4rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.booking-submit-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(46, 204, 113, 0.3);
+}
+
+.booking-submit-btn:disabled {
+  background: #bdc3c7;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .booking-wrapper {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .booking-event-info {
+    position: static;
+  }
+  
+  .countdown-timer {
+    margin-top: 1rem;
+    padding: 1rem;
+  }
+  
+  .time-value {
+    font-size: 2rem;
+  }
+  
+  .booking-title {
+    font-size: 2rem;
+  }
+  
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .payment-methods {
+    grid-template-columns: 1fr;
+  }
+  
+  .ticket-item {
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+  }
+  
+  .booking-section {
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .booking-page {
+    padding: 1.5rem 0 5rem;
+  }
+  
+  .countdown-timer {
+    padding: 1rem;
+  }
+  
+  .time-value {
+    font-size: 1.8rem;
+  }
+  
+  .countdown-header h4 {
+    font-size: 1.2rem;
+  }
+  
+  .countdown-header p {
+    font-size: 1.1rem;
+  }
+  
+  .booking-title {
+    font-size: 1.5rem;
+  }
+  
+  .booking-section {
+    padding: 1rem;
+  }
+  
+  .section-title {
+    font-size: 1.6rem;
+  }
+}

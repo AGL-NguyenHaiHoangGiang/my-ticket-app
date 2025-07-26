@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import EventService from '../services/events';
 
 import SingleEventHead from "../components/event/event-single-head";
@@ -10,7 +10,7 @@ import adsImageSp from '../assets/images/event-detail/ads-sp.png';
 
 import RelatedEvents from '../components/related';
 
-const EventDetail = () => {
+const EventDetail = ({ auth, setLoginOpen }) => {
   const [detail, setDetail] = useState({});
   const { slug } = useParams();
 
@@ -31,6 +31,8 @@ const EventDetail = () => {
   // console.log('Event Detail:', detail);
   const startTime = detail.startTime ? new Date(detail.startTime) : null;
   const endTime = detail.endTime ? new Date(detail.endTime) : null;
+  const today = new Date();
+  const isExpired = endTime && endTime < today;
 
   // pad numbers to 2 digits
   const pad2 = (num) => num.toString().padStart(2, '0');
@@ -63,6 +65,7 @@ const EventDetail = () => {
         priceFrom={priceFromFormat}
         priceTo={priceToFormat}
         banner={detail.bannerURL}
+        expired={isExpired}
       />
 
       {/* article detail */}
@@ -71,34 +74,42 @@ const EventDetail = () => {
           <div className="event__wrapper">
             {/* event main content */}
             <div className="event__main">
-              <div className="event__block e-ticket-info " id="ticket-detail">
-                <h2 className="e-ticket-info__title title--medium">Các hạng vé</h2>
-                <div className="e-ticket-info__booking">
-                  <time dateTime="2025-01-04 19:00" className="e-ticket-info__time">
-                    <img
-                      className="e-ticket-info__time-icon"
-                      src={iconCalendar}
-                      alt="calendar"
-                    />
-                    {formattedDate}
-                  </time>
-                  <a href="#" className="js-booking-btn js-modal-open button button--primary" data-id="login">
-                    Đăng nhập
-                  </a>
+              {!isExpired && (
+                <div className="event__block e-ticket-info " id="ticket-detail">
+                  <h2 className="e-ticket-info__title title--medium">Các hạng vé</h2>
+                  <div className="e-ticket-info__booking">
+                    <time dateTime="2025-01-04 19:00" className="e-ticket-info__time">
+                      <img
+                        className="e-ticket-info__time-icon"
+                        src={iconCalendar}
+                        alt="calendar"
+                      />
+                      {formattedDate}
+                    </time>
+                    {auth ? (
+                      <Link to={`/su-kien/${slug}/dat-ve`} className="button button--primary">
+                        Đặt vé
+                      </Link>
+                    ) : (
+                      <button className="button button--primary" data-id="login" onClick={() => setLoginOpen(true)}>
+                        Đăng nhập
+                      </button>
+                    )}
+                  </div>
+                  {ticketList.length > 0 && (
+                    <table className="e-ticket-info__table">
+                      <tbody>
+                        {ticketList.map((ticket, index) => (
+                          <tr key={index}>
+                            <th>{ticket.name}</th>
+                            <td>{formatPrice(ticket.price)}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  )}
                 </div>
-                {ticketList.length > 0 && (
-                  <table className="e-ticket-info__table">
-                    <tbody>
-                      {ticketList.map((ticket, index) => (
-                        <tr key={index}>
-                          <th>{ticket.name}</th>
-                          <td>{formatPrice(ticket.price)}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                )}
-              </div>
+              )}
 
               <div className="event__block event__content ">
                 <h2 className="event-title title--medium">Giới thiệu sự kiện</h2>

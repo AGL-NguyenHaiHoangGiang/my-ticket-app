@@ -2,6 +2,8 @@ const {CATEGORIES, RES_LOCATIONS} = require('../utils/enums')
 const {requestToresponseLocation} = require('../utils/location.mapper');
 
 const Event = require('../models/event.model');
+const BannerEvent = require('../models/banner-events.model');
+const SpecialEvent = require('../models/special-event.model');
 const EventDetails = require('../models/event-details.model');
 
 const bcrypt = require('bcrypt');
@@ -75,7 +77,14 @@ exports.getAllEvents = async (req, res) => {
 exports.getEventBySlug = async (req, res) => {
   try {
 
-    const eventDetails = await EventDetails.findOne({ url: req.params.slug });
+    const { slug } = req.params;
+    
+    const event = await Event.findOne({ url : slug, deletedAt: null});
+    
+    if (!event)
+      return res.status(201).json({ error: 'Event not found' });
+
+    const eventDetails = await EventDetails.findOne({ url: slug });
     
     if (!eventDetails) {
       return res.status(201).json({ error: 'Event not found' });
@@ -117,3 +126,32 @@ exports.getEventByKeyword = async (req, res) => {
     res.status(404).json({ error: "Service not supported" });
   }
 };
+
+exports.getBannerEvents = async (req, res) => {
+
+  try {
+    const bannerEvents = await BannerEvent.find({}).sort({ showingTime: -1 });
+    
+    res.status(200).json({
+      message: 'Banner events retrieved successfully',
+      body: bannerEvents,
+    });
+  }
+  catch (err) {
+    res.status(404).json({ error: "Service not supported" });
+  }
+}
+
+exports.getSpecialEvents = async (req, res) => {
+  try {
+    const specialEvents = await SpecialEvent.find({});
+  
+    res.status(200).json({
+      message: 'Banner events retrieved successfully',
+      body: specialEvents,
+    });
+  }
+  catch (err) {
+    res.status(404).json({ error: "Service not supported" });
+  }
+}
