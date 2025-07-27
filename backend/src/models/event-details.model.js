@@ -9,7 +9,7 @@ const COLLECTION_NAME = 'ticketbox_event_details'
 const eventSchema = new mongoose.Schema(
   {
     id: {
-      type: Number,
+      type: String,
       unique: true,
     },
     title: {
@@ -105,7 +105,7 @@ const eventSchema = new mongoose.Schema(
         default: new Date(Date.now()) + 30* 48600000, // Default to 30 days from now
     },
     originalId: {
-      type: Number,
+      type: String,
       // Reference to the event's own id
     },
     originalId_v2: {
