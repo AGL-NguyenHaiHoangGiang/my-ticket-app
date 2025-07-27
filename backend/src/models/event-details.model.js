@@ -9,7 +9,7 @@ const COLLECTION_NAME = 'ticketbox_event_details'
 const eventSchema = new mongoose.Schema(
   {
     id: {
-      type: String,
+      type: Number,
       unique: true,
     },
     title: {
