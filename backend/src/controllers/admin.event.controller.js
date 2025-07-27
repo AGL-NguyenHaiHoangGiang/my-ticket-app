@@ -110,8 +110,8 @@ exports.updateEventById = async (req, res) => {
     const { id } = req.params;
     const updateData = req.body;
 
-    const updatedEvent = await Event.findOneAndUpdate(
-      { _id: id },
+    const updatedEvent = await EventDetail.findOneAndUpdate(
+      { id: id },
       { $set: updateData }
     )
     
@@ -134,7 +134,7 @@ exports.getEventById = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const event = await Event.findOne({ _id: id});
+    const event = await Event.findOne({ id: id});
     
     if (!event) {
       return res.status(404).json({ error: 'Event not found' });
