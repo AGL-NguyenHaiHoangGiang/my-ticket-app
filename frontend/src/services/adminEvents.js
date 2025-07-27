@@ -21,7 +21,7 @@ class AdminEventService {
 
     // Delete an event by ID
     async deleteEvent(id) {
-        const response = await adminApi.delete(`/event/${id}`);
+        const response = await adminApi.delete(`/event/id/${id}`);
         return response.data;
     }
 

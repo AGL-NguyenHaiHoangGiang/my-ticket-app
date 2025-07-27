@@ -41,7 +41,7 @@ const eventSchema = new mongoose.Schema(
       default: true,
     },
     originalId: {
-      type: Number,
+      type: String,
       // Reference to the event's own id
     },
     url: {
