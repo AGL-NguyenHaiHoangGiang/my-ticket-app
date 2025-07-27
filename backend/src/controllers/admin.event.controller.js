@@ -32,24 +32,13 @@ exports.addEvent = async (req, res) => {
     }
 
     const newEvent = new Event({
-      name,
-      url: url.toLowerCase(),
-      imageUrl: imageUrl,
-      categories: categories,
-      day: day,
-      description : description,
-      orgLogoUrl: orgLogoUrl||"",
-      price: price || 0,
-      version: '1.1.0',
-      location: location || "Hồ Chí Minh",
-    });
-    
       name: addData.title,
       url: addData.url.toLowerCase(),
       imageUrl: addData.bannerURL,
       categories: addData.categories,
       day: addData.startTime,
       price: minPrice,
+      version: '1.1.0',
       location: addData.location
     });
 
@@ -84,6 +73,7 @@ exports.addEvent = async (req, res) => {
 
     if (!savedEventDetail) {
       return res.status(500).json({ error: 'Failed to create event detail' });
+      const deleteEvent = Event.deleteOne({ id: eventDetail.id })
     }
 
     return res.status(200).json({
