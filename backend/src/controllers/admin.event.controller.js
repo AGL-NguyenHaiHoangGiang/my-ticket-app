@@ -35,7 +35,7 @@ exports.addEvent = async (req, res) => {
       name: addData.title,
       url: addData.url.toLowerCase(),
       imageUrl: addData.bannerURL,
-      categories: addData.categories,
+      categories: addData.categoriesV2,
       day: addData.startTime,
       price: minPrice,
       version: '1.1.0',
