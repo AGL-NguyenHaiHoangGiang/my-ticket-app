@@ -46,6 +46,8 @@ exports.getAllEvents = async (req, res) => {
       const trueEndDate = new Date(endDate).setDate(new Date(endDate).getDate() + 1)
       filter.day = { ...filter.day, $lt: trueEndDate };
     }
+    
+    filter.deletedAt = null;
  
     const eventList = await Event
         .find(filter)
@@ -130,7 +132,7 @@ exports.getEventByKeyword = async (req, res) => {
 exports.getBannerEvents = async (req, res) => {
 
   try {
-    const bannerEvents = await BannerEvent.find({}).sort({ showingTime: -1 });
+    const bannerEvents = await BannerEvent.find({deletedAt: null}).sort({ showingTime: -1 });
     
     res.status(200).json({
       message: 'Banner events retrieved successfully',
@@ -144,7 +146,7 @@ exports.getBannerEvents = async (req, res) => {
 
 exports.getSpecialEvents = async (req, res) => {
   try {
-    const specialEvents = await SpecialEvent.find({});
+    const specialEvents = await SpecialEvent.find({deletedAt: null});
   
     res.status(200).json({
       message: 'Banner events retrieved successfully',
