@@ -99,7 +99,7 @@ exports.deleteEvent = async (req, res) => {
     const { id } = req.params;
 
     const event = await Event.updateOne(
-      { _id: id },
+      { id: id },
       { $set: { deletedAt: new Date() } }
     );
 
@@ -185,7 +185,7 @@ exports.getEventById = async (req, res) => {
 
     // let eventDetail;
 
-    eventDetail = await EventDetail.findOne({ id: parseInt(id) });
+    const eventDetail = await EventDetail.findOne({ id: parseInt(id) });
 
     if (!eventDetail) {
       return res.status(404).json({ error: 'Event details not found' });
