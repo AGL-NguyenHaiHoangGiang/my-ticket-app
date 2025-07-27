@@ -1,69 +1,33 @@
 import { useState, useEffect } from 'react';
-import { Form, Input, Button, Select, DatePicker, InputNumber, Upload, Card, message, Row, Col, Table, Space, Modal } from 'antd';
+import { useParams, useNavigate } from 'react-router-dom';
+import AdminEventService from '../../services/adminEvents';
+import { Form, Input, Button, Select, DatePicker, InputNumber, Upload, Card, message, Row, Col, Table, Space, Modal, Spin } from 'antd';
 import { PlusOutlined, ArrowLeftOutlined, EditOutlined, DeleteOutlined, FileImageOutlined } from '@ant-design/icons';
 import dayjs from 'dayjs';
-import { Link } from 'react-router-dom';
 
 const { Option } = Select;
 const { TextArea } = Input;
 const { RangePicker } = DatePicker;
 
-const AddTicket = ({ onMenuClick, mode = 'add', ticketData = null }) => {
-    console.log('AddTicket props:', { mode, ticketData });
-
+const TicketDetail = ({ mode = 'add' }) => {
+    const { id } = useParams();
+    const navigate = useNavigate();
     const [form] = Form.useForm();
-    const [loading, setLoading] = useState(false);
+
+    // State 
     const [fileList, setFileList] = useState([]);
-    const [description, setDescription] = useState('');
+    const [logoFileList, setLogoFileList] = useState([]);
     const [ticketTiers, setTicketTiers] = useState([]);
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [editingTier, setEditingTier] = useState(null);
     const [tierForm] = Form.useForm();
 
-    const isEditing = mode === 'edit';
-    const isAdding = mode === 'add' || !mode;
-    const isViewing = mode === 'view';
+    // Mode (xem, sửa, thêm mới)
+    const isEditing = mode === 'edit' && id;
+    const isViewing = mode === 'view' && id;
+    const isAdding = mode === 'add' || !id;
 
-    // Load data when in edit mode
-    useEffect(() => {
-        if ((isEditing || isViewing) && ticketData) {
-            // Map API fields to form fields
-            const formData = {
-                eventName: ticketData.name,
-                category: ticketData.categories,
-                location: ticketData.location,
-                venueName: ticketData.venueName,
-                dateRange: ticketData.startDate && ticketData.endDate ? [
-                    dayjs(ticketData.startDate),
-                    dayjs(ticketData.endDate)
-                ] : ticketData.day ? [
-                    dayjs(ticketData.day),
-                    dayjs(ticketData.day).add(2, 'hours') // Default 2 hour duration
-                ] : null,
-                organizer: ticketData.organizer,
-                organizerDescription: ticketData.organizerDescription,
-            };
-
-            // Set form fields
-            form.setFieldsValue(formData);
-
-            // Set description
-            setDescription(ticketData.description || '');
-
-            // Set ticket tiers if available
-            setTicketTiers(ticketData.ticketTiers || []);
-
-            // Set file list if available
-            if (ticketData.images) {
-                setFileList(ticketData.images);
-            }
-
-            console.log('Loading ticket data:', ticketData);
-            console.log('Mapped form data:', formData);
-        }
-    }, [isEditing, isViewing, ticketData, form]);
-
-    // Mock categories data
+    // Categories data
     const categories = [
         { id: 1, name: 'Live Concert', key: 'music' },
         { id: 2, name: 'Sân khấu nghệ thuật', key: 'theatersandart' },
@@ -71,80 +35,165 @@ const AddTicket = ({ onMenuClick, mode = 'add', ticketData = null }) => {
         { id: 4, name: 'Khác', key: 'others' },
     ];
 
-    const handleSubmit = async (values) => {
-        setLoading(true);
+    // Fetch event detail 
+    const fetchEventDetail = async () => {
+        if (!id) return;
+
         try {
-            // Validate ticket tiers
-            if (ticketTiers.length === 0) {
-                message.error('Vui lòng thêm ít nhất một hạng vé!');
-                setLoading(false);
-                return;
-            }
+            const response = await AdminEventService.getById(id);
+            const eventData = response.body;
 
-            // Simulate API call
-            await new Promise(resolve => setTimeout(resolve, 1500));
 
+            // console.log('Event data:', eventData);
+
+            // Map API data to form fields
             const formData = {
-                ...values,
-                description: description,
-                ticketTiers: ticketTiers,
-                images: fileList,
-                id: isEditing ? ticketData.id : undefined
+                eventName: eventData.title || '',
+                url: eventData.url || '',
+                category: eventData.categoriesV2?.[0] || '',
+                address: eventData.address || '',
+                location: eventData.location || '',
+                venueName: eventData.venue || '',
+                organizer: eventData.orgName || '',
+                organizerDescription: eventData.orgDescription || '',
+                description: eventData.description || '',
+                dateRange: eventData.startTime && eventData.endTime ? [
+                    dayjs(eventData.startTime),
+                    dayjs(eventData.endTime),
+                ] : null,
             };
 
-            console.log('Form values:', formData);
+            // Set form values
+            form.setFieldsValue(formData);
 
-            if (isEditing) {
-                message.success('Cập nhật sự kiện thành công!');
-            } else {
-                message.success('Tạo sự kiện thành công!');
-                // Reset form only when adding new
-                form.resetFields();
-                setFileList([]);
-                setDescription('');
-                setTicketTiers([]);
+            // Set banner image
+            if (eventData.bannerURL) {
+                setFileList([{
+                    uid: '-1',
+                    name: 'banner.jpg',
+                    status: 'done',
+                    url: eventData.bannerURL,
+                    thumbUrl: eventData.bannerURL,
+                }]);
             }
 
-            // Navigate back to ticket list after success
-            setTimeout(() => {
-                onMenuClick && onMenuClick('ticket-list');
-            }, 1000);
+            // Set logo tổ chức image
+            if (eventData.orgLogoURL) {
+                setLogoFileList([{
+                    uid: '-2',
+                    name: 'logo.jpg',
+                    status: 'done',
+                    url: eventData.orgLogoURL,
+                    thumbUrl: eventData.orgLogoURL,
+                }]);
+            }
+
+            // Set ticket tiers if available
+            if (eventData.showings?.[0]?.ticketTypes) {
+                const mappedTiers = eventData.showings[0].ticketTypes.map((ticket, index) => ({
+                    id: ticket.id || index + 1,
+                    tierName: ticket.name,
+                    price: ticket.price,
+                    quantity: ticket.quantity || 0,
+                    description: ticket.description || '',
+                    benefits: ticket.benefits || '',
+                }));
+                setTicketTiers(mappedTiers);
+            }
 
         } catch (error) {
-            console.error('Submit error:', error);
-            message.error('Có lỗi xảy ra, vui lòng thử lại!');
-        } finally {
-            setLoading(false);
+            console.log('Error:', error);
         }
     };
 
+    useEffect(() => {
+        fetchEventDetail();
+    }, [id]);
+
+    // Form submit handler
+    const handleSubmit = async (values) => {
+        try {
+            // Validate hạng vé
+            if (ticketTiers.length === 0) {
+                message.error('Vui lòng thêm ít nhất một hạng vé!');
+                return;
+            }
+
+            // form data
+            const formData = {
+                title: values.eventName,
+                url: values.url || values.eventName.toLowerCase().replace(/\s+/g, '-'),
+                description: values.description,
+                address: values.address,
+                location: values.location,
+                venue: values.venueName,
+                orgName: values.organizer,
+                orgDescription: values.organizerDescription,
+                orgLogoURL: logoFileList[0]?.url || logoFileList[0]?.response?.url || logoFileList[0]?.thumbUrl || '',
+                categoriesV2: [values.category],
+                startTime: values.dateRange?.[0]?.toISOString(),
+                endTime: values.dateRange?.[1]?.toISOString(),
+                bannerURL: fileList[0]?.url || fileList[0]?.response?.url || fileList[0]?.thumbUrl || '',
+                showings: [{
+                    ticketTypes: ticketTiers.map(tier => ({
+                        name: tier.tierName,
+                        price: tier.price,
+                        quantity: tier.quantity,
+                        description: tier.description,
+                        benefits: tier.benefits,
+                    }))
+                }]
+            };
+
+            // console.log('Form data:', formData);
+
+            let response;
+            if (isEditing) {
+                response = await AdminEventService.updateEvent(id, formData);
+                alert('Cập nhật sự kiện thành công!');
+            } else {
+                response = await AdminEventService.addEvent(formData);
+                alert('Tạo sự kiện thành công!');
+            }
+
+            // console.log('API Response:', response);
+
+            // setTimeout(() => {
+            //     navigate('/admin/ticket-list');
+            // }, 1000);
+
+        } catch (error) {
+            console.log('Submit error:', error);
+            alert('Có lỗi xảy ra, vui lòng thử lại!');
+        }
+    };
+
+    // File upload handlers
     const handleUploadChange = ({ fileList: newFileList }) => {
         setFileList(newFileList);
     };
 
-    const beforeUpload = (file) => {
-        const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
-        if (!isJpgOrPng) {
-            message.error('Chỉ có thể upload file JPG/PNG!');
-        }
-        const isLt2M = file.size / 1024 / 1024 < 2;
-        if (!isLt2M) {
-            message.error('Ảnh phải nhỏ hơn 2MB!');
-        }
-        return isJpgOrPng && isLt2M;
+    const handleLogoUploadChange = ({ fileList: newFileList }) => {
+        setLogoFileList(newFileList);
     };
 
     const uploadButton = (
         <div>
             <PlusOutlined />
-            <div style={{ marginTop: 8 }}>Upload</div>
+            <div style={{ marginTop: 8 }}>Tải lên Banner</div>
         </div>
     );
 
-    // Ticket Tier Management Functions
+    const logoUploadButton = (
+        <div>
+            <PlusOutlined />
+            <div style={{ marginTop: 8 }}>Tải lên Logo</div>
+        </div>
+    );
+
+    // Quan lý các hạng vé
     const handleAddTier = () => {
         setEditingTier(null);
-        tierForm.resetFields();
         setIsModalVisible(true);
     };
 
@@ -161,16 +210,16 @@ const AddTicket = ({ onMenuClick, mode = 'add', ticketData = null }) => {
 
     const handleTierSubmit = (values) => {
         if (editingTier) {
-            // Edit existing tier
+            // Chỉnh sửa hạng vé hiện tại
             setTicketTiers(prev => prev.map(tier =>
                 tier.id === editingTier.id ? { ...values, id: editingTier.id } : tier
             ));
             message.success('Đã cập nhật hạng vé!');
         } else {
-            // Add new tier
+            // Thêm hạng vé mới
             const newTier = {
                 ...values,
-                id: Date.now() // Simple ID generation
+                id: Date.now()
             };
             setTicketTiers(prev => [...prev, newTier]);
             message.success('Đã thêm hạng vé!');
@@ -179,42 +228,45 @@ const AddTicket = ({ onMenuClick, mode = 'add', ticketData = null }) => {
         tierForm.resetFields();
     };
 
-    // Custom validation for description
-    const validateDescription = () => {
-        if (!description || description.trim().length < 20) {
-            return Promise.reject(new Error('Mô tả phải có ít nhất 20 ký tự!'));
-        }
-        return Promise.resolve();
-    };
-
-    // Ticket Tiers Table Columns
+    // Config Column cho bảng hạng vé
     const tierColumns = [
         {
             title: 'Tên hạng vé',
             dataIndex: 'tierName',
             key: 'tierName',
+            width: 150,
         },
         {
             title: 'Giá vé (VND)',
             dataIndex: 'price',
             key: 'price',
+            width: 150,
             render: (price) => `${price?.toLocaleString()} VND`,
         },
         {
             title: 'Số lượng',
             dataIndex: 'quantity',
             key: 'quantity',
+            width: 100,
             render: (quantity) => `${quantity} vé`,
+        },
+        {
+            title: 'Quyền lợi',
+            dataIndex: 'benefits',
+            key: 'benefits',
+            width: 150,
+            render: (text) => text?.length > 30 ? `${text.substring(0, 30)}...` : text || 'Không có',
         },
         {
             title: 'Mô tả',
             dataIndex: 'description',
             key: 'description',
-            render: (text) => text?.length > 50 ? `${text.substring(0, 50)}...` : text,
+            render: (text) => text?.length > 40 ? `${text.substring(0, 40)}...` : text || 'Không có',
         },
         {
             title: 'Hành động',
             key: 'actions',
+            width: 120,
             render: (_, record) => (
                 !isViewing && (
                     <Space size="small">
@@ -253,17 +305,18 @@ const AddTicket = ({ onMenuClick, mode = 'add', ticketData = null }) => {
                         <Button
                             type="primary"
                             icon={<EditOutlined />}
-                            onClick={() => onMenuClick && onMenuClick('edit-ticket', ticketData)}
+                            onClick={() => navigate(`/admin/edit-ticket/${id}`)}
                             style={{ marginRight: 8 }}
                         >
                             Chỉnh sửa
                         </Button>
                     )}
-                    <Link to="/admin/ticket-list">
-                        <Button icon={<ArrowLeftOutlined />}>
-                            Quay lại
-                        </Button>
-                    </Link>
+                    <Button
+                        icon={<ArrowLeftOutlined />}
+                        onClick={() => navigate('/admin/ticket-list')}
+                    >
+                        Quay lại
+                    </Button>
                 </div>
             </div>
 
@@ -277,8 +330,9 @@ const AddTicket = ({ onMenuClick, mode = 'add', ticketData = null }) => {
                         scrollToFirstError
                         disabled={isViewing}
                     >
+                        {/* Tên sự kiện */}
                         <Row gutter={24}>
-                            <Col xs={24} md={12}>
+                            <Col xs={24} md={24}>
                                 <Form.Item
                                     name="eventName"
                                     label="Tên sự kiện"
@@ -294,6 +348,23 @@ const AddTicket = ({ onMenuClick, mode = 'add', ticketData = null }) => {
                                 </Form.Item>
                             </Col>
 
+                            {/* //slug */}
+                            <Col xs={24} md={24}>
+                                <Form.Item
+                                    name="url"
+                                    label="url"
+                                    rules={[{ required: false }]}
+                                >
+                                    <Input
+                                        placeholder="Nhập url cho sự kiện"
+                                        size="large"
+                                    />
+                                </Form.Item>
+                            </Col>
+                        </Row>
+
+                        {/* Thời gian tổ chức */}
+                        <Row gutter={24}>
                             <Col xs={24} md={12}>
                                 <Form.Item
                                     name="category"
@@ -312,74 +383,6 @@ const AddTicket = ({ onMenuClick, mode = 'add', ticketData = null }) => {
                                     </Select>
                                 </Form.Item>
                             </Col>
-                        </Row>
-
-                        <Form.Item
-                            name="images"
-                            label="Banner sự kiện"
-                            valuePropName="fileList"
-                            getValueFromEvent={e => Array.isArray(e) ? e : e?.fileList}
-                        >
-                            <Upload
-                                listType="picture-card"
-                                fileList={fileList}
-                                onChange={handleUploadChange}
-                                beforeUpload={beforeUpload}
-                                multiple
-                                maxCount={5}
-                            >
-                                {fileList.length >= 5 ? null : uploadButton}
-                            </Upload>
-                        </Form.Item>
-
-                        <Form.Item
-                            name="description"
-                            label="Mô tả sự kiện"
-                            rules={[
-                                { validator: validateDescription }
-                            ]}
-                        >
-                            <div style={{ marginBottom: 16 }}>
-                                <TextArea
-                                    value={description}
-                                    onChange={e => setDescription(e.target.value)}
-                                    rows={10}
-                                    placeholder="Nhập mô tả sự kiện"
-                                />
-                            </div>
-                        </Form.Item>
-
-                        <Row gutter={24}>
-
-
-                            <Col xs={24} md={12}>
-                                <Form.Item
-                                    name="location"
-                                    label="Địa điểm"
-                                    rules={[{ required: true, message: 'Vui lòng nhập địa điểm!' }]}
-                                >
-                                    <Input
-                                        placeholder="Nhập địa điểm tổ chức"
-                                        size="large"
-                                    />
-                                </Form.Item>
-                            </Col>
-
-                            <Col xs={24} md={12}>
-                                <Form.Item
-                                    name="venueName"
-                                    label="Tên tòa nhà / sân vận động / địa điểm cụ thể"
-                                    rules={[{ required: false }]}
-                                >
-                                    <Input
-                                        placeholder="Ví dụ: Sân vận động Mỹ Đình, Nhà hát lớn Hà Nội..."
-                                        size="large"
-                                    />
-                                </Form.Item>
-                            </Col>
-                        </Row>
-
-                        <Row gutter={24}>
                             <Col xs={24} md={12}>
                                 <Form.Item
                                     name="dateRange"
@@ -397,11 +400,93 @@ const AddTicket = ({ onMenuClick, mode = 'add', ticketData = null }) => {
                             </Col>
                         </Row>
 
+                        {/* Địa điểm */}
+                        <Row gutter={24}>
+                            <Col xs={24} md={24}>
+                                <Form.Item
+                                    name="address"
+                                    label="Tên đường, số nhà, phường/xã"
+                                    rules={[{ required: true, message: 'Vui lòng nhập địa chỉ!' }]}
+                                >
+                                    <Input
+                                        placeholder="Nhập địa chỉ nơi diễn ra sự kiện"
+                                        size="large"
+                                    />
+                                </Form.Item>
+                            </Col>
+
+                            <Col xs={24} md={12}>
+                                <Form.Item
+                                    name="location"
+                                    label="Thành phố"
+                                    rules={[{ required: true, message: 'Vui lòng nhập thành phố!' }]}
+                                >
+                                    <Input
+                                        placeholder="Nhập thành phố nơi diễn ra sự kiện"
+                                        size="large"
+                                    />
+                                </Form.Item>
+                            </Col>
+
+                            <Col xs={24} md={12}>
+                                <Form.Item
+                                    name="venueName"
+                                    label="Tên địa điểm cụ thể"
+                                    rules={[{ required: false }]}
+                                >
+                                    <Input
+                                        placeholder="Ví dụ: Sân vận động Mỹ Đình, Nhà hát lớn Hà Nội..."
+                                        size="large"
+                                    />
+                                </Form.Item>
+                            </Col>
+                        </Row>
+
+                        {/* Banner sự kiện */}
+                        <Form.Item
+                            label="Banner sự kiện"
+                        >
+                            <Upload
+                                listType="picture-card"
+                                fileList={fileList}
+                                onChange={handleUploadChange}
+                                maxCount={1}
+                                accept="image/*"
+                                showUploadList={{
+                                    showPreviewIcon: true,
+                                    showDownloadIcon: false,
+                                    showRemoveIcon: !isViewing,
+                                }}
+                            >
+                                {fileList.length >= 1 ? null : uploadButton}
+                            </Upload>
+                        </Form.Item>
+
+                        {/* Mô tả chi tiết */}
+                        <Form.Item
+                            name="description"
+                            label="Mô tả sự kiện"
+                            rules={[
+                                { required: true, message: 'Vui lòng nhập mô tả sự kiện!' },
+                                { min: 20, message: 'Mô tả phải có ít nhất 20 ký tự!' }
+                            ]}
+                        >
+                            <TextArea
+                                rows={8}
+                                placeholder="Nhập mô tả chi tiết về sự kiện"
+                                showCount
+                                maxLength={2000}
+                            />
+                        </Form.Item>
+
+
+
+                        {/* Quản lý hạng vé */}
                         <Row gutter={24}>
                             <Col span={24}>
-                                <Form.Item label="Hạng vé">
+                                <Form.Item label="Quản lý hạng vé">
                                     <Card
-                                        title="Quản lý hạng vé"
+                                        title={`Hạng vé (${ticketTiers.length} loại)`}
                                         extra={
                                             !isViewing && (
                                                 <Button
@@ -422,6 +507,7 @@ const AddTicket = ({ onMenuClick, mode = 'add', ticketData = null }) => {
                                                 pagination={false}
                                                 rowKey="id"
                                                 size="small"
+                                                scroll={{ x: 800 }}
                                             />
                                         ) : (
                                             <div style={{
@@ -429,7 +515,6 @@ const AddTicket = ({ onMenuClick, mode = 'add', ticketData = null }) => {
                                                 padding: '40px 0',
                                                 color: '#999'
                                             }}>
-                                                <FileImageOutlined style={{ fontSize: 48, marginBottom: 16 }} />
                                                 <p>Chưa có hạng vé nào. Nhấn "Thêm hạng vé" để bắt đầu.</p>
                                             </div>
                                         )}
@@ -438,6 +523,7 @@ const AddTicket = ({ onMenuClick, mode = 'add', ticketData = null }) => {
                             </Col>
                         </Row>
 
+                        {/* Ban tổ chức */}
                         <Row gutter={24}>
                             <Col xs={24} md={12}>
                                 <Form.Item
@@ -464,66 +550,43 @@ const AddTicket = ({ onMenuClick, mode = 'add', ticketData = null }) => {
                                     />
                                 </Form.Item>
                             </Col>
+                        </Row>
 
+                        {/* Logo Đơn vị tổ chức */}
+                        <Row gutter={24}>
                             <Col xs={24} md={12}>
                                 <Form.Item
-                                    name="organizerLogo"
                                     label="Logo ban tổ chức"
-                                    valuePropName="fileList"
-                                    getValueFromEvent={e => Array.isArray(e) ? e : e?.fileList}
                                 >
                                     <Upload
                                         listType="picture-card"
-                                        fileList={fileList}
-                                        onChange={handleUploadChange}
-                                        beforeUpload={beforeUpload}
+                                        fileList={logoFileList}
+                                        onChange={handleLogoUploadChange}
                                         maxCount={1}
+                                        accept="image/*"
+                                        showUploadList={{
+                                            showPreviewIcon: true,
+                                            showDownloadIcon: false,
+                                            showRemoveIcon: !isViewing,
+                                        }}
                                     >
-                                        {fileList.length >= 1 ? null : uploadButton}
+                                        {logoFileList.length >= 1 ? null : logoUploadButton}
                                     </Upload>
                                 </Form.Item>
                             </Col>
-
-                            {/* <Col xs={24} md={12}>
-                                <Form.Item
-                                    name="status"
-                                    label="Trạng thái"
-                                    rules={[{ required: true, message: 'Vui lòng chọn trạng thái!' }]}
-                                >
-                                    <Select 
-                                        placeholder="Chọn trạng thái"
-                                        size="large"
-                                    >
-                                        <Option value="draft">Bản nháp</Option>
-                                        <Option value="active">Đang bán</Option>
-                                        <Option value="inactive">Tạm dừng</Option>
-                                    </Select>
-                                </Form.Item>
-                            </Col> */}
                         </Row>
 
-
-
+                        {/* Form Button */}
                         <Form.Item>
                             <div className="admin-form-actions">
-                                <Link to="/admin/ticket-list">
-                                    <Button
-                                        size="large"
-                                        onClick={() => onMenuClick && onMenuClick('ticket-list')}
-                                    >
-                                        Quay lại
-                                    </Button>
-                                </Link>
                                 {!isViewing && (
                                     <Button
                                         type="primary"
                                         htmlType="submit"
-                                        loading={loading}
                                         size="large"
                                     >
-                                        {loading
-                                            ? (isEditing ? 'Đang cập nhật...' : 'Đang tạo...')
-                                            : (isEditing ? 'Cập nhật sự kiện' : 'Tạo sự kiện')
+                                        {
+                                            isEditing ? 'Cập nhật sự kiện' : 'Tạo sự kiện'
                                         }
                                     </Button>
                                 )}
@@ -533,7 +596,7 @@ const AddTicket = ({ onMenuClick, mode = 'add', ticketData = null }) => {
                 </Card>
             </div>
 
-            {/* Modal for adding/editing ticket tiers */}
+            {/* Modal các hạng vé */}
             <Modal
                 title={editingTier ? 'Sửa hạng vé' : 'Thêm hạng vé mới'}
                 open={isModalVisible}
@@ -542,7 +605,8 @@ const AddTicket = ({ onMenuClick, mode = 'add', ticketData = null }) => {
                     tierForm.resetFields();
                 }}
                 footer={null}
-                width={600}
+                width={700}
+                destroyOnHidden
             >
                 <Form
                     form={tierForm}
@@ -582,6 +646,7 @@ const AddTicket = ({ onMenuClick, mode = 'add', ticketData = null }) => {
                                     parser={value => value.replace(/\$\s?|(,*)/g, '')}
                                     size="large"
                                     style={{ width: '100%' }}
+                                    min={0}
                                 />
                             </Form.Item>
                         </Col>
@@ -652,4 +717,4 @@ const AddTicket = ({ onMenuClick, mode = 'add', ticketData = null }) => {
     );
 };
 
-export default AddTicket;
+export default TicketDetail;

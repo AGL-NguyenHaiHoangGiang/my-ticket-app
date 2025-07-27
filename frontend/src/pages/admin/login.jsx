@@ -31,6 +31,7 @@ const Login = () => {
 
             if (response && response.accessToken) {
                 localStorage.setItem("adminToken", response.accessToken);
+                localStorage.setItem("adminRefreshToken", response.refreshToken);
                 localStorage.setItem("adminUsername", values.username);
                 navigate('/admin');
             }
