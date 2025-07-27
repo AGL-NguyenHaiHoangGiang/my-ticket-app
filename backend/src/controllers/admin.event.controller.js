@@ -42,7 +42,7 @@ exports.addEvent = async (req, res) => {
       location: addData.location
     });
 
-    newEvent.originalId = newEvent._id;
+    newEvent.originalId = newEvent.id;
 
     const savedEvent = await newEvent.save();
     
@@ -134,7 +134,7 @@ exports.updateEventById = async (req, res) => {
     }
 
     const updatedEvent = await Event.findOneAndUpdate(
-      { originalId: updatedEventDetail.originalId },
+      { id: updatedEventDetail.id },
       {
         $set: {
           url: updateData.url,
