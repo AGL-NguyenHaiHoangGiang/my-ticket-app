@@ -36,7 +36,7 @@ exports.addEvent = async (req, res) => {
       categories: categories,
       day: day,
       description : description,
-      orgLogoUrl: orgLogoUrl,
+      orgLogoUrl: orgLogoUrl||"",
       price: price || 0,
       version: '1.1.0',
       location: location || "Hồ Chí Minh",
@@ -50,6 +50,7 @@ exports.addEvent = async (req, res) => {
     
     const eventDetail = new EventDetail({
       title: title,
+      id: savedEvent.id,
       url: url.toLowerCase(),
       description: description,
       address: address,
@@ -57,13 +58,13 @@ exports.addEvent = async (req, res) => {
       venue: venue,
       orgName: orgName,
       orgDescription: orgDescription,
-      orgLogoURL: orgLogoURL,
+      orgLogoUrl: orgLogoUrl,
       categoriesV2: categories,
       startTime: req.body.startTime,
       endTime: req.body.endTime,
       bannerURL: bannerURL,
       showings: showings,
-      originalId: savedEvent._id,
+      originalId_v2: savedEvent._id,
     });
     
     const savedEventDetail = await eventDetail.save();
@@ -113,11 +114,6 @@ exports.updateEventById = async (req, res) => {
     const { id } = req.params;
     const updateData = req.body;
 
-    const updatedEvent = await Event.findOneAndUpdate(
-      { _id: id },
-      { $set: updateData }
-    )
-
     // Lấy giá thấp nhất từ showings[].ticketTypes[].price
     let minPrice = 0;
     if (Array.isArray(updateData.showings) && updateData.showings.length > 0) {
@@ -130,7 +126,7 @@ exports.updateEventById = async (req, res) => {
     }
 
     const updatedEvent = await Event.findOneAndUpdate(
-      { originalId: updatedEventDetail.originalId },
+      { originalId: updatedEvent.originalId },
       { $set: { 
         url: updateData.url, 
         name: updateData.title, 
@@ -142,13 +138,13 @@ exports.updateEventById = async (req, res) => {
       } }
     );
     
-    if (!updatedEventDetail) {
+    if (!updatedEvent) {
       return res.status(404).json({ error: 'Event not found' });
     }
     
     return res.status(200).json({
       message: 'Event Detail updated successfully',
-      body: updatedEventDetail
+      body: updatedEvent
     });
   }
   catch (err) {
@@ -161,7 +157,7 @@ exports.getEventById = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const event = await Event.findOne({ _id: id});
+    const event = await Event.findOne({ originalId: id});
     
     if (!event) {
       return res.status(404).json({ error: 'Event not found' });
