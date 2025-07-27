@@ -14,6 +14,7 @@ const ProtectedRoute = ({ children }) => {
       const token = localStorage.getItem('adminToken');
       if (!token) {
         setAuth(false);
+        console.log("No token found, redirecting to login");
         return;
       }
 

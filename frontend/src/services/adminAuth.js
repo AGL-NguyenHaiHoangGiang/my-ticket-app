@@ -25,6 +25,11 @@ class Auth {
         });
         return response.data;
     }
+
+    async refreshToken(refreshToken) {
+        const response = await this.api.post("/refresh-token", { refreshToken });
+        return response.data;
+    }
 }
 
 export default new Auth();
