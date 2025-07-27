@@ -68,13 +68,17 @@ const TicketList = () => {
                 const start = record.startTime ? new Date(record.startTime) : null;
                 const end = record.endTime ? new Date(record.endTime) : null;
                 let status = 'CHƯA DIỄN RA';
-                let color = 'blue';
-                if (end && now > end) {
-                    status = 'HẾT HẠN';
+                let color = 'green';
+
+                if(record.deletedAt) {
+                    status = 'ĐÃ XÓA';
                     color = 'red';
+                } else if (end && now > end) {
+                    status = 'HẾT HẠN';
+                    color = 'orange';
                 } else if (start && end && now >= start && now <= end) {
                     status = 'ĐANG DIỄN RA';
-                    color = 'green';
+                    color = 'orange';
                 }
                 return <Tag color={color}>{status}</Tag>;
             },
@@ -85,8 +89,8 @@ const TicketList = () => {
             width: 200,
             render: (_, record) => (
                 <Space size="middle">
-                    <Link 
-                    to={`/admin/view-ticket/${record.originalId}`}>
+                    <Link
+                        to={`/admin/view-ticket/${record.originalId}`}>
                         <Button type="primary" icon={<EyeOutlined />} size="small">
                             Xem
                         </Button>
@@ -96,13 +100,31 @@ const TicketList = () => {
                             Sửa
                         </Button>
                     </Link>
-                    <Button type="primary" danger icon={<DeleteOutlined />} size="small">
-                        Xóa
-                    </Button>
+                    {record.deletedAt ? (
+                        <Button type="primary" danger disabled size="small">
+                            Đã xóa
+                        </Button>
+                    ) : (
+                        <Button type="primary" danger icon={<DeleteOutlined />} onClick={() => handleDelete(record.originalId)} size="small">
+                            Xóa
+                        </Button>
+                    )}
                 </Space>
             ),
         },
     ];
+
+    const handleDelete = async (id) => {
+        try {
+            const response = await AdminEventService.deleteEvent(id);
+            alert("Xóa sự kiện thành công");
+            fetchData();
+
+        } catch (error) {
+            console.log("Error deleting event:", error);
+            alert("Xóa sự kiện thất bại");
+        }
+    }
 
 
 

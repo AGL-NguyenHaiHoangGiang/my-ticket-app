@@ -107,6 +107,15 @@ exports.deleteEvent = async (req, res) => {
       return res.status(404).json({ error: 'Event not found' });
     }
 
+    const eventDetail = await EventDetail.updateOne(
+      { id: id },
+      { $set: { deletedAt: new Date() } }
+    );
+
+    if (eventDetail.nModified === 0) {
+      return res.status(404).json({ error: 'Event detail not found' });
+    }
+
     return res.status(200).json({
       message: 'Delete event successfully',
       body: { id }

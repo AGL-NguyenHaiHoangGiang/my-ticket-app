@@ -115,7 +115,7 @@ const TicketDetail = ({ mode = 'add' }) => {
         try {
             // Validate hạng vé
             if (ticketTiers.length === 0) {
-                message.error('Vui lòng thêm ít nhất một hạng vé!');
+                alert('Vui lòng thêm ít nhất một hạng vé!');
                 return;
             }
 
@@ -158,9 +158,11 @@ const TicketDetail = ({ mode = 'add' }) => {
 
             // console.log('API Response:', response);
 
-            // setTimeout(() => {
-            //     navigate('/admin/ticket-list');
-            // }, 1000);
+            if (isAdding) {
+                setTimeout(() => {
+                    navigate('/admin/ticket-list');
+                }, 1000);
+            }
 
         } catch (error) {
             console.log('Submit error:', error);
