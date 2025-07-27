@@ -41,10 +41,15 @@ exports.addEvent = async (req, res) => {
       version: '1.1.0',
       location: addData.location
     });
-
-    newEvent.originalId = newEvent.id;
-
+    
     const savedEvent = await newEvent.save();
+
+    const updatedEvent = await Event.updateOne(
+      {id: savedEvent.id},
+      {$set : {
+        originalId : savedEvent.id
+      }
+    });
     
     if (!savedEvent) {
       return res.status(500).json({ error: 'Failed to create event' });
@@ -65,15 +70,16 @@ exports.addEvent = async (req, res) => {
       endTime: addData.endTime,
       bannerURL: addData.bannerURL,
       showings: addData.showings,
-      originalId: savedEvent._id,
-      id: savedEvent._id, 
+      originalId: savedEvent.id,
+      id: savedEvent.id, 
     });
 
     const savedEventDetail = await eventDetail.save();
 
     if (!savedEventDetail) {
-      return res.status(500).json({ error: 'Failed to create event detail' });
       const deleteEvent = Event.deleteOne({ id: eventDetail.id })
+      return res.status(500).json({ error: 'Failed to create event detail' });
+      
     }
 
     return res.status(200).json({
