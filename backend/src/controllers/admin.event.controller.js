@@ -116,6 +116,11 @@ exports.updateEventById = async (req, res) => {
   try {
     const { id } = req.params;
     const updateData = req.body;
+    
+    const updatedEventDetail = await EventDetail.findOneAndUpdate(
+      { id: id },
+      { $set: updateData }
+    )
 
     // Lấy giá thấp nhất từ showings[].ticketTypes[].price
     let minPrice = 0;
