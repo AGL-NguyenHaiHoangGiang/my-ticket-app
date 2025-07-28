@@ -8,17 +8,17 @@ const COLLECTION_NAME = 'transactions'
 
 const transactionSchema = new mongoose.Schema(
   {
-    id: {
+    trans_id: {
       type: Number,
       unique: true,
     },
     transactionCode: {
         type: String,
-        unique: true
+        // unique: true
     },
     userId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
+        type: String,
+        default: ''
     },
     eventId: {
         type: String,
@@ -49,6 +49,10 @@ const transactionSchema = new mongoose.Schema(
         type: Array,
         default: []
     },
+    description: {
+        type: String,
+        default: 'Booking transaction'
+    }
   },
   {
     timestamps: false, // Disable automatic timestamps
@@ -56,13 +60,13 @@ const transactionSchema = new mongoose.Schema(
   },
 )
 
-transactionSchema.plugin(AutoIncrement, { inc_field: 'id' });
+transactionSchema.plugin(AutoIncrement, { inc_field: 'trans_id' });
 
-transactionSchema.pre('save', function(next){
-    if (!this.transactionCode && this.id != null) {
-        this.transactionCode = `MTP${String(this.id).padStart(6, '0')}`;
-    }
-    next();
-})
+// transactionSchema.post('save', async function(doc, next){
+//     if (!doc.transactionCode && doc.trans_id)
+//         doc.transactionCode = `MTP${String(doc.trans_id).padStart(6, '0')}`;
+//     await doc.save();
+//     next();
+// })
 
 module.exports = mongoose.model(DOCUMENT_NAME, transactionSchema)

@@ -8,7 +8,7 @@ const COLLECTION_NAME = 'bookings'
 
 const bookingSchema = new mongoose.Schema(
   {
-    id: {
+    booking_id: {
       type: Number,
       unique: true,
     },
@@ -16,9 +16,13 @@ const bookingSchema = new mongoose.Schema(
         type: String,
         required: true
     },
+    vnpTranscode: {
+        type: String,
+        default: ''
+    },
     userId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
+        type: String,
+        default: ''
     },
     eventId: {
         type: String,
@@ -49,6 +53,10 @@ const bookingSchema = new mongoose.Schema(
         type: Array,
         default: []
     },
+    description: {
+        type: String,
+        default: 'Booking transaction'
+    }
   },
   {
     timestamps: false, // Disable automatic timestamps
@@ -56,6 +64,6 @@ const bookingSchema = new mongoose.Schema(
   },
 )
 
-bookingSchema.plugin(AutoIncrement, { inc_field: 'id' });
+bookingSchema.plugin(AutoIncrement, { inc_field: 'booking_id' });
 
 module.exports = mongoose.model(DOCUMENT_NAME, bookingSchema)

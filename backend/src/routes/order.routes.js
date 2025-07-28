@@ -5,6 +5,9 @@ const crypto = require('crypto');
 const {VNPay, ignoreLogger, ProductCode, VnpLocale, dateFormat, verifyReturnUrl} = require('vnpay');
 const {vnp_TmnCode, vnp_HashSecret, vnp_Url, vnp_ReturnUrl} = require('../configs/vnpay.default');
 
+const Transaction = require('../models/transaction.model');
+const Booking = require('../models/booking.model');
+
 const orderController = require('../controllers/order.controller');
 
 const vnpay = new VNPay({
@@ -18,21 +21,54 @@ const vnpay = new VNPay({
 
 router.post('/create_payment_url', async (req,res)=> {
     try{
-        const {description, order_id} = req.body;
+        const {description, tickets, amount, userId, eventId, ticketId} = req.body;
+        
+        const newTransaction = new Transaction({
+            userId,
+            eventId,
+            ticketId,
+            amount: parseInt(amount),
+            tickets,
+            description
+        });
+        
+        const savedTransaction = await newTransaction.save();
+        
+        console.log('save transaction')
+        
+        if (!savedTransaction) {
+          return res.status(500).json({ error: 'Failed to create transaction' });
+        }
+        
+        console.log('Update transaction code');
+        
+        const newTransactionCode = `MTP${String(savedTransaction.trans_id).padStart(6, '0')}`;
+        
+        const updatedTransaction = await Transaction.findOneAndUpdate(
+            {trans_id: savedTransaction.trans_id},
+            {$set: {
+                transactionCode:  newTransactionCode
+            }}
+        )
+        
+        console.log("Updated transcode")
         
          const vnpayResponse = await vnpay.buildPaymentUrl({
-            vnp_Amount: 500000,
+            vnp_Amount: parseInt(updatedTransaction.amount),
             vnp_IpAddr: '127.0.0.1',
-            vnp_TxnRef: order_id || "TEST0",
-            vnp_OrderInfo: description || "this is an order",
+            vnp_TxnRef: newTransactionCode || "TEST0",
+            vnp_OrderInfo: updatedTransaction.description || "this is an order",
             vnp_OrderType: ProductCode.Other,
             vnp_ReturnUrl: vnp_ReturnUrl,
             vnp_Locale: VnpLocale.VN,
             vnp_CreateDate: dateFormat(new Date()),
             vnp_ExpireDate: dateFormat(new Date(Date.now()+ 15*1000*60)), // expires after 15 mins
         })
-        
-        return res.status(201).json(vnpayResponse)
+
+        return res.status(201).json(vnpayResponse);
+        // return res.status(201).json({
+        //     body: updatedTransaction
+        // });
     }
     catch(err) {
         console.log(err);
@@ -41,22 +77,86 @@ router.post('/create_payment_url', async (req,res)=> {
     
 });
 
-router.get('/vnpay_return', (req, res, next) => {
+router.get('/vnpay_return', async (req, res, next) => {
     let verify;
     try {
         // Sử dụng try-catch để bắt lỗi nếu query không hợp lệ hoặc thiếu dữ liệu
         verify = vnpay.verifyReturnUrl(req.query);
+        
         if (!verify.isVerified) {
             return res.send('Xác thực tính toàn vẹn dữ liệu thất bại');
         }
+        
+        console.log("Querying transaction");
+        
+        const vnpTransCode = req.query.vnp_TmnCode;
+        
+        const transaction = await Transaction.findOne({transactionCode: req.query.vnp_TxnRef}, {});
+            
+        if (!transaction)
+            return res.status(404).json({
+                message: "Transaction not available"
+            });
+            
         if (!verify.isSuccess) {
-            return res.send('Đơn hàng thanh toán thất bại');
+            const updateResponse = await Transaction.findOneAndUpdate(
+                {transactionCode : transaction.transactionCode},
+                {$set: {status: 'failed'}}
+            );
+            
+            return res.status(500).json({
+                message : "Đơn hàng thanh toán thất bại",
+                body : {
+                    transactionCode: vnpTransCode
+                }
+            });
         }
+        
+        const updateResponse = await Transaction.findOneAndUpdate(
+            {transactionCode : transaction.transactionCode},
+            {$set: {status: 'success'}}
+        );
+        
+        const existedBooking = Booking.findOne({
+            vnpTranscode : vnpTransCode
+        })
+        
+        if (existedBooking)
+            return res.status(201).json({
+                message: "Transaction successfull, check your booking",
+                vnpTranscode: vnpTransCode
+            })
+        
+        const newBooking = new Booking({
+            transactionCode:  transaction.transactionCode,
+            vnpTranscode: vnpTransCode,
+            userId: transaction.userId,
+            eventId: transaction.eventId,
+            ticketId: transaction.ticketId,
+            tickets: transaction.tickets,
+            amount: transaction.amount,
+            status: 'success',
+            description: transaction.description
+        });
+        
+        
+        const savedBooking = await newBooking.save();
+        
+        if (!savedBooking) {
+          return res.status(500).json({ error: `Failed to create booking on transaction ${transaction.transactionCode}`});
+        }
+        
+        return res.status(200).json({
+            message: "Transaction success. Booking created. Check your account",
+            body: {
+                transactionCode : vnpTransCode
+            }
+        })
+            
     } catch (error) {
         console.log(error)
-        return res.send('Dữ liệu không hợp lệ');
+        return res.status(400).json({message: 'Transaction failed'})
     }
-    return res.send('Xác thực URL trả về thành công');
 });
 
 module.exports = router;
