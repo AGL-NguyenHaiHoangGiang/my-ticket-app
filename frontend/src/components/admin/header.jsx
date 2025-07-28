@@ -21,7 +21,9 @@ const AdminHeader = () => {
     const logout = () => {
         Auth.logout(localStorage.getItem('adminToken'));
         localStorage.removeItem('adminToken');
+        localStorage.removeItem('adminRefreshToken');
         localStorage.removeItem('adminUsername');
+        localStorage.removeItem('avatar');
         navigate('/admin/login');
     }
 
@@ -66,9 +68,13 @@ const AdminHeader = () => {
                 <Dropdown menu={userDropdown} trigger={['click']} >
                     <a onClick={(e) => e.preventDefault()} style={{ color: 'white' }}>
                         <Space>
-                            <Avatar 
-                                size="medium" 
-                                icon={<UserOutlined />} 
+                            <Avatar
+                                size="medium"
+                                icon={
+                                    localStorage.getItem('avatar')
+                                        ? <img src={localStorage.getItem('avatar')} alt="avatar" />
+                                        : <UserOutlined />
+                                }
                                 style={{ backgroundColor: '#1890ff' }}
                             />
                             {localStorage.getItem('adminUsername') || 'No name'}

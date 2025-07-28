@@ -76,7 +76,11 @@ export default function UserLayout() {
         }
       } catch (error) {
         // console.error("Token verification failed:", error);
+<<<<<<< HEAD
         localStorage.removeItem("adminToken");
+=======
+        localStorage.removeItem('customerToken');
+>>>>>>> develop
         setAuth(false);
       }
     };

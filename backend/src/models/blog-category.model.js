@@ -35,11 +35,7 @@ const blogCategorySchema = new mongoose.Schema(
     collection: COLLECTION_NAME,
   },
 )
-// AutoIncrement ID with unique counter name
-blogCategorySchema.plugin(AutoIncrement, {
-  inc_field: 'id',
-  id: 'blog_category_seq',
-})
+
 
 //  update (query)
 blogCategorySchema.pre(
@@ -54,11 +50,29 @@ blogCategorySchema.pre(
 )
 
 // Run before save
-blogCategorySchema.pre('save', function (next) {
+blogCategorySchema.pre('save', async function (next) {
   // Auto generate slug if not
   if (!this.slug || this.isModified('name')) {
     this.slug = slugify(this.name, { lower: true, strict: true })
   }
+
+  //  Auto generate ID
+  if (this.isNew && !this.id) {
+    try {
+      // Tìm document có ID cao nhất
+      const highestDoc = await mongoose
+        .model(DOCUMENT_NAME)
+        .findOne()
+        .sort({ id: -1 })
+        .select('id')
+      
+      // Set ID = highest + 1, hoặc 1 nếu chưa có document nào
+      this.id = (highestDoc?.id || 0) + 1
+    } catch (error) {
+      console.error('Error generating ID:', error)
+    }
+  }
+  
   next()
 })
 

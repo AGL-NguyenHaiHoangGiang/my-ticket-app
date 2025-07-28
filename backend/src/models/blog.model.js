@@ -96,11 +96,6 @@ const blogSchema = new mongoose.Schema(
 // Index for search
 blogSchema.index({ title: 'text', short_description: 'text', summary: 'text' })
 
-// AutoIncrement ID with unique counter name
-blogSchema.plugin(AutoIncrement, {
-  inc_field: 'article_id',
-})
-
 //  update (query)
 blogSchema.pre(
   ['findOneAndUpdate', 'updateOne', 'findByIdAndUpdate'],
@@ -121,7 +116,22 @@ blogSchema.pre(
 )
 
 // Run before save
-blogSchema.pre('save', function (next) {
+blogSchema.pre('save', async function (next) {
+  // Auto generate article_id nếu chưa có
+  if (this.isNew && !this.article_id) {
+    try {
+      const highestDoc = await mongoose
+        .model(DOCUMENT_NAME)
+        .findOne()
+        .sort({ article_id: -1 })
+        .select('article_id')
+
+      this.article_id = (highestDoc?.article_id || 0) + 1
+    } catch (error) {
+      console.error('Error generating article_id:', error)
+    }
+  }
+
   // Set article_datetime to current time if not provided
   if (!this.article_datetime) {
     this.article_datetime = new Date()

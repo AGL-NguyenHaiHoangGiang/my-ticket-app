@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Auth from '../../services/adminAuth';
-import {Spin } from 'antd';
+import { Spin } from 'antd';
 
 const ProtectedRoute = ({ children }) => {
   const navigate = useNavigate();
@@ -14,6 +14,7 @@ const ProtectedRoute = ({ children }) => {
       const token = localStorage.getItem('adminToken');
       if (!token) {
         setAuth(false);
+        console.log("No token found, redirecting to login");
         return;
       }
 
@@ -24,8 +25,28 @@ const ProtectedRoute = ({ children }) => {
           setAuth(true);
         }
       } catch (error) {
-        console.error("Token verification failed:", error);
+        console.warn("Token expired or invalid, trying to refresh...");
+
+        const refreshToken = localStorage.getItem('adminRefreshToken');
+        if (!refreshToken) {
+          console.error("No refresh token found");
+          setAuth(false);
+          return;
+        }
+
+        try {
+          const refreshResponse = await Auth.refreshToken(refreshToken);
+          if (refreshResponse?.accessToken) {
+            localStorage.setItem('adminToken', refreshResponse.accessToken);
+            setAuth(true);
+            return;
+          }
+        } catch (refreshError) {
+          console.error("Failed to refresh token", refreshError);
+        }
+
         localStorage.removeItem('adminToken');
+        localStorage.removeItem('adminRefreshToken');
         setAuth(false);
       }
     }

@@ -25,6 +25,8 @@ const TicketList = () => {
         fetchData();
     }, []);
 
+    // console.log("Fetched data:", data);
+
     // Define the columns for the ticket list table (Ant Design)
     const columns = [
         {
@@ -35,12 +37,12 @@ const TicketList = () => {
         },
         {
             title: 'Sự kiện',
-            dataIndex: 'name',
-            key: 'name',
+            dataIndex: 'title',
+            key: 'title',
         },
         {
             title: 'Danh mục',
-            dataIndex: 'categories',
+            dataIndex: 'categoriesV2',
             key: 'categories',
             render: (categories) =>
                 Array.isArray(categories)
@@ -48,26 +50,37 @@ const TicketList = () => {
                     : <Tag>{categories}</Tag>,
         },
         {
-            title: 'Ngày diễn ra',
-            dataIndex: 'day',
-            key: 'eventDate',
-            render: (day) => new Date(day).toLocaleDateString(),
-            width: 150,
+            title: 'Thời gian sự kiện',
+            key: 'eventTime',
+            render: (_, record) => {
+                const start = record.startTime ? new Date(record.startTime).toLocaleString() : '';
+                const end = record.endTime ? new Date(record.endTime).toLocaleString() : '';
+                return `${start} - ${end}`;
+            },
+            width: 250,
         },
         {
             title: 'Trạng thái',
-            dataIndex: 'day',
             key: 'status',
             width: 150,
-            render: (day, record) => {
-                const today = new Date();
-                const eventDate = new Date(day);
-                const isExpired = eventDate < today;
-                return (
-                    <Tag color={isExpired ? 'red' : 'green'}>
-                        {isExpired ? 'HẾT HẠN' : 'HOẠT ĐỘNG'}
-                    </Tag>
-                );
+            render: (_, record) => {
+                const now = new Date();
+                const start = record.startTime ? new Date(record.startTime) : null;
+                const end = record.endTime ? new Date(record.endTime) : null;
+                let status = 'CHƯA DIỄN RA';
+                let color = 'green';
+
+                if(record.deletedAt) {
+                    status = 'ĐÃ XÓA';
+                    color = 'red';
+                } else if (end && now > end) {
+                    status = 'HẾT HẠN';
+                    color = 'orange';
+                } else if (start && end && now >= start && now <= end) {
+                    status = 'ĐANG DIỄN RA';
+                    color = 'orange';
+                }
+                return <Tag color={color}>{status}</Tag>;
             },
         },
         {
@@ -76,23 +89,42 @@ const TicketList = () => {
             width: 200,
             render: (_, record) => (
                 <Space size="middle">
-                    <Link to={`/admin/view-ticket/${record.id}`}>
+                    <Link
+                        to={`/admin/view-ticket/${record.originalId}`}>
                         <Button type="primary" icon={<EyeOutlined />} size="small">
                             Xem
                         </Button>
                     </Link>
-                    <Link to={`/admin/edit-ticket/${record.id}`}>
+                    <Link to={`/admin/edit-ticket/${record.originalId}`}>
                         <Button type="default" icon={<EditOutlined />} size="small">
                             Sửa
                         </Button>
                     </Link>
-                    <Button type="primary" danger icon={<DeleteOutlined />} size="small">
-                        Xóa
-                    </Button>
+                    {record.deletedAt ? (
+                        <Button type="primary" danger disabled size="small">
+                            Đã xóa
+                        </Button>
+                    ) : (
+                        <Button type="primary" danger icon={<DeleteOutlined />} onClick={() => handleDelete(record.originalId)} size="small">
+                            Xóa
+                        </Button>
+                    )}
                 </Space>
             ),
         },
     ];
+
+    const handleDelete = async (id) => {
+        try {
+            const response = await AdminEventService.deleteEvent(id);
+            alert("Xóa sự kiện thành công");
+            fetchData();
+
+        } catch (error) {
+            console.log("Error deleting event:", error);
+            alert("Xóa sự kiện thất bại");
+        }
+    }
 
 
 

@@ -30,8 +30,11 @@ const Login = () => {
             // console.log("Login response:", response);
 
             if (response && response.accessToken) {
+                console.log("Login successful:", response);
                 localStorage.setItem("adminToken", response.accessToken);
+                localStorage.setItem("adminRefreshToken", response.refreshToken);
                 localStorage.setItem("adminUsername", values.username);
+                localStorage.setItem("avatar", response.body.avatar || '');
                 navigate('/admin');
             }
         } catch (error) {

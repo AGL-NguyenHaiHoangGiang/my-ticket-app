@@ -40,10 +40,6 @@ const eventSchema = new mongoose.Schema(
         type: String,
         default: "", 
     },
-    day: {
-      type: Date,
-      default: Date.now,
-    },
     logoURL: {
       type: String,
       default: "", 
@@ -124,6 +120,18 @@ const eventSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
+    remaining_tickets: {
+      type: Number,
+      default: 0
+    },
+    location: {
+      type: String,
+      default: "Hồ Chí Minh",
+    },
+    deletedAt: {
+      type: Date,
+      default: null,
+    }
   },
   {
     timestamps: false, // Disable automatic timestamps

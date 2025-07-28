@@ -2,8 +2,14 @@ import adminApi from './adminApi';
 
 class AdminEventService {
     // Get all events
-    async getAll(limit = 99999, page = 1) {
-        const response = await adminApi.get(`/event/all?limit=${limit}&page=${page}`);
+    async getAll(limit = 99999) {
+        const response = await adminApi.get(`/event/all?limit=${limit}`);
+        return response.data;
+    }
+
+    // Get event by ID
+    async getById(id) {
+        const response = await adminApi.get(`/event/id/${id}`);
         return response.data;
     }
 
@@ -15,13 +21,13 @@ class AdminEventService {
 
     // Delete an event by ID
     async deleteEvent(id) {
-        const response = await adminApi.delete(`/event/${id}`);
+        const response = await adminApi.delete(`/event/id/${id}`);
         return response.data;
     }
 
     // Update an event by ID
     async updateEvent(id, eventData) {
-        const response = await adminApi.put(`/event/${id}`, eventData);
+        const response = await adminApi.put(`/event/id/${id}`, eventData);
         return response.data;
     }
   

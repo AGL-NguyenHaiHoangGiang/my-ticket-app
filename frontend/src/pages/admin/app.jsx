@@ -41,10 +41,10 @@ const items = [
         key: 'add-ticket',
         label: <Link to="/admin/add-ticket">Thêm sự kiện</Link>,
       },
-      {
-        key: 'ticket-categories',
-        label: <Link to="/admin/ticket-categories">Danh mục sự kiện</Link>,
-      }
+      // {
+      //   key: 'ticket-categories',
+      //   label: <Link to="/admin/ticket-categories">Danh mục sự kiện</Link>,
+      // }
     ],
   },
   {
@@ -154,7 +154,7 @@ const App = () => {
                 <Route path="/add-ticket" element={<AddTicket mode="add" />} />
                 <Route path="/edit-ticket/:id" element={<AddTicket mode="edit" />} />
                 <Route path="/view-ticket/:id" element={<AddTicket mode="view" />} />
-                <Route path="/ticket-categories" element={<TicketCategories />} />
+                {/* <Route path="/ticket-categories" element={<TicketCategories />} /> */}
                 <Route path="/blog-list" element={<BlogList />} />
                 <Route path="/blog-categories" element={<BlogCategories />} />
                 <Route path="/order-list" element={<OrderList />} />
