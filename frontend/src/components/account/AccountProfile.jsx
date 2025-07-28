@@ -1,11 +1,14 @@
 import React from "react";
 import avatar from "../../assets/images/account/avatar.jpg";
+import "../../assets/style/account.css";
 
 const AccountProfile = ({
   userInfo,
   isEditing,
   onToggleEdit,
   onInputChange,
+  onSave,
+  onCancel,
 }) => {
   return (
     <>
@@ -17,9 +20,11 @@ const AccountProfile = ({
           <div className="avatar__container avatar__main">
             <img src={avatar} alt="Avatar Image" />
           </div>
-          <button className="pill__container" onClick={onToggleEdit}>
-            Cập nhật thông tin
-          </button>
+          {!isEditing && (
+            <button className="update-info-btn" onClick={onToggleEdit}>
+              Cập nhật thông tin
+            </button>
+          )}
         </div>
         <div className="personal_detail_container">
           <div className="personal_detail_item">
@@ -35,7 +40,7 @@ const AccountProfile = ({
               </div>
             ) : (
               <input
-                className="profile__form-input"
+                className="profile-form-input"
                 type="text"
                 value={userInfo.name}
                 onChange={(e) => onInputChange("name", e.target.value)}
@@ -53,7 +58,7 @@ const AccountProfile = ({
               </div>
             ) : (
               <input
-                className="profile__form-input"
+                className="profile-form-input"
                 type="text"
                 value={userInfo.birthDate}
                 onChange={(e) => onInputChange("birthDate", e.target.value)}
@@ -71,7 +76,7 @@ const AccountProfile = ({
               </div>
             ) : (
               <input
-                className="profile__form-input"
+                className="profile-form-input"
                 type="text"
                 value={userInfo.phone}
                 onChange={(e) => onInputChange("phone", e.target.value)}
@@ -89,7 +94,7 @@ const AccountProfile = ({
               </div>
             ) : (
               <input
-                className="profile__form-input"
+                className="profile-form-input"
                 type="email"
                 value={userInfo.email}
                 onChange={(e) => onInputChange("email", e.target.value)}
@@ -107,7 +112,7 @@ const AccountProfile = ({
               </div>
             ) : (
               <input
-                className="profile__form-input"
+                className="profile-form-input"
                 type="text"
                 value={userInfo.address}
                 onChange={(e) => onInputChange("address", e.target.value)}
@@ -121,6 +126,17 @@ const AccountProfile = ({
             </div>
             <div className="personal_detail_value">{userInfo.joinDate}</div>
           </div>
+
+          {isEditing && (
+            <div className="edit-buttons-container">
+              <button className="save-btn" onClick={onSave}>
+                Lưu
+              </button>
+              <button className="cancel-btn" onClick={onCancel}>
+                Hủy
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </>
