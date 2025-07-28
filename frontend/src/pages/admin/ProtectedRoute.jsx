@@ -52,7 +52,7 @@ const ProtectedRoute = ({ children }) => {
     }
 
     checkAuth();
-  }, []);
+  }, [navigate]);
 
   useEffect(() => {
     if (auth === false) {
