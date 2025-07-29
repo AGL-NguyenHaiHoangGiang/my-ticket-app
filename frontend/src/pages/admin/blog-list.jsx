@@ -17,7 +17,8 @@ import BlogDetailModal from "../../components/admin/BlogDetailModal";
 import EditBlogModal from "../../components/admin/EditBlogModal";
 
 const BlogList = () => {
-  const [blogs, setBlogs] = useState([]);
+  const [allBlogs, setAllBlogs] = useState([]); // Lưu tất cả blogs
+  const [blogs, setBlogs] = useState([]); // Blogs hiển thị trên trang hiện tại
   const [loading, setLoading] = useState(false);
   const [deletingIds, setDeletingIds] = useState(new Set());
   const [isAddModalVisible, setIsAddModalVisible] = useState(false);
@@ -28,19 +29,20 @@ const BlogList = () => {
     current: 1,
     pageSize: 10,
     total: 0,
-    hasNextPage: true,
+    showSizeChanger: false,
   });
 
-  const fetchBlogs = async (page = 1, pageSize = 10) => {
+  // Load tất cả blogs một lần với limit 10000
+  const fetchAllBlogs = async () => {
     try {
       setLoading(true);
-      const response = await getBlogsWithPagination(page, pageSize);
+      const response = await getBlogsWithPagination(1, 10000); // Load tất cả
       const data = response.data;
 
       if (data && data.metadata) {
         const blogList = data.metadata.map((blog, index) => ({
           key: blog._id,
-          id: (page - 1) * pageSize + index + 1,
+          id: index + 1,
           title: blog.title,
           author: blog.author,
           category: blog.category_id?.name || "Chưa phân loại",
@@ -52,20 +54,14 @@ const BlogList = () => {
           _id: blog._id,
         }));
 
-        setBlogs(blogList);
+        setAllBlogs(blogList);
+        setPagination((prev) => ({
+          ...prev,
+          total: blogList.length,
+        }));
 
-        const hasNextPage = blogList.length === pageSize;
-        const estimatedTotal = hasNextPage
-          ? page * pageSize + pageSize
-          : (page - 1) * pageSize + blogList.length;
-
-        setPagination({
-          current: page,
-          pageSize: pageSize,
-          total: estimatedTotal,
-          hasNextPage: hasNextPage,
-          showSizeChanger: false,
-        });
+        // Hiển thị trang đầu tiên
+        updateDisplayedBlogs(blogList, 1, 10);
       }
     } catch (error) {
       message.error("Không thể tải danh sách bài viết");
@@ -74,12 +70,28 @@ const BlogList = () => {
     }
   };
 
+  // Cập nhật blogs hiển thị theo trang
+  const updateDisplayedBlogs = (allBlogsList, page, pageSize) => {
+    const startIndex = (page - 1) * pageSize;
+    const endIndex = startIndex + pageSize;
+    const displayedBlogs = allBlogsList.slice(startIndex, endIndex);
+    setBlogs(displayedBlogs);
+  };
+
   useEffect(() => {
-    fetchBlogs();
+    fetchAllBlogs();
   }, []);
 
-  const handleTableChange = (pagination) => {
-    fetchBlogs(pagination.current, pagination.pageSize);
+  const handleTableChange = (paginationInfo) => {
+    setPagination((prev) => ({
+      ...prev,
+      current: paginationInfo.current,
+    }));
+    updateDisplayedBlogs(
+      allBlogs,
+      paginationInfo.current,
+      paginationInfo.pageSize
+    );
   };
 
   const handleDelete = async (blogId) => {
@@ -90,11 +102,37 @@ const BlogList = () => {
 
       message.success("Xóa bài viết thành công");
 
-      const remainingBlogs = blogs.length - 1;
-      if (remainingBlogs === 0 && pagination.current > 1) {
-        fetchBlogs(pagination.current - 1, pagination.pageSize);
+      // Cập nhật allBlogs và tính toán lại pagination
+      const updatedAllBlogs = allBlogs.filter((blog) => blog._id !== blogId);
+      setAllBlogs(updatedAllBlogs);
+
+      // Cập nhật total count
+      setPagination((prev) => ({
+        ...prev,
+        total: updatedAllBlogs.length,
+      }));
+
+      // Kiểm tra nếu trang hiện tại không còn dữ liệu
+      const currentPageStartIndex =
+        (pagination.current - 1) * pagination.pageSize;
+      if (
+        currentPageStartIndex >= updatedAllBlogs.length &&
+        pagination.current > 1
+      ) {
+        // Chuyển về trang trước
+        const newPage = pagination.current - 1;
+        setPagination((prev) => ({
+          ...prev,
+          current: newPage,
+        }));
+        updateDisplayedBlogs(updatedAllBlogs, newPage, pagination.pageSize);
       } else {
-        fetchBlogs(pagination.current, pagination.pageSize);
+        // Giữ nguyên trang hiện tại
+        updateDisplayedBlogs(
+          updatedAllBlogs,
+          pagination.current,
+          pagination.pageSize
+        );
       }
     } catch (error) {
       if (error.response) {
@@ -127,11 +165,15 @@ const BlogList = () => {
   };
 
   const handleAddSuccess = () => {
-    fetchBlogs(1, pagination.pageSize);
+    fetchAllBlogs(); // Reload tất cả dữ liệu và về trang đầu
+    setPagination((prev) => ({
+      ...prev,
+      current: 1,
+    }));
   };
 
   const handleEditSuccess = () => {
-    fetchBlogs(pagination.current, pagination.pageSize);
+    fetchAllBlogs(); // Reload tất cả dữ liệu và giữ trang hiện tại
   };
 
   const handleViewDetail = async (blog) => {
@@ -295,24 +337,9 @@ const BlogList = () => {
             pageSize: pagination.pageSize,
             total: pagination.total,
             showSizeChanger: false,
-            showQuickJumper: false,
+            showQuickJumper: true,
             showTotal: (total, range) => {
-              // Hiển thị thông tin phù hợp
-              if (
-                !pagination.hasNextPage &&
-                blogs.length < pagination.pageSize
-              ) {
-                return `Hiển thị ${range[0]}-${range[1]} của ${range[1]} bài viết (tất cả)`;
-              } else {
-                return `Hiển thị ${range[0]}-${range[1]} bài viết (trang ${pagination.current})`;
-              }
-            },
-            itemRender: (current, type, originalElement) => {
-              if (type === "next") {
-                // Chỉ hiển thị nút next nếu có trang tiếp theo
-                return pagination.hasNextPage ? originalElement : null;
-              }
-              return originalElement;
+              return `Hiển thị ${range[0]}-${range[1]} của ${total} bài viết`;
             },
           }}
           onChange={handleTableChange}

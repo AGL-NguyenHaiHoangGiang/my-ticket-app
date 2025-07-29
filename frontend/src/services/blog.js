@@ -70,33 +70,11 @@ export const updateBlog = (id, blogData) => {
   if (token) {
     config.headers = {
       Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
     };
-
-    if (!(blogData instanceof FormData)) {
-      config.headers["Content-Type"] = "application/json";
-    }
   }
 
   return axios.put(`${MANAGER_API_BASE_URL}/${id}`, blogData, config);
-};
-
-// Cập nhật blog theo slug
-export const updateBlogBySlug = (slug, blogData) => {
-  const token =
-    localStorage.getItem("adminToken") || localStorage.getItem("customerToken");
-  const config = {};
-
-  if (token) {
-    config.headers = {
-      Authorization: `Bearer ${token}`,
-    };
-
-    if (!(blogData instanceof FormData)) {
-      config.headers["Content-Type"] = "application/json";
-    }
-  }
-
-  return axios.put(`${MANAGER_API_BASE_URL}/slug/${slug}`, blogData, config);
 };
 
 // Lấy chi tiết blog theo ID

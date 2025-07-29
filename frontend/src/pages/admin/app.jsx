@@ -60,14 +60,14 @@ const items = [
         key: "blog-list",
         label: <Link to="/admin/blog-list">Danh sách blog</Link>,
       },
-      // {
-      //   key: 'add-blog',
-      //   label: <Link to="/admin/add-blog">Thêm blog</Link>,
-      // },
       {
-        key: "blog-categories",
-        label: <Link to="/admin/blog-categories">Danh mục blog</Link>,
+        key: "add-blog",
+        label: <Link to="/admin/add-blog">Thêm blog</Link>,
       },
+      // {
+      //   key: "blog-categories",
+      //   label: <Link to="/admin/blog-categories">Danh mục blog</Link>,
+      // },
     ],
   },
   {
@@ -147,14 +147,14 @@ const App = () => {
       return [
         { title: "Trang chủ" },
         { title: "Quản lý blog" },
-        // { title: "Thêm blog" },
+        { title: "Thêm blog" },
       ];
-    if (path.includes("blog-categories"))
-      return [
-        { title: "Trang chủ" },
-        { title: "Quản lý blog" },
-        { title: "Danh mục blog" },
-      ];
+    // if (path.includes("blog-categories"))
+    //   return [
+    //     { title: "Trang chủ" },
+    //     { title: "Quản lý blog" },
+    //     { title: "Danh mục blog" },
+    //   ];
     if (path.includes("order-list"))
       return [
         { title: "Trang chủ" },

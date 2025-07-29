@@ -1,15 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  Modal,
-  Form,
-  Input,
-  Select,
-  DatePicker,
-  Upload,
-  Button,
-  message,
-} from "antd";
-import { UploadOutlined } from "@ant-design/icons";
+import { Modal, Form, Input, Select, DatePicker, Button, message } from "antd";
 import { createBlog, getBlogCategories } from "../../services/blog";
 import dayjs from "dayjs";
 
@@ -20,8 +10,6 @@ const AddBlogModal = ({ visible, onCancel, onSuccess }) => {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
   const [categories, setCategories] = useState([]);
-  const [fileList, setFileList] = useState([]);
-  const [previewImage, setPreviewImage] = useState("");
 
   // Load blog categories khi modal mở
   useEffect(() => {
@@ -29,8 +17,6 @@ const AddBlogModal = ({ visible, onCancel, onSuccess }) => {
       fetchCategories();
       // Reset form khi modal mở
       form.resetFields();
-      setFileList([]);
-      setPreviewImage("");
     }
   }, [visible]);
 
@@ -57,39 +43,30 @@ const AddBlogModal = ({ visible, onCancel, onSuccess }) => {
         .replace(/-+/g, "-")
         .trim();
 
-      const formData = new FormData();
-      formData.append("title", values.title);
-      formData.append("slug", slug);
-      formData.append("author", values.author);
-      formData.append("category_id", values.category_id);
-      formData.append("short_description", values.short_description);
-      formData.append("summary", values.summary);
-
-      const contentArray = values.content
-        .split("\n\n")
-        .map((paragraph) => paragraph.trim())
-        .filter((paragraph) => paragraph.length > 0);
-
-      formData.append("content", JSON.stringify(contentArray));
+      const blogData = {
+        title: values.title,
+        slug: slug,
+        author: values.author,
+        category_id: values.category_id,
+        short_description: values.short_description,
+        summary: values.summary,
+        content: values.content
+          .split("\n\n")
+          .map((paragraph) => paragraph.trim())
+          .filter((paragraph) => paragraph.length > 0),
+        thumpnail: values.thumpnail || "",
+      };
 
       if (values.article_datetime) {
-        formData.append(
-          "article_datetime",
-          values.article_datetime.toISOString()
-        );
+        blogData.article_datetime = values.article_datetime.toISOString();
       } else {
-        formData.append("article_datetime", new Date().toISOString());
+        blogData.article_datetime = new Date().toISOString();
       }
 
-      if (fileList.length > 0 && fileList[0].originFileObj) {
-        formData.append("thumpnail", fileList[0].originFileObj);
-      }
-
-      const response = await createBlog(formData);
+      const response = await createBlog(blogData);
 
       message.success("Tạo bài viết thành công!");
       form.resetFields();
-      setFileList([]);
       onSuccess();
       onCancel();
     } catch (error) {
@@ -110,29 +87,6 @@ const AddBlogModal = ({ visible, onCancel, onSuccess }) => {
     } finally {
       setLoading(false);
     }
-  };
-
-  const uploadProps = {
-    fileList,
-    beforeUpload: (file) => {
-      const isImage = file.type.startsWith("image/");
-      if (!isImage) {
-        message.error("Chỉ có thể upload file hình ảnh!");
-        return false;
-      }
-      const isLt5M = file.size / 1024 / 1024 < 5;
-      if (!isLt5M) {
-        message.error("Hình ảnh phải nhỏ hơn 5MB!");
-        return false;
-      }
-      return false;
-    },
-    onChange: ({ fileList: newFileList }) => {
-      setFileList(newFileList.slice(-1));
-    },
-    onRemove: () => {
-      setFileList([]);
-    },
   };
 
   return (
@@ -250,12 +204,11 @@ const AddBlogModal = ({ visible, onCancel, onSuccess }) => {
         </Form.Item>
 
         <Form.Item
-          label="Ảnh thumbnail"
-          extra="Chỉ hỗ trợ file hình ảnh, tối đa 5MB"
+          label="URL Thumbnail"
+          name="thumpnail"
+          rules={[{ type: "url", message: "Vui lòng nhập URL hợp lệ!" }]}
         >
-          <Upload {...uploadProps} maxCount={1}>
-            <Button icon={<UploadOutlined />}>Chọn ảnh</Button>
-          </Upload>
+          <Input placeholder="https://example.com/image.jpg" addonBefore="🖼️" />
         </Form.Item>
       </Form>
     </Modal>
