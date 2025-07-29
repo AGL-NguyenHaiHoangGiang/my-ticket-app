@@ -7,21 +7,21 @@ import {
   PlusOutlined,
   InfoCircleOutlined,
 } from "@ant-design/icons";
+import { useNavigate } from "react-router-dom";
 import {
   getBlogsWithPagination,
   deleteBlog,
   getBlogBySlug,
 } from "../../services/blog";
-import AddBlogModal from "../../components/admin/AddBlogModal";
 import BlogDetailModal from "../../components/admin/BlogDetailModal";
 import EditBlogModal from "../../components/admin/EditBlogModal";
 
 const BlogList = () => {
+  const navigate = useNavigate();
   const [allBlogs, setAllBlogs] = useState([]); // Lưu tất cả blogs
   const [blogs, setBlogs] = useState([]); // Blogs hiển thị trên trang hiện tại
   const [loading, setLoading] = useState(false);
   const [deletingIds, setDeletingIds] = useState(new Set());
-  const [isAddModalVisible, setIsAddModalVisible] = useState(false);
   const [isDetailModalVisible, setIsDetailModalVisible] = useState(false);
   const [isEditModalVisible, setIsEditModalVisible] = useState(false);
   const [selectedBlog, setSelectedBlog] = useState(null);
@@ -164,14 +164,6 @@ const BlogList = () => {
     window.open(`/tin-tuc/${slug}`, "_blank");
   };
 
-  const handleAddSuccess = () => {
-    fetchAllBlogs(); // Reload tất cả dữ liệu và về trang đầu
-    setPagination((prev) => ({
-      ...prev,
-      current: 1,
-    }));
-  };
-
   const handleEditSuccess = () => {
     fetchAllBlogs(); // Reload tất cả dữ liệu và giữ trang hiện tại
   };
@@ -202,11 +194,7 @@ const BlogList = () => {
   };
 
   const handleAddBlog = () => {
-    setIsAddModalVisible(true);
-  };
-
-  const handleCloseAddModal = () => {
-    setIsAddModalVisible(false);
+    navigate("/admin/add-blog");
   };
 
   const handleCloseDetailModal = () => {
@@ -345,13 +333,6 @@ const BlogList = () => {
           onChange={handleTableChange}
         />
       </div>
-
-      {/* Add Blog Modal */}
-      <AddBlogModal
-        visible={isAddModalVisible}
-        onCancel={handleCloseAddModal}
-        onSuccess={handleAddSuccess}
-      />
 
       {/* Blog Detail Modal */}
       <BlogDetailModal

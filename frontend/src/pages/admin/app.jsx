@@ -20,6 +20,7 @@ import TicketCategories from "./ticket-categories";
 import AddTicket from "./ticket-detail";
 import BlogList from "./blog-list";
 import BlogCategories from "./blog-categories";
+import AddBlogPage from "./add-blog";
 import OrderList from "./order-list";
 import AddOrder from "./add-order";
 import UserList from "./user-list";
@@ -211,6 +212,9 @@ const App = () => {
                 />
                 {/* <Route path="/ticket-categories" element={<TicketCategories />} /> */}
                 <Route path="/blog-list" element={<BlogList />} />
+                <Route path="/blogs" element={<BlogList />} />
+                <Route path="/blogs/add" element={<AddBlogPage />} />
+                <Route path="/add-blog" element={<AddBlogPage />} />
                 <Route path="/blog-categories" element={<BlogCategories />} />
                 <Route path="/order-list" element={<OrderList />} />
                 <Route path="/add-order" element={<AddOrder />} />

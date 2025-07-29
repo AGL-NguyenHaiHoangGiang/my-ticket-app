@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Modal, Form, Input, Select, Button, message, Row, Col } from "antd";
 import {
-  getBlogCategories,
   updateBlog,
   getBlogBySlug,
+  getBlogCategories,
 } from "../../services/blog";
 
 const { TextArea } = Input;
@@ -17,18 +17,25 @@ const EditBlogModal = ({ visible, onCancel, onSuccess, blogData }) => {
   useEffect(() => {
     if (visible && blogData) {
       fetchCategories();
-      populateForm();
     }
   }, [visible, blogData]);
+
+  useEffect(() => {
+    // Chỉ populate form khi đã có categories
+    if (visible && blogData && categories.length > 0) {
+      populateForm();
+    }
+  }, [visible, blogData, categories]);
 
   const fetchCategories = async () => {
     try {
       const response = await getBlogCategories();
       const categoryData = response.data.metadata || response.data;
-      setCategories(categoryData);
-    } catch (error) {
-      message.error("Không thể tải danh sách danh mục");
-    }
+
+      if (Array.isArray(categoryData) && categoryData.length > 0) {
+        setCategories(categoryData);
+      }
+    } catch (error) {}
   };
 
   const populateForm = async () => {
@@ -38,13 +45,33 @@ const EditBlogModal = ({ visible, onCancel, onSuccess, blogData }) => {
       const response = await getBlogBySlug(blogData.slug);
       const fullBlogData = response.data.metadata || response.data;
 
-      form.setFieldsValue({
+      // Tìm category ID từ blog data
+      let categoryId = null;
+      if (
+        typeof fullBlogData.category_id === "object" &&
+        fullBlogData.category_id
+      ) {
+        // Nếu category object chỉ có name, tìm category theo name
+        if (fullBlogData.category_id.name && !fullBlogData.category_id._id) {
+          const categoryName = fullBlogData.category_id.name;
+          const foundCategoryByName = categories.find(
+            (cat) => cat.name === categoryName
+          );
+          if (foundCategoryByName) {
+            categoryId = foundCategoryByName._id;
+          }
+        } else {
+          categoryId =
+            fullBlogData.category_id._id || fullBlogData.category_id.id;
+        }
+      } else {
+        categoryId = fullBlogData.category_id;
+      }
+
+      const formValues = {
         title: fullBlogData.title || "",
         author: fullBlogData.author || "",
-        category_id:
-          typeof fullBlogData.category_id === "object"
-            ? fullBlogData.category_id?._id
-            : fullBlogData.category_id,
+        category_id: categoryId,
         short_description: fullBlogData.short_description || "",
         summary: fullBlogData.summary || "",
         content: Array.isArray(fullBlogData.content)
@@ -54,7 +81,9 @@ const EditBlogModal = ({ visible, onCancel, onSuccess, blogData }) => {
           ? new Date(fullBlogData.article_datetime).toISOString().slice(0, 16)
           : "",
         thumpnail: fullBlogData.thumpnail || "",
-      });
+      };
+
+      form.setFieldsValue(formValues);
     } catch (error) {
       message.error("Không thể tải thông tin chi tiết blog");
     }
@@ -162,7 +191,16 @@ const EditBlogModal = ({ visible, onCancel, onSuccess, blogData }) => {
               name="category_id"
               rules={[{ required: true, message: "Vui lòng chọn danh mục!" }]}
             >
-              <Select placeholder="Chọn danh mục">
+              <Select
+                placeholder="Chọn danh mục"
+                loading={categories.length === 0}
+                showSearch
+                filterOption={(input, option) =>
+                  option?.children
+                    ?.toLowerCase()
+                    .indexOf(input.toLowerCase()) >= 0
+                }
+              >
                 {categories.map((category) => (
                   <Option key={category._id} value={category._id}>
                     {category.name}
