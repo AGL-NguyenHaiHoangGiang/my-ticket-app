@@ -40,7 +40,6 @@ const AddBlogModal = ({ visible, onCancel, onSuccess }) => {
       const categoryData = response.data.metadata || response.data;
       setCategories(categoryData);
     } catch (error) {
-      console.error("Error fetching categories:", error);
       message.error("Không thể tải danh sách danh mục");
     }
   };
@@ -49,44 +48,51 @@ const AddBlogModal = ({ visible, onCancel, onSuccess }) => {
     try {
       setLoading(true);
 
-      // Tự động tạo slug từ title
       const slug = values.title
         .toLowerCase()
         .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "") // Remove accents
-        .replace(/[^a-z0-9\s-]/g, "") // Remove special chars
-        .replace(/\s+/g, "-") // Replace spaces with hyphens
-        .replace(/-+/g, "-") // Replace multiple hyphens with single
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/[^a-z0-9\s-]/g, "")
+        .replace(/\s+/g, "-")
+        .replace(/-+/g, "-")
         .trim();
 
-      // Chuẩn bị dữ liệu blog
-      const blogData = {
-        title: values.title,
-        slug: slug,
-        short_description: values.short_description,
-        summary: values.summary,
-        author: values.author,
-        category_id: values.category_id,
-        content: values.content
-          ? values.content.split("\n").filter((line) => line.trim())
-          : [],
-        article_datetime: values.article_datetime
-          ? values.article_datetime.toISOString()
-          : new Date().toISOString(),
-        thumpnail: values.thumpnail || "", // URL thumbnail
-      };
+      const formData = new FormData();
+      formData.append("title", values.title);
+      formData.append("slug", slug);
+      formData.append("author", values.author);
+      formData.append("category_id", values.category_id);
+      formData.append("short_description", values.short_description);
+      formData.append("summary", values.summary);
 
-      // Gọi API tạo blog
-      const response = await createBlog(blogData);
+      const contentArray = values.content
+        .split("\n\n")
+        .map((paragraph) => paragraph.trim())
+        .filter((paragraph) => paragraph.length > 0);
+
+      formData.append("content", JSON.stringify(contentArray));
+
+      if (values.article_datetime) {
+        formData.append(
+          "article_datetime",
+          values.article_datetime.toISOString()
+        );
+      } else {
+        formData.append("article_datetime", new Date().toISOString());
+      }
+
+      if (fileList.length > 0 && fileList[0].originFileObj) {
+        formData.append("thumpnail", fileList[0].originFileObj);
+      }
+
+      const response = await createBlog(formData);
 
       message.success("Tạo bài viết thành công!");
       form.resetFields();
       setFileList([]);
-      onSuccess(); // Callback để refresh danh sách blog
-      onCancel(); // Đóng modal
+      onSuccess();
+      onCancel();
     } catch (error) {
-      console.error("Error creating blog:", error);
-
       if (error.response) {
         const status = error.response.status;
         const errorMessage = error.response.data?.message || "Có lỗi xảy ra";
@@ -107,22 +113,25 @@ const AddBlogModal = ({ visible, onCancel, onSuccess }) => {
   };
 
   const uploadProps = {
+    fileList,
     beforeUpload: (file) => {
       const isImage = file.type.startsWith("image/");
       if (!isImage) {
         message.error("Chỉ có thể upload file hình ảnh!");
         return false;
       }
-      const isLt2M = file.size / 1024 / 1024 < 2;
-      if (!isLt2M) {
-        message.error("Hình ảnh phải nhỏ hơn 2MB!");
+      const isLt5M = file.size / 1024 / 1024 < 5;
+      if (!isLt5M) {
+        message.error("Hình ảnh phải nhỏ hơn 5MB!");
         return false;
       }
-      return false; // Prevent auto upload
+      return false;
     },
-    fileList,
     onChange: ({ fileList: newFileList }) => {
-      setFileList(newFileList);
+      setFileList(newFileList.slice(-1));
+    },
+    onRemove: () => {
+      setFileList([]);
     },
   };
 
@@ -226,14 +235,6 @@ const AddBlogModal = ({ visible, onCancel, onSuccess }) => {
         </Form.Item>
 
         <Form.Item
-          name="thumpnail"
-          label="URL Hình ảnh đại diện"
-          rules={[{ type: "url", message: "Vui lòng nhập URL hợp lệ!" }]}
-        >
-          <Input placeholder="https://example.com/image.jpg" />
-        </Form.Item>
-
-        <Form.Item
           name="content"
           label="Nội dung"
           rules={[
@@ -243,17 +244,17 @@ const AddBlogModal = ({ visible, onCancel, onSuccess }) => {
         >
           <TextArea
             rows={8}
-            placeholder="Nhập nội dung bài viết... (Mỗi dòng sẽ là một đoạn)"
+            placeholder="Nhập nội dung bài viết (mỗi đoạn văn cách nhau bằng 2 dòng trống)"
             showCount
           />
         </Form.Item>
 
         <Form.Item
-          label="Upload Hình ảnh (Tùy chọn)"
-          extra="Chỉ hỗ trợ file hình ảnh, tối đa 2MB"
+          label="Ảnh thumbnail"
+          extra="Chỉ hỗ trợ file hình ảnh, tối đa 5MB"
         >
-          <Upload {...uploadProps}>
-            <Button icon={<UploadOutlined />}>Chọn hình ảnh</Button>
+          <Upload {...uploadProps} maxCount={1}>
+            <Button icon={<UploadOutlined />}>Chọn ảnh</Button>
           </Upload>
         </Form.Item>
       </Form>

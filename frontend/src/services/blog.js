@@ -27,7 +27,7 @@ export const getBlogsWithPagination = (page = 1, limit = 10) => {
   return axios.get(`${API_BASE_URL}?page=${page}&limit=${limit}`);
 };
 
-// Xóa blog (cần authentication token) - sử dụng manager route
+// Xóa blog
 export const deleteBlog = (id) => {
   const token =
     localStorage.getItem("adminToken") || localStorage.getItem("customerToken");
@@ -42,7 +42,7 @@ export const deleteBlog = (id) => {
   return axios.delete(`${MANAGER_API_BASE_URL}/${id}`, config);
 };
 
-// Tạo blog mới (cần authentication token)
+// Tạo blog mới
 export const createBlog = (blogData) => {
   const token =
     localStorage.getItem("adminToken") || localStorage.getItem("customerToken");
@@ -51,14 +51,17 @@ export const createBlog = (blogData) => {
   if (token) {
     config.headers = {
       Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
     };
+
+    if (!(blogData instanceof FormData)) {
+      config.headers["Content-Type"] = "application/json";
+    }
   }
 
   return axios.post(MANAGER_API_BASE_URL, blogData, config);
 };
 
-// Cập nhật blog (cần authentication token)
+// Cập nhật blog
 export const updateBlog = (id, blogData) => {
   const token =
     localStorage.getItem("adminToken") || localStorage.getItem("customerToken");
@@ -67,14 +70,36 @@ export const updateBlog = (id, blogData) => {
   if (token) {
     config.headers = {
       Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
     };
+
+    if (!(blogData instanceof FormData)) {
+      config.headers["Content-Type"] = "application/json";
+    }
   }
 
   return axios.put(`${MANAGER_API_BASE_URL}/${id}`, blogData, config);
 };
 
-// Lấy chi tiết blog theo ID (cần authentication token)
+// Cập nhật blog theo slug
+export const updateBlogBySlug = (slug, blogData) => {
+  const token =
+    localStorage.getItem("adminToken") || localStorage.getItem("customerToken");
+  const config = {};
+
+  if (token) {
+    config.headers = {
+      Authorization: `Bearer ${token}`,
+    };
+
+    if (!(blogData instanceof FormData)) {
+      config.headers["Content-Type"] = "application/json";
+    }
+  }
+
+  return axios.put(`${MANAGER_API_BASE_URL}/slug/${slug}`, blogData, config);
+};
+
+// Lấy chi tiết blog theo ID
 export const getBlogById = (id) => {
   const token =
     localStorage.getItem("adminToken") || localStorage.getItem("customerToken");

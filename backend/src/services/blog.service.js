@@ -42,9 +42,8 @@ class BlogService {
     if (typeof select === 'string') {
       selectFields = select.split(',').map((field) => field.trim())
     }
-    
+
     const filter = {}
-    
 
     return await blogRepository.findAllBlogs({
       limit,

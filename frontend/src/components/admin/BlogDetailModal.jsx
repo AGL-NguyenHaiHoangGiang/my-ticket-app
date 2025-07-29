@@ -5,10 +5,7 @@ import dayjs from "dayjs";
 const { Paragraph, Title } = Typography;
 
 const BlogDetailModal = ({ visible, onCancel, blogData }) => {
-  console.log("BlogDetailModal rendered with:", { visible, blogData });
-
   if (!blogData) {
-    console.log("No blogData provided to modal");
     return null;
   }
 
@@ -17,7 +14,6 @@ const BlogDetailModal = ({ visible, onCancel, blogData }) => {
     try {
       return dayjs(dateString).format("DD/MM/YYYY HH:mm");
     } catch (error) {
-      console.error("Error formatting date:", error);
       return "Lỗi định dạng ngày";
     }
   };

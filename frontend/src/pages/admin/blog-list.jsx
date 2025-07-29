@@ -5,6 +5,7 @@ import {
   DeleteOutlined,
   EyeOutlined,
   PlusOutlined,
+  InfoCircleOutlined,
 } from "@ant-design/icons";
 import {
   getBlogsWithPagination,
@@ -13,22 +14,23 @@ import {
 } from "../../services/blog";
 import AddBlogModal from "../../components/admin/AddBlogModal";
 import BlogDetailModal from "../../components/admin/BlogDetailModal";
+import EditBlogModal from "../../components/admin/EditBlogModal";
 
 const BlogList = () => {
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [deletingIds, setDeletingIds] = useState(new Set()); // Track đang xóa blogs nào
-  const [isAddModalVisible, setIsAddModalVisible] = useState(false); // Modal state
-  const [isDetailModalVisible, setIsDetailModalVisible] = useState(false); // Detail Modal state
-  const [selectedBlog, setSelectedBlog] = useState(null); // Blog được chọn để xem chi tiết
+  const [deletingIds, setDeletingIds] = useState(new Set());
+  const [isAddModalVisible, setIsAddModalVisible] = useState(false);
+  const [isDetailModalVisible, setIsDetailModalVisible] = useState(false);
+  const [isEditModalVisible, setIsEditModalVisible] = useState(false);
+  const [selectedBlog, setSelectedBlog] = useState(null);
   const [pagination, setPagination] = useState({
     current: 1,
     pageSize: 10,
     total: 0,
-    hasNextPage: true, // Thêm flag để tracking có trang tiếp theo không
+    hasNextPage: true,
   });
 
-  // Fetch blogs from API
   const fetchBlogs = async (page = 1, pageSize = 10) => {
     try {
       setLoading(true);
@@ -42,7 +44,7 @@ const BlogList = () => {
           title: blog.title,
           author: blog.author,
           category: blog.category_id?.name || "Chưa phân loại",
-          status: "published", // Mặc định tất cả blog đều published
+          status: "published",
           date: new Date(
             blog.article_datetime || blog.createdAt
           ).toLocaleDateString("vi-VN"),
@@ -52,7 +54,6 @@ const BlogList = () => {
 
         setBlogs(blogList);
 
-        // Xác định có trang tiếp theo không dựa trên số lượng records trả về
         const hasNextPage = blogList.length === pageSize;
         const estimatedTotal = hasNextPage
           ? page * pageSize + pageSize
@@ -67,48 +68,35 @@ const BlogList = () => {
         });
       }
     } catch (error) {
-      console.error("Error fetching blogs:", error);
       message.error("Không thể tải danh sách bài viết");
     } finally {
       setLoading(false);
     }
   };
 
-  // Load blogs on component mount
   useEffect(() => {
     fetchBlogs();
   }, []);
 
-  // Handle pagination change
   const handleTableChange = (pagination) => {
     fetchBlogs(pagination.current, pagination.pageSize);
   };
 
-  // Handle delete blog
   const handleDelete = async (blogId) => {
     try {
-      // Thêm vào set đang xóa
       setDeletingIds((prev) => new Set([...prev, blogId]));
 
-      console.log("Deleting blog with ID:", blogId); // Debug log
       const response = await deleteBlog(blogId);
-      console.log("Delete response:", response); // Debug log
 
       message.success("Xóa bài viết thành công");
 
-      // Kiểm tra nếu trang hiện tại không còn blog nào sau khi xóa
       const remainingBlogs = blogs.length - 1;
       if (remainingBlogs === 0 && pagination.current > 1) {
-        // Nếu trang hiện tại trống và không phải trang đầu, chuyển về trang trước
         fetchBlogs(pagination.current - 1, pagination.pageSize);
       } else {
-        // Reload trang hiện tại
         fetchBlogs(pagination.current, pagination.pageSize);
       }
     } catch (error) {
-      console.error("Error deleting blog:", error);
-
-      // Hiển thị thông báo lỗi chi tiết hơn
       if (error.response) {
         const status = error.response.status;
         const message_error = error.response.data?.message || "Có lỗi xảy ra";
@@ -126,7 +114,6 @@ const BlogList = () => {
         message.error("Không thể kết nối đến server");
       }
     } finally {
-      // Xóa khỏi set đang xóa
       setDeletingIds((prev) => {
         const newSet = new Set(prev);
         newSet.delete(blogId);
@@ -135,43 +122,27 @@ const BlogList = () => {
     }
   };
 
-  // Handle view blog
   const handleView = (slug) => {
     window.open(`/tin-tuc/${slug}`, "_blank");
   };
 
-  // Handle add blog success
   const handleAddSuccess = () => {
-    // Refresh danh sách blog và quay về trang đầu
     fetchBlogs(1, pagination.pageSize);
   };
 
-  // Handle edit blog - hiển thị thông tin blog trong modal
-  const handleEdit = async (blog) => {
-    console.log("=== EDIT BLOG DATA (FROM TABLE) ===");
-    console.log("Table blog object:", blog);
-    console.log("Blog slug:", blog.slug);
+  const handleEditSuccess = () => {
+    fetchBlogs(pagination.current, pagination.pageSize);
+  };
 
+  const handleViewDetail = async (blog) => {
     try {
-      console.log("🔄 Fetching full blog details from API...");
-      console.log("Using slug:", blog.slug);
       const response = await getBlogBySlug(blog.slug);
-      console.log("📡 API Response:", response);
-
       const fullBlogData = response.data.metadata || response.data;
 
-      console.log("=== FULL BLOG DATA (FROM API) ===");
-      console.log("📋 Complete blog object:", fullBlogData);
-
-      // Hiển thị modal với thông tin đầy đủ
       setSelectedBlog(fullBlogData);
       setIsDetailModalVisible(true);
     } catch (error) {
-      console.error("❌ Error fetching full blog details:", error);
       if (error.response) {
-        console.error("📡 API Error Response:", error.response.data);
-        console.error("🔢 Status Code:", error.response.status);
-
         if (error.response.status === 404) {
           message.error("Không tìm thấy blog này.");
         } else {
@@ -183,19 +154,26 @@ const BlogList = () => {
     }
   };
 
-  // Handle open add modal
+  const handleEdit = (blog) => {
+    setSelectedBlog(blog);
+    setIsEditModalVisible(true);
+  };
+
   const handleAddBlog = () => {
     setIsAddModalVisible(true);
   };
 
-  // Handle close add modal
   const handleCloseAddModal = () => {
     setIsAddModalVisible(false);
   };
 
-  // Handle close detail modal
   const handleCloseDetailModal = () => {
     setIsDetailModalVisible(false);
+    setSelectedBlog(null);
+  };
+
+  const handleCloseEditModal = () => {
+    setIsEditModalVisible(false);
     setSelectedBlog(null);
   };
   const columns = [
@@ -243,7 +221,7 @@ const BlogList = () => {
     {
       title: "Hành động",
       key: "actions",
-      width: 200,
+      width: 280,
       render: (_, record) => (
         <Space size="middle">
           <Button
@@ -253,6 +231,14 @@ const BlogList = () => {
             onClick={() => handleView(record.slug)}
           >
             Xem
+          </Button>
+          <Button
+            type="default"
+            icon={<InfoCircleOutlined />}
+            size="small"
+            onClick={() => handleViewDetail(record)}
+          >
+            Chi tiết
           </Button>
           <Button
             type="default"
@@ -344,6 +330,14 @@ const BlogList = () => {
       <BlogDetailModal
         visible={isDetailModalVisible}
         onCancel={handleCloseDetailModal}
+        blogData={selectedBlog}
+      />
+
+      {/* Edit Blog Modal */}
+      <EditBlogModal
+        visible={isEditModalVisible}
+        onCancel={handleCloseEditModal}
+        onSuccess={handleEditSuccess}
         blogData={selectedBlog}
       />
     </div>
