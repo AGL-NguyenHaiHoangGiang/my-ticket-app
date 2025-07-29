@@ -6,6 +6,7 @@ import { getBlogsWithPagination, deleteBlog } from "../../services/blog";
 const BlogList = () => {
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [deletingIds, setDeletingIds] = useState(new Set()); // Track đang xóa blogs nào
   const [pagination, setPagination] = useState({
     current: 1,
     pageSize: 10,
@@ -72,13 +73,51 @@ const BlogList = () => {
   // Handle delete blog
   const handleDelete = async (blogId) => {
     try {
-      await deleteBlog(blogId);
+      // Thêm vào set đang xóa
+      setDeletingIds((prev) => new Set([...prev, blogId]));
+
+      console.log("Deleting blog with ID:", blogId); // Debug log
+      const response = await deleteBlog(blogId);
+      console.log("Delete response:", response); // Debug log
+
       message.success("Xóa bài viết thành công");
-      // Reload current page
-      fetchBlogs(pagination.current, pagination.pageSize);
+
+      // Kiểm tra nếu trang hiện tại không còn blog nào sau khi xóa
+      const remainingBlogs = blogs.length - 1;
+      if (remainingBlogs === 0 && pagination.current > 1) {
+        // Nếu trang hiện tại trống và không phải trang đầu, chuyển về trang trước
+        fetchBlogs(pagination.current - 1, pagination.pageSize);
+      } else {
+        // Reload trang hiện tại
+        fetchBlogs(pagination.current, pagination.pageSize);
+      }
     } catch (error) {
       console.error("Error deleting blog:", error);
-      message.error("Không thể xóa bài viết");
+
+      // Hiển thị thông báo lỗi chi tiết hơn
+      if (error.response) {
+        const status = error.response.status;
+        const message_error = error.response.data?.message || "Có lỗi xảy ra";
+
+        if (status === 401) {
+          message.error("Bạn không có quyền xóa bài viết này");
+        } else if (status === 404) {
+          message.error("Không tìm thấy bài viết cần xóa");
+        } else if (status === 403) {
+          message.error("Quyền truy cập bị từ chối");
+        } else {
+          message.error(`Không thể xóa bài viết: ${message_error}`);
+        }
+      } else {
+        message.error("Không thể kết nối đến server");
+      }
+    } finally {
+      // Xóa khỏi set đang xóa
+      setDeletingIds((prev) => {
+        const newSet = new Set(prev);
+        newSet.delete(blogId);
+        return newSet;
+      });
     }
   };
 
@@ -157,8 +196,10 @@ const BlogList = () => {
               danger
               icon={<DeleteOutlined />}
               size="small"
+              loading={deletingIds.has(record._id)}
+              disabled={deletingIds.has(record._id)}
             >
-              Xóa
+              {deletingIds.has(record._id) ? "Đang xóa..." : "Xóa"}
             </Button>
           </Popconfirm>
         </Space>

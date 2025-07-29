@@ -1,6 +1,7 @@
 import axios from "axios";
 
 const API_BASE_URL = "http://localhost:3052/api/v0/blogs";
+const MANAGER_API_BASE_URL = "http://localhost:3052/api/v0/manager/blogs";
 
 export const getAllBlogCategories = (limit = 50) => {
   return axios.get(`${API_BASE_URL}?limit=${limit}`);
@@ -25,7 +26,49 @@ export const getBlogsWithPagination = (page = 1, limit = 10) => {
   return axios.get(`${API_BASE_URL}?page=${page}&limit=${limit}`);
 };
 
-// Xóa blog
+// Xóa blog (cần authentication token) - sử dụng manager route
 export const deleteBlog = (id) => {
-  return axios.delete(`${API_BASE_URL}/${id}`);
+  const token =
+    localStorage.getItem("adminToken") || localStorage.getItem("customerToken");
+  const config = {};
+
+  if (token) {
+    config.headers = {
+      Authorization: `Bearer ${token}`,
+    };
+  }
+
+  return axios.delete(`${MANAGER_API_BASE_URL}/${id}`, config);
+};
+
+// Tạo blog mới (cần authentication token)
+export const createBlog = (blogData) => {
+  const token =
+    localStorage.getItem("adminToken") || localStorage.getItem("customerToken");
+  const config = {};
+
+  if (token) {
+    config.headers = {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    };
+  }
+
+  return axios.post(MANAGER_API_BASE_URL, blogData, config);
+};
+
+// Cập nhật blog (cần authentication token)
+export const updateBlog = (id, blogData) => {
+  const token =
+    localStorage.getItem("adminToken") || localStorage.getItem("customerToken");
+  const config = {};
+
+  if (token) {
+    config.headers = {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    };
+  }
+
+  return axios.put(`${MANAGER_API_BASE_URL}/${id}`, blogData, config);
 };
