@@ -1,5 +1,5 @@
 const userModel = require('../user.model')
-
+const { BadRequestError } = require('../../core/error.response')
 // Find all user customer
 const findAllUsers = async ({ limit, sort, page, filter, select }) => {
   const skip = (page - 1) * limit
@@ -33,7 +33,7 @@ const findUserByEmail = async ({ email }) => {
 // Update user by ID
 const updateUserById = async ({ userId, updateData }) => {
   const user = await userModel
-    .findByIdAndUpdate(userId, updateData, { new: true, runValidators: true })
+    .findByIdAndUpdate(userId, updateData, { new: true })
     .select('-password')
 
   if (!user) {
@@ -46,4 +46,6 @@ const updateUserById = async ({ userId, updateData }) => {
 module.exports = {
   findAllUsers,
   findUserById,
+  findUserByEmail,
+  updateUserById,
 }

@@ -14,5 +14,13 @@ router.use(authorizeRoles(['MANAGER'])) // Check for MANAGER role
 //GET list
 router.get('', asyncHandler(userController.getAllUsers))
 
+// Update user
+router.put('/:id', asyncHandler(userController.updateUser))
+
+// Deactivate user
+router.put('/deactivate/:id', asyncHandler(userController.deactivateUser))
+
+// Activate user
+router.put('/activate/:id', asyncHandler(userController.activateUser))
 
 module.exports = router
