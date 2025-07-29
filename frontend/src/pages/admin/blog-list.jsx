@@ -1,12 +1,26 @@
 import React, { useState, useEffect } from "react";
 import { Table, Button, Space, Tag, message, Popconfirm } from "antd";
-import { EditOutlined, DeleteOutlined, EyeOutlined } from "@ant-design/icons";
-import { getBlogsWithPagination, deleteBlog } from "../../services/blog";
+import {
+  EditOutlined,
+  DeleteOutlined,
+  EyeOutlined,
+  PlusOutlined,
+} from "@ant-design/icons";
+import {
+  getBlogsWithPagination,
+  deleteBlog,
+  getBlogBySlug,
+} from "../../services/blog";
+import AddBlogModal from "../../components/admin/AddBlogModal";
+import BlogDetailModal from "../../components/admin/BlogDetailModal";
 
 const BlogList = () => {
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(false);
   const [deletingIds, setDeletingIds] = useState(new Set()); // Track đang xóa blogs nào
+  const [isAddModalVisible, setIsAddModalVisible] = useState(false); // Modal state
+  const [isDetailModalVisible, setIsDetailModalVisible] = useState(false); // Detail Modal state
+  const [selectedBlog, setSelectedBlog] = useState(null); // Blog được chọn để xem chi tiết
   const [pagination, setPagination] = useState({
     current: 1,
     pageSize: 10,
@@ -125,6 +139,65 @@ const BlogList = () => {
   const handleView = (slug) => {
     window.open(`/tin-tuc/${slug}`, "_blank");
   };
+
+  // Handle add blog success
+  const handleAddSuccess = () => {
+    // Refresh danh sách blog và quay về trang đầu
+    fetchBlogs(1, pagination.pageSize);
+  };
+
+  // Handle edit blog - hiển thị thông tin blog trong modal
+  const handleEdit = async (blog) => {
+    console.log("=== EDIT BLOG DATA (FROM TABLE) ===");
+    console.log("Table blog object:", blog);
+    console.log("Blog slug:", blog.slug);
+
+    try {
+      console.log("🔄 Fetching full blog details from API...");
+      console.log("Using slug:", blog.slug);
+      const response = await getBlogBySlug(blog.slug);
+      console.log("📡 API Response:", response);
+
+      const fullBlogData = response.data.metadata || response.data;
+
+      console.log("=== FULL BLOG DATA (FROM API) ===");
+      console.log("📋 Complete blog object:", fullBlogData);
+
+      // Hiển thị modal với thông tin đầy đủ
+      setSelectedBlog(fullBlogData);
+      setIsDetailModalVisible(true);
+    } catch (error) {
+      console.error("❌ Error fetching full blog details:", error);
+      if (error.response) {
+        console.error("📡 API Error Response:", error.response.data);
+        console.error("🔢 Status Code:", error.response.status);
+
+        if (error.response.status === 404) {
+          message.error("Không tìm thấy blog này.");
+        } else {
+          message.error("Không thể tải thông tin blog chi tiết.");
+        }
+      } else {
+        message.error("Không thể kết nối đến server.");
+      }
+    }
+  };
+
+  // Handle open add modal
+  const handleAddBlog = () => {
+    setIsAddModalVisible(true);
+  };
+
+  // Handle close add modal
+  const handleCloseAddModal = () => {
+    setIsAddModalVisible(false);
+  };
+
+  // Handle close detail modal
+  const handleCloseDetailModal = () => {
+    setIsDetailModalVisible(false);
+    setSelectedBlog(null);
+  };
   const columns = [
     {
       title: "ID",
@@ -181,7 +254,12 @@ const BlogList = () => {
           >
             Xem
           </Button>
-          <Button type="default" icon={<EditOutlined />} size="small">
+          <Button
+            type="default"
+            icon={<EditOutlined />}
+            size="small"
+            onClick={() => handleEdit(record)}
+          >
             Sửa
           </Button>
           <Popconfirm
@@ -212,7 +290,13 @@ const BlogList = () => {
       <div className="admin-header-section">
         <h1 className="admin-page-title">Quản lý blog</h1>
         <div className="admin-actions">
-          <Button type="primary">Thêm bài viết</Button>
+          <Button
+            type="primary"
+            icon={<PlusOutlined />}
+            onClick={handleAddBlog}
+          >
+            Thêm bài viết
+          </Button>
         </div>
       </div>
       <div className="admin-table-container">
@@ -248,6 +332,20 @@ const BlogList = () => {
           onChange={handleTableChange}
         />
       </div>
+
+      {/* Add Blog Modal */}
+      <AddBlogModal
+        visible={isAddModalVisible}
+        onCancel={handleCloseAddModal}
+        onSuccess={handleAddSuccess}
+      />
+
+      {/* Blog Detail Modal */}
+      <BlogDetailModal
+        visible={isDetailModalVisible}
+        onCancel={handleCloseDetailModal}
+        blogData={selectedBlog}
+      />
     </div>
   );
 };

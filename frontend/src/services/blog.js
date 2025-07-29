@@ -2,6 +2,7 @@ import axios from "axios";
 
 const API_BASE_URL = "http://localhost:3052/api/v0/blogs";
 const MANAGER_API_BASE_URL = "http://localhost:3052/api/v0/manager/blogs";
+const BLOG_CATEGORIES_API_URL = "http://localhost:3052/api/v0/blog-categories";
 
 export const getAllBlogCategories = (limit = 50) => {
   return axios.get(`${API_BASE_URL}?limit=${limit}`);
@@ -71,4 +72,24 @@ export const updateBlog = (id, blogData) => {
   }
 
   return axios.put(`${MANAGER_API_BASE_URL}/${id}`, blogData, config);
+};
+
+// Lấy chi tiết blog theo ID (cần authentication token)
+export const getBlogById = (id) => {
+  const token =
+    localStorage.getItem("adminToken") || localStorage.getItem("customerToken");
+  const config = {};
+
+  if (token) {
+    config.headers = {
+      Authorization: `Bearer ${token}`,
+    };
+  }
+
+  return axios.get(`${MANAGER_API_BASE_URL}/${id}`, config);
+};
+
+// Lấy danh sách blog categories
+export const getBlogCategories = () => {
+  return axios.get(BLOG_CATEGORIES_API_URL);
 };
