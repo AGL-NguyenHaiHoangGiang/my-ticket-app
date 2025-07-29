@@ -19,3 +19,13 @@ export const getBlogBySlug = (slug) => {
 export const getBlogsByCategory = (category, limit = 50) => {
   return axios.get(`${API_BASE_URL}?category=${category}&limit=${limit}`);
 };
+
+// Lấy blogs với pagination cho admin
+export const getBlogsWithPagination = (page = 1, limit = 10) => {
+  return axios.get(`${API_BASE_URL}?page=${page}&limit=${limit}`);
+};
+
+// Xóa blog
+export const deleteBlog = (id) => {
+  return axios.delete(`${API_BASE_URL}/${id}`);
+};
