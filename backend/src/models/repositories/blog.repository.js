@@ -41,9 +41,15 @@ const findAllBlogs = async ({
   return blogs
 }
 const findBlogBySlug = async ({ slug }) => {
-  return await blogModel
+   const blog = await blogModel
     .findOne({ slug: slug })
     .populate('category_id', 'name -_id')
+
+    if(!blog){
+      throw new BadRequestError(`Not found with slug: ${slug}`)
+    }
+
+    return blog
 }
 
 // Search
