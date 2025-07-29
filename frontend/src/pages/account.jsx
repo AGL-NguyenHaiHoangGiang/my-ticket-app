@@ -15,7 +15,7 @@ const Account = ({ auth }) => {
       return JSON.parse(savedUserInfo);
     }
     return {
-      name: "Nguyễn Vân Anh",
+      name: "Hoàng Giang",
       birthDate: "01/01/2006",
       phone: "0123456789",
       email: "mailtothietkeweb@abc.xyz",

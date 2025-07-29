@@ -18,8 +18,8 @@ import EditBlogModal from "../../components/admin/EditBlogModal";
 
 const BlogList = () => {
   const navigate = useNavigate();
-  const [allBlogs, setAllBlogs] = useState([]); // Lưu tất cả blogs
-  const [blogs, setBlogs] = useState([]); // Blogs hiển thị trên trang hiện tại
+  const [allBlogs, setAllBlogs] = useState([]);
+  const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(false);
   const [deletingIds, setDeletingIds] = useState(new Set());
   const [isDetailModalVisible, setIsDetailModalVisible] = useState(false);
@@ -36,7 +36,7 @@ const BlogList = () => {
   const fetchAllBlogs = async () => {
     try {
       setLoading(true);
-      const response = await getBlogsWithPagination(1, 10000); // Load tất cả
+      const response = await getBlogsWithPagination(1, 10000);
       const data = response.data;
 
       if (data && data.metadata) {
