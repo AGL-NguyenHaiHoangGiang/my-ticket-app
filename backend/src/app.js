@@ -6,6 +6,7 @@ const cors = require('cors')
 const authRoutes = require('./routes/auth.routes')
 const eventRoutes = require('./routes/event.routes')
 const orderRoutes = require('./routes/order.routes')
+const userRoutes = require('./routes/user.routes')
 const adminAuthRoutes = require('./routes/admin.auth.routes')
 const adminEventRoutes = require('./routes/admin.event.routes')
 
@@ -40,6 +41,7 @@ require('./dbs/init.mongodb')
 app.use('/api/v0/auth', authRoutes);
 app.use('/api/v0/event', eventRoutes);
 app.use('/api/v0/order', orderRoutes)
+app.use('/api/v0/user', userRoutes);
 app.use('/api/v0/admin/auth', adminAuthRoutes);
 app.use('/api/v0/admin/event', adminEventRoutes);
 app.use('/', require('./routes'))

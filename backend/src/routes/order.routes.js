@@ -10,6 +10,8 @@ const Booking = require('../models/booking.model');
 
 const orderController = require('../controllers/order.controller');
 
+const authMiddleware = require('../middlewares/authMiddleware');    
+
 const vnpay = new VNPay({
             tmnCode: vnp_TmnCode,
             secureSecret: vnp_HashSecret,
@@ -19,12 +21,12 @@ const vnpay = new VNPay({
             loggerFn: ignoreLogger
         })
 
-router.post('/create_payment_url', async (req,res)=> {
+router.post('/create_payment_url', authMiddleware, async (req,res)=> {
     try{
         const {description, tickets, amount, userId, eventId, ticketId} = req.body;
         
         const newTransaction = new Transaction({
-            userId,
+            userId: userId || req.user.userId,
             eventId,
             ticketId,
             amount: parseInt(amount),

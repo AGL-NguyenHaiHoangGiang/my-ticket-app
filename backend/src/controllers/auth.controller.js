@@ -60,7 +60,7 @@ exports.login = async (req, res) => {
     )
 
     if (!isPasswordValid)
-      return res.status(401).json({ error: 'Invalid email or password' })
+      return res.status(401).json({ error: 'Invalid password' })
 
     const existingSession = await Session.findOne({ userId: existingUser._id })
 
