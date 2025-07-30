@@ -60,8 +60,13 @@ const Login = ({ setAuth, setLoginOpen, setSignInOpen }) => {
 
     Auth.login(data.email, data.password)
       .then((response) => {
+        console.log("Login response:", response);
         if (response.message === "Login successful") {
           localStorage.setItem("customerToken", response.accessToken);
+          localStorage.setItem("customerRefreshToken", response.refreshToken);
+          localStorage.setItem("customerSessionToken", response.sessionToken);
+          localStorage.setItem("customerEmail", response.body.email);
+          localStorage.setItem("customerAvatar", response.body.avatar || '');
           setLoginOpen(false);
           setAuth(true);
         } else {
