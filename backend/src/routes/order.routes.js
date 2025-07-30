@@ -68,7 +68,9 @@ router.post('/create_payment_url', authMiddleware, async (req,res)=> {
             vnp_ExpireDate: dateFormat(new Date(Date.now()+ 15*1000*60)), // expires after 15 mins
         })
 
-        return res.status(201).json(vnpayResponse);
+        return res.status(201).json({
+            url: vnpayResponse
+        });
         // return res.status(201).json({
         //     body: updatedTransaction
         // });
