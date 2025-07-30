@@ -1,7 +1,11 @@
 'use strict'
 const userRepository = require('../models/repositories/user.repository')
-const bcrypt = require('bcrypt');
-const { BadRequestError, ConflictRequestError } = require('../core/error.response')
+const bcrypt = require('bcrypt')
+const {
+  BadRequestError,
+  ConflictRequestError,
+} = require('../core/error.response')
+
 class UserService {
   // Find all users
   static async findAllUsers({
@@ -34,6 +38,31 @@ class UserService {
     return await userRepository.findUserById({ userId })
   }
 
+  // Create new user by manager
+  static async createUser(payload) {
+
+    // Validate required fields
+    if (!payload.email || !payload.password) {
+      throw new BadRequestError('Email and password are required')
+    }
+
+    // Check email 
+    if (payload.email) {
+      const existingUser = await userRepository.findUserByEmail({
+        email: payload.email,
+      })
+      if (existingUser) {
+        throw new ConflictRequestError('Email already exists')
+      }
+      payload.email = payload.email.toLowerCase()
+    }
+
+    // Hash password
+    const hashedPassword = await bcrypt.hash(payload.password, 10)
+
+    return await userRepository.createUser(payload)
+  }
+
   // Update user by manager
   static async updateUser(userId, payload) {
     // Hash password if provided
@@ -43,8 +72,8 @@ class UserService {
 
     // Check email uniqueness if changed
     if (payload.email) {
-      const existingUser = await userRepository.findUserByEmail({ 
-        email: payload.email 
+      const existingUser = await userRepository.findUserByEmail({
+        email: payload.email,
       })
       if (existingUser) {
         throw new ConflictRequestError('Email already exists')
@@ -57,17 +86,17 @@ class UserService {
 
   // Deactivate user
   static async deactivateUser(userId) {
-    return await userRepository.updateUserById({ 
-      userId, 
-      updateData: { status: 'INACTIVE' } 
+    return await userRepository.updateUserById({
+      userId,
+      updateData: { status: 'INACTIVE' },
     })
   }
 
   // Activate user
   static async activateUser(userId) {
-    return await userRepository.updateUserById({ 
-      userId, 
-      updateData: { status: 'ACTIVE' } 
+    return await userRepository.updateUserById({
+      userId,
+      updateData: { status: 'ACTIVE' },
     })
   }
 }

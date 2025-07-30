@@ -14,6 +14,9 @@ router.use(authorizeRoles(['MANAGER'])) // Check for MANAGER role
 //GET list
 router.get('', asyncHandler(userController.getAllUsers))
 
+// Create user
+router.post('', asyncHandler(userController.createUser))
+
 // Update user
 router.put('/:id', asyncHandler(userController.updateUser))
 

@@ -1,18 +1,22 @@
 const userModel = require('../user.model')
 const { BadRequestError } = require('../../core/error.response')
-// Find all user customer
+
+// Find all user customer - complex query with pagination, filtering, sorting
 const findAllUsers = async ({ limit, sort, page, filter, select }) => {
   const skip = (page - 1) * limit
-  const sortBy = sort === 'ctime' ? { createAt: -1 } : { createAt: 1 }
+  const sortBy = sort === 'ctime' ? { createdAt: -1 } : { createdAt: 1 }
 
-  return await userModel
+  const users = await userModel
     .find(filter)
     .sort(sortBy)
     .skip(skip)
     .limit(limit)
     .select(select)
     .lean()
+
+  return users
 }
+
 
 // Find user by ID
 const findUserById = async ({ userId, select = '-password' }) => {
@@ -28,6 +32,12 @@ const findUserById = async ({ userId, select = '-password' }) => {
 // Find user by email
 const findUserByEmail = async ({ email }) => {
   return await userModel.findOne({ email }).select('-password').lean()
+}
+
+// Create new user
+const createUser = async (payload) => {
+
+  return await userModel.create(payload)
 }
 
 // Update user by ID
@@ -47,5 +57,6 @@ module.exports = {
   findAllUsers,
   findUserById,
   findUserByEmail,
+  createUser,
   updateUserById,
 }

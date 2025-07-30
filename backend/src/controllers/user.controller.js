@@ -1,7 +1,7 @@
 'use strict'
 const userService = require('../services/user.service')
 
-const { OK } = require('../core/success.response')
+const { OK, CREATED } = require('../core/success.response')
 
 class UserController {
   //GET
@@ -31,6 +31,14 @@ class UserController {
     new OK({
       message: 'Get user success',
       metadata: await userService.findUserById({ userId: req.params.id }),
+    }).send(res)
+  }
+
+  // Create user by manager
+  createUser = async (req, res, next) => {
+    new CREATED({
+      message: 'Create user success',
+      metadata: await userService.createUser(req.body),
     }).send(res)
   }
 
