@@ -9,6 +9,8 @@ const AccountMainContent = ({
   onToggleEdit,
   onInputChange,
   onToggleSwitch,
+  onSave,
+  onCancel,
 }) => {
   return (
     <div className="main_container background_blur">
@@ -18,6 +20,8 @@ const AccountMainContent = ({
         isEditing={isEditing}
         onToggleEdit={onToggleEdit}
         onInputChange={onInputChange}
+        onSave={onSave}
+        onCancel={onCancel}
       />
 
       {/* Settings Section
