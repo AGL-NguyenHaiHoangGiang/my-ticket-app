@@ -23,7 +23,7 @@ const vnpay = new VNPay({
 
 router.post('/create_payment_url', authMiddleware, async (req,res)=> {
     try{
-        const {description, tickets, amount, userId, eventId, ticketId} = req.body;
+        const {description, tickets, amount, userId, eventId, ticketId, fullname, tele, email} = req.body;
         
         const newTransaction = new Transaction({
             userId: userId || req.user.userId,
@@ -31,7 +31,8 @@ router.post('/create_payment_url', authMiddleware, async (req,res)=> {
             ticketId,
             amount: parseInt(amount),
             tickets,
-            description
+            description,
+            fullname, tele, email
         });
         
         const savedTransaction = await newTransaction.save();
@@ -119,14 +120,14 @@ router.get('/vnpay_return', async (req, res, next) => {
             {$set: {status: 'success'}}
         );
         
-        const existedBooking = Booking.findOne({
+        const existedBooking = await Booking.findOne({
             vnpTranscode : vnpTransCode
         })
         
         if (existedBooking)
             return res.status(201).json({
                 message: "Transaction successfull, check your booking",
-                vnpTranscode: vnpTransCode
+                transactionCode: transaction.transactionCode
             })
         
         const newBooking = new Booking({
@@ -138,20 +139,24 @@ router.get('/vnpay_return', async (req, res, next) => {
             tickets: transaction.tickets,
             amount: transaction.amount,
             status: 'success',
-            description: transaction.description
+            description: transaction.description,
+            fullname: transaction.fullname, 
+            tele: transaction.tele, 
+            email: transaction.email
         });
-        
-        
+    
         const savedBooking = await newBooking.save();
         
         if (!savedBooking) {
           return res.status(500).json({ error: `Failed to create booking on transaction ${transaction.transactionCode}`});
         }
         
+        console.log("Saved booking");
+        
         return res.status(200).json({
             message: "Transaction success. Booking created. Check your account",
             body: {
-                transactionCode : vnpTransCode
+                transactionCode: transaction.transactionCode
             }
         })
             
