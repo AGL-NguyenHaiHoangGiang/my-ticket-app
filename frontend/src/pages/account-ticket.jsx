@@ -41,19 +41,14 @@ const AccountTicket = ({ auth }) => {
 
           // Fetch user info
           const userResponse = await UserService.getCurrentUser();
-          console.log("User info response:", userResponse.data); // Debug log
-          console.log("Full user response:", userResponse); // Debug full response
           if (userResponse.data?.body) {
-            console.log("Setting userInfo:", userResponse.data.body); // Debug log
             setUserInfo(userResponse.data.body);
           } else if (userResponse.data) {
-            console.log("Setting userInfo from data:", userResponse.data); // Debug log
             setUserInfo(userResponse.data);
           }
 
           // Fetch bookings
           const response = await UserService.getUserBookings();
-          console.log("Bookings response:", response.data); // Debug log
 
           if (response.data?.body) {
             setBookings(response.data.body);
@@ -226,8 +221,6 @@ const AccountTicket = ({ auth }) => {
 
   // Get user display name
   const getUserDisplayName = () => {
-    console.log("Getting user display name, userInfo:", userInfo); // Debug log
-
     // First try from API response
     if (userInfo) {
       const name =
@@ -236,24 +229,20 @@ const AccountTicket = ({ auth }) => {
         userInfo.firstName ||
         userInfo.username ||
         userInfo.email;
-      console.log("Name from userInfo:", name); // Debug log
       if (name) return name;
     }
 
     // Fallback to localStorage
     try {
       const storedUserInfo = localStorage.getItem("userInfo");
-      console.log("Stored userInfo:", storedUserInfo); // Debug log
       if (storedUserInfo) {
         const parsed = JSON.parse(storedUserInfo);
-        console.log("Parsed userInfo:", parsed); // Debug log
         const name =
           parsed.fullName ||
           parsed.name ||
           parsed.firstName ||
           parsed.username ||
           parsed.email;
-        console.log("Name from localStorage:", name); // Debug log
         if (name) return name;
       }
     } catch (error) {
@@ -261,7 +250,6 @@ const AccountTicket = ({ auth }) => {
     }
 
     // Last fallback
-    console.log("Using fallback name: Người dùng"); // Debug log
     return "Người dùng";
   };
 
