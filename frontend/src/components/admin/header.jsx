@@ -24,9 +24,10 @@ const AdminHeader = () => {
   };
 
   const logout = () => {
-    Auth.logout(localStorage.getItem("adminToken"));
+    Auth.logout(localStorage.getItem("sessionToken"));
     localStorage.removeItem("adminToken");
     localStorage.removeItem("adminRefreshToken");
+    localStorage.removeItem("sessionToken");
     localStorage.removeItem("adminUsername");
     localStorage.removeItem("avatar");
     navigate("/admin/login");
