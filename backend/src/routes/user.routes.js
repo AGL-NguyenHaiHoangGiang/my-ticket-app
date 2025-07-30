@@ -6,10 +6,10 @@ const userController = require('../controllers/user.controller')
 const authMiddleware = require('../middlewares/authMiddleware');    
 const authorizeRoles = require('../middlewares/authRolesMiddleware');
 
-router.get('/my-bookings',  
-    authMiddleware,
-    authorizeRoles(['CUSTOMER']),
-    userController.getAllBooking
-)
+// router.get('/my-bookings',  
+//     authMiddleware,
+//     authorizeRoles(['CUSTOMER']),
+//     userController.getAllBooking
+// )
 
 module.exports = router;
