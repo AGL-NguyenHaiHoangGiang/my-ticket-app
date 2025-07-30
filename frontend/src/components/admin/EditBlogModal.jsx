@@ -106,11 +106,11 @@ const EditBlogModal = ({ visible, onCancel, onSuccess, blogData }) => {
         thumpnail: values.thumpnail || "",
       };
 
-      if (values.article_datetime) {
-        blogUpdateData.article_datetime = new Date(
-          values.article_datetime
-        ).toISOString();
-      }
+      // if (values.article_datetime) {
+      //   blogUpdateData.article_datetime = new Date(
+      //     values.article_datetime
+      //   ).toISOString();
+      // }
 
       const blogId = blogData._id;
       await updateBlog(blogId, blogUpdateData);
