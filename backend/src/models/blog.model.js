@@ -160,8 +160,6 @@ blogSchema.pre('save', async function (next) {
   next()
 })
 
-blogSchema.index({ article_datetime: -1 }) // For sorting
-blogSchema.index({ category_id: 1 }) // For category filter
-blogSchema.index({ slug: 1 }) // For slug lookup
+
 
 module.exports = mongoose.model(DOCUMENT_NAME, blogSchema)
