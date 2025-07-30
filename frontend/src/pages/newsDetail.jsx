@@ -6,7 +6,8 @@ import { getBlogBySlug, getAllBlogCategories } from "../services/blog";
 // import duckAvatar from "../assets/images/blog/duck.jpg";
 // import adBanner from "../assets/images/blog/ad-banner.png";
 import BlogAds from "../components/blog/blog-ads";
-import RelatedEvents from '../components/related';
+import RelatedEvents from "../components/related";
+import SimpleLoading from "../components/SimpleLoading";
 
 const NewDetail = () => {
   const { slug } = useParams();
@@ -41,7 +42,7 @@ const NewDetail = () => {
   }, [slug]);
 
   if (loading) {
-    return <div>Đang tải...</div>;
+    return <SimpleLoading />;
   }
 
   if (!news) {
@@ -196,7 +197,7 @@ const NewDetail = () => {
         </div>
       </article>
       {/* related post */}
-      <RelatedEvents  />
+      <RelatedEvents />
       {/* end related post */}
     </React.Fragment>
   );

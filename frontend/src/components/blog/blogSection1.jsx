@@ -1,22 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import VerticalPostItem from "./verticalPostItem";
 import { Link } from "react-router-dom";
-import { getAllBlogCategories } from "../../services/blog";
 
-const BlogSection1 = () => {
-  const [blogs, setBlogs] = useState([]);
-
-  useEffect(() => {
-    getAllBlogCategories()
-      .then((res) => {
-        setBlogs(res.data.metadata || []);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  }, []);
-
-  if (!blogs.length) return null;
+const BlogSection1 = ({ blogs }) => {
+  if (!blogs || !blogs.length) return null;
 
   // Sắp xếp theo ngày mới nhất
   const sortedBlogs = [...blogs].sort(

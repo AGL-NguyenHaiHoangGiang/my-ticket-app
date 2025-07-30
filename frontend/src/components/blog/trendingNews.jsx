@@ -1,19 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import PostItemTrendingNews from "./postItemTrendingNews";
-import { getAllBlogCategories } from "../../services/blog";
 
-const TrendingNews = () => {
-  const [blogs, setBlogs] = useState([]);
-
-  useEffect(() => {
-    getAllBlogCategories()
-      .then((res) => {
-        setBlogs(res.data.metadata || []);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  }, []);
+const TrendingNews = ({ blogs }) => {
+  if (!blogs || !blogs.length) return null;
 
   // Lấy ngẫu nhiên 4 tin
   const getRandomBlogs = (arr, n) => {

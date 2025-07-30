@@ -1,21 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import BigCardNews from "../../../components/blog/bigCardNews";
 import SmallCardNews from "../../../components/blog/smallCardNews";
 import { Link } from "react-router-dom";
-import { getAllBlogCategories } from "../../../services/blog.js";
 
-const LatestNews = () => {
-  const [blogs, setBlogs] = useState([]);
-
-  useEffect(() => {
-    getAllBlogCategories(1000)
-      .then((res) => {
-        setBlogs(res.data.metadata || []);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  }, []);
+const LatestNews = ({ blogs }) => {
+  if (!blogs || !blogs.length) return null;
 
   // Sắp xếp theo ngày mới nhất
   const sortedBlogs = [...blogs].sort(

@@ -1,4 +1,6 @@
 import React from "react";
+import { Link, useNavigate } from "react-router-dom";
+import Auth from "../../services/auth";
 
 // Import images
 import avatar from "../../assets/images/account/avatar.jpg";
@@ -7,7 +9,30 @@ import iconTicket from "../../assets/images/account/ticket.svg";
 import iconWallet from "../../assets/images/account/wallet.svg";
 import iconLogout from "../../assets/images/account/icon-logout.svg";
 
-const AccountSidebar = ({ userName, onLogout }) => {
+const AccountSidebar = ({ userName, onLogout, activeTab = "account" }) => {
+  const navigate = useNavigate();
+
+  const handleLogout = async (e) => {
+    e.preventDefault();
+    try {
+      await Auth.logout();
+
+      localStorage.removeItem("customerToken");
+
+      if (onLogout) {
+        onLogout();
+      }
+
+      navigate("/");
+    } catch (error) {
+      console.error("Logout error:", error);
+      localStorage.removeItem("customerToken");
+      if (onLogout) {
+        onLogout();
+      }
+      navigate("/");
+    }
+  };
   return (
     <div className="account__side">
       <div className="welcome__container">
@@ -26,26 +51,24 @@ const AccountSidebar = ({ userName, onLogout }) => {
       <div className="horizontal__bar"></div>
 
       <ul className="nav__tag">
-        <li className="nav__item text__blue">
-          <a href="index.html">
+        <li
+          className={`nav__item ${activeTab === "account" ? "text__blue" : ""}`}
+        >
+          <Link to="/tai-khoan">
             <img src={iconPerson} alt="icon" />
             <strong>Tài khoản</strong>
-          </a>
+          </Link>
         </li>
-        <li className="nav__item">
-          <a href="ticket.html">
+        <li
+          className={`nav__item ${activeTab === "ticket" ? "text__blue" : ""}`}
+        >
+          <Link to="/tai-khoan-ticket">
             <img src={iconTicket} alt="icon" />
             <strong>Vé đã mua</strong>
-          </a>
+          </Link>
         </li>
-        {/* <li className="nav__item">
-          <a href="payment.html">
-            <img src={iconWallet} alt="icon" />
-            <strong>Tài khoản thanh toán</strong>
-          </a>
-        </li> */}
         <li className="nav__item">
-          <a href="#" onClick={onLogout}>
+          <a href="#" onClick={handleLogout}>
             <img src={iconLogout} alt="icon" />
             <strong>Đăng xuất</strong>
           </a>
