@@ -5,7 +5,7 @@ const TicketTabs = ({ activeTab, onTabClick }) => {
     { key: "all", label: "Tất cả" },
     { key: "success", label: "Thành công" },
     { key: "inprogress", label: "Đang xử lý" },
-    { key: "canceled", label: "Đã hủy" },
+    { key: "cancelled", label: "Đã hủy" },
   ];
 
   return (
