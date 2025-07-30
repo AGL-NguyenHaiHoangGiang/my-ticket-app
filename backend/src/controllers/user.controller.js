@@ -2,7 +2,7 @@
 const userService = require('../services/user.service')
 
 const { OK, CREATED } = require('../core/success.response')
-
+const { BadRequestError } = require('../core/error.response')
 class UserController {
   //GET
   getAllUsers = async (req, res, next) => {
@@ -12,25 +12,17 @@ class UserController {
     }).send(res)
   }
 
-  // Get user by ID
-  getUserById = async (req, res, next) => {
-    const requestedUserId = req.params.id
+  // Get user profile
+  getUserProfile = async (req, res, next) => {
     const currentUserId = req.user?.userId
-    const userRoles = req.user?.roles
 
-    // Check if user own or has MANAGER role
-    const isOwner = currentUserId === requestedUserId
-    const isManager = userRoles.includes('MANAGER')
-
-    if (!isOwner && !isManager) {
-      return res.status(403).json({
-        message: 'Access denied',
-      })
+    if (!currentUserId) {
+      throw new BadRequestError('Unauthorized')
     }
 
     new OK({
       message: 'Get user success',
-      metadata: await userService.findUserById({ userId: req.params.id }),
+      metadata: await userService.findUserById({ userId: currentUserId }),
     }).send(res)
   }
 

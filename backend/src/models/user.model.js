@@ -26,11 +26,24 @@ const userSchema = new mongoose.Schema(
     },
     avatar: {
       type: String,
-      default: 'https://images.tkbcdn.com/2/608/332/ts/ds/0f/dd/22/af053e21394812a4e0226b6e843a2f57.png',
+      default:
+        'https://images.tkbcdn.com/2/608/332/ts/ds/0f/dd/22/af053e21394812a4e0226b6e843a2f57.png',
     },
     roles: {
       type: Array,
-      default: 'CUSTOMER',
+      default: ['CUSTOMER'],
+    },
+    dob: {
+      type: Date,
+      default: null,
+    },
+    phone: {
+      type: String,
+      default: null,
+    },
+    address: {
+      type: String,
+      default: null,
     },
   },
   {

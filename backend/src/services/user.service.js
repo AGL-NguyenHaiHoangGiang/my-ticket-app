@@ -40,13 +40,17 @@ class UserService {
 
   // Create new user by manager
   static async createUser(payload) {
+    // Delete Role if provided
+    if (payload.roles) {
+      delete payload.roles
+    }
 
     // Validate required fields
     if (!payload.email || !payload.password) {
       throw new BadRequestError('Email and password are required')
     }
 
-    // Check email 
+    // Check email
     if (payload.email) {
       const existingUser = await userRepository.findUserByEmail({
         email: payload.email,
@@ -58,13 +62,18 @@ class UserService {
     }
 
     // Hash password
-    const hashedPassword = await bcrypt.hash(payload.password, 10)
+    payload.password = await bcrypt.hash(payload.password, 10)
 
     return await userRepository.createUser(payload)
   }
 
   // Update user by manager
   static async updateUser(userId, payload) {
+    // Delete Role if provided
+    if (payload.roles) {
+      delete payload.roles
+    }
+
     // Hash password if provided
     if (payload.password) {
       payload.password = await bcrypt.hash(payload.password, 10)
