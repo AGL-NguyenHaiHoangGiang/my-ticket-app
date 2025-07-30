@@ -88,15 +88,14 @@ router.get('/vnpay_return', async (req, res, next) => {
         // Sử dụng try-catch để bắt lỗi nếu query không hợp lệ hoặc thiếu dữ liệu
         verify = vnpay.verifyReturnUrl(req.query);
         
+        const vnpTransCode = req.query.vnp_TmnCode;
+        const transactionCode = req.query.vnp_TxnRef
+        
         if (!verify.isVerified) {
-            return res.send('Xác thực tính toàn vẹn dữ liệu thất bại');
+            return res.redirect(`https://localhost:5173/payment-success?order=${transactionCode}`)
         }
         
-        console.log("Querying transaction");
-        
-        const vnpTransCode = req.query.vnp_TmnCode;
-        
-        const transaction = await Transaction.findOne({transactionCode: req.query.vnp_TxnRef}, {});
+        const transaction = await Transaction.findOne({transactionCode}, {transactionCode});
             
         if (!transaction)
             return res.status(404).json({
@@ -109,12 +108,7 @@ router.get('/vnpay_return', async (req, res, next) => {
                 {$set: {status: 'failed'}}
             );
             
-            return res.status(500).json({
-                message : "Đơn hàng thanh toán thất bại",
-                body : {
-                    transactionCode: vnpTransCode
-                }
-            });
+            return res.redirect(`https://localhost:5173/payment-success?order=${transactionCode}`)
         }
         
         const updateResponse = await Transaction.findOneAndUpdate(
@@ -127,10 +121,7 @@ router.get('/vnpay_return', async (req, res, next) => {
         })
         
         if (existedBooking)
-            return res.status(201).json({
-                message: "Transaction successfull, check your booking",
-                transactionCode: transaction.transactionCode
-            })
+            return res.redirect(`https://localhost:5173/payment-success?order=${transactionCode}`)
         
         const newBooking = new Booking({
             transactionCode:  transaction.transactionCode,
@@ -150,17 +141,12 @@ router.get('/vnpay_return', async (req, res, next) => {
         const savedBooking = await newBooking.save();
         
         if (!savedBooking) {
-          return res.status(500).json({ error: `Failed to create booking on transaction ${transaction.transactionCode}`});
+          return res.redirect(`https://localhost:5173/payment-success?order=${transactionCode}`)
         }
         
         console.log("Saved booking");
         
-        return res.status(200).json({
-            message: "Transaction success. Booking created. Check your account",
-            body: {
-                transactionCode: transaction.transactionCode
-            }
-        })
+        return res.redirect(`https://localhost:5173/payment-success?order=${transactionCode}`)
             
     } catch (error) {
         console.log(error)
