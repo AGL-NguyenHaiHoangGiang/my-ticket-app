@@ -1,21 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import SideItem from "../../../components/blog/sideItem";
-import { getAllBlogCategories } from "../../../services/blog";
 import adsBanner from "../../../assets/images/blog/ad-banner.png";
 import BlogAds from "../blog-ads";
 
-const BlogSide = () => {
-  const [blogs, setBlogs] = useState([]);
-
-  useEffect(() => {
-    getAllBlogCategories(100)
-      .then((res) => {
-        setBlogs(res.data.metadata || []);
-      })
-      .catch((err) => {
-        console.error("Error fetching blogs:", err);
-      });
-  }, []);
+const BlogSide = ({ blogs }) => {
+  if (!blogs || !blogs.length) return null;
 
   // Lấy ngẫu nhiên 5 tin
   const getRandomBlogs = (arr, n) => {

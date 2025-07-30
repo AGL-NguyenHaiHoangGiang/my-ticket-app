@@ -7,7 +7,6 @@ const authMiddleware = require('../../middlewares/authMiddleware')
 const authorizeRoles = require('../../middlewares/authRolesMiddleware')
 const router = express.Router()
 
-
 //Authentication
 router.use(authMiddleware) // Verify JWT token
 router.use(authorizeRoles(['MANAGER'])) // Check for MANAGER role

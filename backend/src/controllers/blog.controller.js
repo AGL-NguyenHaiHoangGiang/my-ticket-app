@@ -20,7 +20,7 @@ class BlogController {
   }
 
   // Delete blog by id
-  deleteBlog = async (req, res, next) =>{
+  deleteBlog = async (req, res, next) => {
     new OK({
       message: 'Delete blog success',
       metadata: await blogService.deleteBlog(req.params.id),

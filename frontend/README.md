@@ -23,6 +23,7 @@ pnpm run dev
 ## 🎫 Tài khoản demo
 
 ### Đăng nhập quản trị viên
+
 - **Địa chỉ:** [http://localhost:5173/admin/](http://localhost:5173/admin/)
 - **Tài khoản:** `admin`
 - **Mật khẩu:** `myticketadmin`
@@ -31,5 +32,5 @@ pnpm run dev
 
 > **Lưu ý:** Để đăng nhập, hãy nhấn vào biểu tượng đăng nhập (popup) trên thanh header.
 
-- **Tài khoản:** `demo@gmail.com`
+- **Tài khoản:** `demo2@gmail.com`
 - **Mật khẩu:** `demo`

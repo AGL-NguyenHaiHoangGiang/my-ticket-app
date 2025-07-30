@@ -1,45 +1,29 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import LatestNews from "./blogBottom/latestNews";
 import OtherNews from "./blogBottom/otherNews";
 import VerticalPostItem from "./verticalPostItem";
 import BlogSide from "./blogBottom/blogSide";
-import { getBlogsByCategory } from "../../services/blog";
 
-const BlogBottom = () => {
-  const [sportsNews, setSportsNews] = useState([]);
-  const [entertainmentNews, setEntertainmentNews] = useState([]);
+const BlogBottom = ({ blogs }) => {
+  if (!blogs || !blogs.length) return null;
 
-  useEffect(() => {
-    // Lấy tất cả tin và lọc theo category
-    getBlogsByCategory("", 100)
-      .then((res) => {
-        const allNews = res.data.metadata || [];
+  // Lọc tin thể thao
+  const sportsNews = blogs
+    .filter(
+      (item) =>
+        item.category_id?.name === "Thể Thao" ||
+        item.category_id?.name === "Du lịch"
+    )
+    .slice(0, 4);
 
-        // Lọc tin thể thao
-        const sportsFiltered = allNews
-          .filter(
-            (item) =>
-              item.category_id?.name === "Thể Thao" ||
-              item.category_id?.name === "Du lịch"
-          )
-          .slice(0, 4);
-
-        // Lọc tin giải trí
-        const entertainmentFiltered = allNews
-          .filter(
-            (item) =>
-              item.category_id?.name === "Giải Trí" ||
-              item.category_id?.name === "Phim ảnh"
-          )
-          .slice(0, 4);
-
-        setSportsNews(sportsFiltered);
-        setEntertainmentNews(entertainmentFiltered);
-      })
-      .catch((err) => {
-        console.error("Error fetching news:", err);
-      });
-  }, []);
+  // Lọc tin giải trí
+  const entertainmentNews = blogs
+    .filter(
+      (item) =>
+        item.category_id?.name === "Giải Trí" ||
+        item.category_id?.name === "Phim ảnh"
+    )
+    .slice(0, 4);
 
   const sportNews = {
     title: "Thể thao - Du lịch",
@@ -89,7 +73,7 @@ const BlogBottom = () => {
     <div className="blog--bottom">
       <div className="container flex-box">
         <div className="blog__main">
-          <LatestNews />
+          <LatestNews blogs={blogs} />
           {sportsNews.length > 0 && sportNews.bigCard && (
             <OtherNews
               title={sportNews.title}
@@ -107,7 +91,7 @@ const BlogBottom = () => {
             />
           )}
         </div>
-        <BlogSide />
+        <BlogSide blogs={blogs} />
       </div>
     </div>
   );
