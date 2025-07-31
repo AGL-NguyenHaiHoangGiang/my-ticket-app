@@ -91,7 +91,7 @@ const TicketDetail = ({ mode = 'add' }) => {
             // Set ticket tiers if available
             if (eventData.showings?.[0]?.ticketTypes) {
                 const mappedTiers = eventData.showings[0].ticketTypes.map((ticket, index) => ({
-                    id: ticket.id || index + 1,
+                    id: ticket.id || index + 1, // Đảm bảo có id
                     tierName: ticket.name,
                     price: ticket.price,
                     quantity: ticket.quantity || 0,
@@ -135,14 +135,30 @@ const TicketDetail = ({ mode = 'add' }) => {
                 endTime: values.dateRange?.[1]?.toISOString(),
                 bannerURL: fileList[0]?.url || fileList[0]?.response?.url || fileList[0]?.thumbUrl || '',
                 showings: [{
-                    ticketTypes: ticketTiers.map(tier => ({
-                        name: tier.tierName,
-                        price: tier.price,
-                        quantity: tier.quantity,
-                        description: tier.description,
-                        benefits: tier.benefits,
+                    id: 1,
+                    name: "Default Showing",
+                    description: "",
+                    remaining_tickets: ticketTiers.reduce((sum, tier) => sum + (tier.quantity || 0), 0),
+                    ticketTypes: ticketTiers.map((tier, index) => ({
+                        id: tier.id || index + 1, 
+                        name: tier.tierName || '',
+                        description: tier.description || '',
+                        isFree: (tier.price || 0) === 0,
+                        price: tier.price || 0,
+                        originalPrice: tier.price || 0,
+                        maxQtyPerOrder: 10,
+                        minQtyPerOrder: 1,
+                        position: index,
+                        status: "ACTIVE",
+                        statusName: "Đang bán",
+                        imageUrl: "",
+                        ticketStartTime: values.dateRange?.[0]?.toISOString(),
+                        ticketEndTime: values.dateRange?.[1]?.toISOString(),
+                        // Custom fields
+                        quantity: tier.quantity || 0,
+                        benefits: tier.benefits || ''
                     }))
-                }]
+                }],
             };
 
             // console.log('Form data:', formData);
@@ -218,10 +234,11 @@ const TicketDetail = ({ mode = 'add' }) => {
             ));
             message.success('Đã cập nhật hạng vé!');
         } else {
-            // Thêm hạng vé mới
+            // Thêm hạng vé mới với id duy nhất
+            const newId = ticketTiers.length > 0 ? Math.max(...ticketTiers.map(t => t.id)) + 1 : 1;
             const newTier = {
                 ...values,
-                id: Date.now()
+                id: newId
             };
             setTicketTiers(prev => [...prev, newTier]);
             message.success('Đã thêm hạng vé!');

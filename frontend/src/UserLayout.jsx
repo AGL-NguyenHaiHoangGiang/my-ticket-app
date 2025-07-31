@@ -24,6 +24,7 @@ import NotFound from "./pages/404";
 import Account from "./pages/account";
 import Booking from "./pages/booking";
 import AccountTicket from "./pages/account-ticket";
+import PaymentSuccess from "./pages/payment-success";
 
 export default function UserLayout() {
   const location = useLocation();
@@ -42,6 +43,7 @@ export default function UserLayout() {
       return "event single";
     else if (path.startsWith("/loai-su-kien/")) return "page-event";
     else if (path === "/tai-khoan") return "account";
+    else if (path === "/payment-success") return "payment-success";
     else return "pages";
   };
 
@@ -121,6 +123,7 @@ export default function UserLayout() {
             path="/tai-khoan-ticket"
             element={<AccountTicket auth={auth} />}
           />
+          <Route path="/payment-success" element={<PaymentSuccess />} />
         </Routes>
       </main>
       <Footer />

@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import EventService from '../services/events';
+import OrderService from '../services/order';
 
 // Icons
 import iconMinus from '../assets/images/booking/icon-minus.svg';
@@ -93,7 +94,7 @@ const Booking = ({ auth, setLoginOpen }) => {
         return () => clearInterval(timer);
     }, [timeLeft, navigate, slug]);
 
-    // Format time for display
+    // Format time 
     const formatTime = (seconds) => {
         const minutes = Math.floor(seconds / 60);
         const remainingSeconds = seconds % 60;
@@ -119,9 +120,10 @@ const Booking = ({ auth, setLoginOpen }) => {
         }).format(price).replace(/\s?₫/, '₫');
     }
 
-    const handleTicketQuantityChange = (ticketId, action) => {
+    const handleTicketQuantityChange = (ticketId, ticketName, action) => {
         setSelectedTickets(prev => {
-            const currentQuantity = prev[ticketId] || 0;
+            const currentTicket = prev[ticketId];
+            const currentQuantity = currentTicket ? currentTicket.quantity : 0;
             let newQuantity = currentQuantity;
 
             if (action === 'increase') {
@@ -137,20 +139,27 @@ const Booking = ({ auth, setLoginOpen }) => {
 
             return {
                 ...prev,
-                [ticketId]: newQuantity
+                [ticketId]: {
+                    id: ticketId,
+                    ticketName: ticketName,
+                    quantity: newQuantity
+                }
             };
         });
     };
 
     const getTotalAmount = () => {
         return ticketList.reduce((total, ticket) => {
-            const quantity = selectedTickets[ticket.id] || 0;
+            const selectedTicket = selectedTickets[ticket.id];
+            const quantity = selectedTicket ? selectedTicket.quantity : 0;
             return total + (ticket.price * quantity);
         }, 0);
     };
 
     const getTotalTickets = () => {
-        return Object.values(selectedTickets).reduce((total, quantity) => total + quantity, 0);
+        return Object.values(selectedTickets).reduce((total, ticketObj) => {
+            return total + (ticketObj ? ticketObj.quantity : 0);
+        }, 0);
     };
 
     const handleSubmitBooking = async (data) => {
@@ -162,25 +171,54 @@ const Booking = ({ auth, setLoginOpen }) => {
         setLoading(true);
 
         try {
-            // Simulate booking API call
-            await new Promise(resolve => setTimeout(resolve, 2000));
-
+            
             const bookingData = {
+                description: (data.note ? data.note + ' - ' : '') + 'Đặt vé sự kiện ' + detail.title,
+                tickets: Object.values(selectedTickets), //array
+                amount: getTotalAmount(),
                 eventId: detail.id,
-                tickets: selectedTickets,
-                customerInfo: data, // Sử dụng data từ form validation
-                paymentMethod,
-                totalAmount: getTotalAmount(),
-                totalTickets: getTotalTickets()
+                paymentMethod
             };
 
-            console.log('Booking data:', bookingData);
-            alert('Đặt vé thành công! Chúng tôi sẽ liên hệ với bạn sớm nhất.');
-            navigate(`/su-kien/${slug}`);
+            // console.log('Booking data:', bookingData);
+
+            const token = localStorage.getItem('customerToken');
+            
+            if (!token) {
+                alert('Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại!');
+                return;
+            }
+
+            if (!detail.id) {
+                alert('Không tìm thấy thông tin sự kiện!');
+                return;
+            }
+
+            const response = await OrderService.create_payment_url(
+                bookingData.description,
+                bookingData.tickets,
+                bookingData.amount,
+                bookingData.eventId,
+                data.fullName, // Sử dụng data từ form
+                data.phone,    // Sử dụng data từ form
+                data.email,    // Sử dụng data từ form
+                token
+            );
+
+            // console.log('Payment URL response:', response);
+            
+            // Kiểm tra response
+            if (response.url) {
+                // Chuyển hướng đến trang thanh toán
+                window.location.href = response.url;
+            } else {
+                throw new Error('Không nhận được URL thanh toán từ server');
+            }
 
         } catch (error) {
             console.error('Booking error:', error);
-            alert('Có lỗi xảy ra, vui lòng thử lại!');
+            let errorMessage = 'Có lỗi xảy ra, vui lòng thử lại!';
+            alert(errorMessage);
         } finally {
             setLoading(false);
         }
@@ -245,7 +283,6 @@ const Booking = ({ auth, setLoginOpen }) => {
 
                     {/* Booking Form */}
                     <form className="booking-form" onSubmit={handleSubmit(handleSubmitBooking)}>
-                        {/* Ticket Selection */}
                         <div className="booking-section">
                             <h3 className="section-title">
                                 <img src={iconTicket} alt="Ticket" />
@@ -265,18 +302,18 @@ const Booking = ({ auth, setLoginOpen }) => {
                                             <button
                                                 type="button"
                                                 className="quantity-btn"
-                                                onClick={() => handleTicketQuantityChange(ticket.id, 'decrease')}
-                                                disabled={!selectedTickets[ticket.id]}
+                                                onClick={() => handleTicketQuantityChange(ticket.id, ticket.name, 'decrease')}
+                                                disabled={!selectedTickets[ticket.id] || selectedTickets[ticket.id].quantity === 0}
                                             >
                                                 <img src={iconMinus} alt="Decrease" />
                                             </button>
                                             <span className="quantity-display">
-                                                {selectedTickets[ticket.id] || 0}
+                                                {selectedTickets[ticket.id] ? selectedTickets[ticket.id].quantity : 0}
                                             </span>
                                             <button
                                                 type="button"
                                                 className="quantity-btn"
-                                                onClick={() => handleTicketQuantityChange(ticket.id, 'increase')}
+                                                onClick={() => handleTicketQuantityChange(ticket.id, ticket.name, 'increase')}
                                             >
                                                 <img src={iconPlus} alt="Increase" />
                                             </button>
@@ -359,17 +396,7 @@ const Booking = ({ auth, setLoginOpen }) => {
                                     />
                                     <span className="payment-label">VNPay</span>
                                 </label>
-                                <label className="payment-method">
-                                    <input
-                                        type="radio"
-                                        name="payment"
-                                        value="momo"
-                                        checked={paymentMethod === 'momo'}
-                                        onChange={(e) => setPaymentMethod(e.target.value)}
-                                    />
-                                    <span className="payment-label">Ví MoMo</span>
-                                </label>
-                                <label className="payment-method">
+                                {/* <label className="payment-method">
                                     <input
                                         type="radio"
                                         name="payment"
@@ -378,7 +405,7 @@ const Booking = ({ auth, setLoginOpen }) => {
                                         onChange={(e) => setPaymentMethod(e.target.value)}
                                     />
                                     <span className="payment-label">Chuyển khoản ngân hàng</span>
-                                </label>
+                                </label> */}
                             </div>
                         </div>
 
@@ -387,13 +414,13 @@ const Booking = ({ auth, setLoginOpen }) => {
                             <h3 className="section-title">Tóm tắt đơn hàng</h3>
                             <div className="summary-content">
                                 {/* Chi tiết từng loại vé */}
-                                {Object.entries(selectedTickets).map(([ticketId, quantity]) => {
+                                {Object.entries(selectedTickets).map(([ticketId, ticketObj]) => {
                                     const ticket = ticketList.find(t => t.id == ticketId);
-                                    if (!ticket || quantity === 0) return null;
+                                    if (!ticket || !ticketObj || ticketObj.quantity === 0) return null;
                                     return (
                                         <div key={ticketId} className="summary-item">
-                                            <span>{ticket.name} x{quantity}</span>
-                                            <span>{formatPrice(ticket.price * quantity)}</span>
+                                            <span>{ticket.name} x{ticketObj.quantity}</span>
+                                            <span>{formatPrice(ticket.price * ticketObj.quantity)}</span>
                                         </div>
                                     );
                                 })}

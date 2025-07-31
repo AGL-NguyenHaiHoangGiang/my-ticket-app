@@ -92,7 +92,7 @@ router.get('/vnpay_return', async (req, res, next) => {
         const transactionCode = req.query.vnp_TxnRef
         
         if (!verify.isVerified) {
-            return res.redirect(`https://localhost:5173/payment-success?order=${transactionCode}`)
+            return res.redirect(`http://localhost:5173/payment-success?order=${transactionCode}`)
         }
         
         const transaction = await Transaction.findOne({transactionCode}, {transactionCode});
@@ -108,7 +108,7 @@ router.get('/vnpay_return', async (req, res, next) => {
                 {$set: {status: 'failed'}}
             );
             
-            return res.redirect(`https://localhost:5173/payment-success?order=${transactionCode}`)
+            return res.redirect(`http://localhost:5173/payment-success?order=${transactionCode}`)
         }
         
         const updateResponse = await Transaction.findOneAndUpdate(
@@ -121,7 +121,7 @@ router.get('/vnpay_return', async (req, res, next) => {
         })
         
         if (existedBooking)
-            return res.redirect(`https://localhost:5173/payment-success?order=${transactionCode}`)
+            return res.redirect(`http://localhost:5173/payment-success?order=${transactionCode}`)
         
         const newBooking = new Booking({
             transactionCode:  transaction.transactionCode,
@@ -141,12 +141,12 @@ router.get('/vnpay_return', async (req, res, next) => {
         const savedBooking = await newBooking.save();
         
         if (!savedBooking) {
-          return res.redirect(`https://localhost:5173/payment-success?order=${transactionCode}`)
+          return res.redirect(`http://localhost:5173/payment-success?order=${transactionCode}`)
         }
         
         console.log("Saved booking");
         
-        return res.redirect(`https://localhost:5173/payment-success?order=${transactionCode}`)
+        return res.redirect(`http://localhost:5173/payment-success?order=${transactionCode}`)
             
     } catch (error) {
         console.log(error)

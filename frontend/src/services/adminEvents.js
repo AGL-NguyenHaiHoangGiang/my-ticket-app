@@ -2,7 +2,7 @@ import adminApi from './adminApi';
 
 class AdminEventService {
     // Get all events
-    async getAll(limit = 99999) {
+    async getAll(limit = 100) {
         const response = await adminApi.get(`/event/all?limit=${limit}`);
         return response.data;
     }
