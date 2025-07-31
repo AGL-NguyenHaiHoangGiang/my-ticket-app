@@ -95,7 +95,7 @@ router.get('/vnpay_return', async (req, res, next) => {
             return res.redirect(`http://localhost:5173/payment-success?order=${transactionCode}`)
         }
         
-        const transaction = await Transaction.findOne({transactionCode}, {transactionCode});
+        const transaction = await Transaction.findOne({transactionCode});
             
         if (!transaction)
             return res.status(404).json({
@@ -111,7 +111,7 @@ router.get('/vnpay_return', async (req, res, next) => {
             return res.redirect(`http://localhost:5173/payment-success?order=${transactionCode}`)
         }
         
-        const updateResponse = await Transaction.findOneAndUpdate(
+        const updatedTransaction = await Transaction.findOneAndUpdate(
             {transactionCode : transaction.transactionCode},
             {$set: {status: 'success'}}
         );
@@ -130,7 +130,7 @@ router.get('/vnpay_return', async (req, res, next) => {
             eventId: transaction.eventId,
             ticketId: transaction.ticketId,
             tickets: transaction.tickets,
-            amount: transaction.amount,
+            amount: parseInt(transaction.amount),
             status: 'success',
             description: transaction.description,
             fullname: transaction.fullname, 
