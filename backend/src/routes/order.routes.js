@@ -117,7 +117,7 @@ router.get('/vnpay_return', async (req, res, next) => {
         );
         
         const existedBooking = await Booking.findOne({
-            vnpTranscode : vnpTransCode
+            transactionCode : transaction.transactionCode
         })
         
         if (existedBooking)
