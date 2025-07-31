@@ -56,6 +56,17 @@ const bookingSchema = new mongoose.Schema(
     description: {
         type: String,
         default: 'Booking transaction'
+    },fullname:{
+        type: String,
+        default: ''
+    },
+    tele: {
+        type: String,
+        default: ''
+    },
+    email: {
+        type: String,
+        default: ''
     }
   },
   {
