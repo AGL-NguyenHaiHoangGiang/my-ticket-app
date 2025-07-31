@@ -12,7 +12,7 @@ const TicketMainContent = ({
   const allTickets = [
     ...ticketData.success,
     ...ticketData.inprogress,
-    ...ticketData.canceled,
+    ...ticketData.cancelled,
   ];
 
   const getTicketsByTab = (tab) => {
@@ -23,8 +23,8 @@ const TicketMainContent = ({
         return ticketData.success;
       case "inprogress":
         return ticketData.inprogress;
-      case "canceled":
-        return ticketData.canceled;
+      case "cancelled":
+        return ticketData.cancelled;
       default:
         return [];
     }

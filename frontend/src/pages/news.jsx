@@ -11,7 +11,7 @@ const News = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    getAllBlogCategories(1000)
+    getAllBlogCategories(30)
       .then((res) => {
         setBlogs(res.data.metadata || []);
         setLoading(false);
