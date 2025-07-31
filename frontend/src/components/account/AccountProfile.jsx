@@ -18,7 +18,7 @@ const AccountProfile = ({
       <div className="account-detail__container">
         <div className="account-avatar__section">
           <div className="avatar__container avatar__main">
-            <img src={avatar} alt="Avatar Image" />
+            <img src={userInfo.avatar} alt="Avatar Image" />
           </div>
           {!isEditing && (
             <button className="update-info-btn" onClick={onToggleEdit}>

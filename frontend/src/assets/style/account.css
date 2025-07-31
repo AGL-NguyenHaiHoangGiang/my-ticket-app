@@ -793,6 +793,7 @@
   cursor: pointer;
   transition: all 0.3s ease;
   box-shadow: 0 4px 15px rgba(74, 144, 226, 0.3);
+  margin-top: 12px;
 }
 
 .update-info-btn:hover {
