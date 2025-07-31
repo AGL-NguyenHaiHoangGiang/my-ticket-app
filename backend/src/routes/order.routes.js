@@ -154,4 +154,8 @@ router.get('/vnpay_return', async (req, res, next) => {
     }
 });
 
+router.get('/trans-info/:id',  
+    authMiddleware, 
+    orderController.getTransaction);
+
 module.exports = router;
