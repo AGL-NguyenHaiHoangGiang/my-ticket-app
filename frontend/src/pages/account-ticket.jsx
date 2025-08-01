@@ -223,12 +223,7 @@ const AccountTicket = ({ auth }) => {
   const getUserDisplayName = () => {
     // First try from API response
     if (userInfo) {
-      const name =
-        userInfo.fullName ||
-        userInfo.name ||
-        userInfo.firstName ||
-        userInfo.username ||
-        userInfo.email;
+      const name = userInfo.name;
       if (name) return name;
     }
 
@@ -237,12 +232,7 @@ const AccountTicket = ({ auth }) => {
       const storedUserInfo = localStorage.getItem("userInfo");
       if (storedUserInfo) {
         const parsed = JSON.parse(storedUserInfo);
-        const name =
-          parsed.fullName ||
-          parsed.name ||
-          parsed.firstName ||
-          parsed.username ||
-          parsed.email;
+        const name = parsed.name;
         if (name) return name;
       }
     } catch (error) {
@@ -251,6 +241,29 @@ const AccountTicket = ({ auth }) => {
 
     // Last fallback
     return "Người dùng";
+  };
+
+  const getUserAvatar = () => {
+    // First try from API response
+    if (userInfo) {
+      const avatar = userInfo.avatar;
+      if (avatar) return avatar;
+    }
+
+    // Fallback to localStorage
+    try {
+      const storedUserInfo = localStorage.getItem("userInfo");
+      if (storedUserInfo) {
+        const parsed = JSON.parse(storedUserInfo);
+        const avatar = parsed.avatar;
+        if (avatar) return avatar;
+      }
+    } catch (error) {
+      console.error("Error parsing stored user info:", error);
+    }
+
+    // Last fallback
+    return "default-avatar.png";
   };
 
   return (
@@ -266,6 +279,7 @@ const AccountTicket = ({ auth }) => {
               userName={getUserDisplayName()}
               onLogout={logout}
               activeTab="ticket"
+              userImage={getUserAvatar()}
             />
             {/* End Side panel */}
 
