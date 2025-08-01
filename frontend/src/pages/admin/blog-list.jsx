@@ -32,11 +32,11 @@ const BlogList = () => {
     showSizeChanger: false,
   });
 
-  // Load tất cả blogs một lần với limit 10000
+  // Load tất cả blogs một lần
   const fetchAllBlogs = async () => {
     try {
       setLoading(true);
-      const response = await getBlogsWithPagination(1, 10000);
+      const response = await getBlogsWithPagination(1, 100);
       const data = response.data;
 
       if (data && data.metadata) {

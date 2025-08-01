@@ -17,7 +17,7 @@ const NewsCategory = () => {
 
   useEffect(() => {
     setLoading(true);
-    getAllBlogCategories(1000)
+    getAllBlogCategories(100)
       .then((res) => {
         const allBlogs = res.data.metadata || [];
         let filteredBlogs = allBlogs;
@@ -25,15 +25,11 @@ const NewsCategory = () => {
         // Lọc theo category nếu có
         if (category === "the-thao") {
           filteredBlogs = allBlogs.filter(
-            (item) =>
-              item.category_id?.name === "Thể Thao" ||
-              item.category_id?.name === "Du lịch"
+            (item) => item.category_id?.name === "Thể Thao"
           );
         } else if (category === "giai-tri") {
           filteredBlogs = allBlogs.filter(
-            (item) =>
-              item.category_id?.name === "Giải Trí" ||
-              item.category_id?.name === "Phim ảnh"
+            (item) => item.category_id?.name === "Giải Trí"
           );
         }
 
@@ -73,16 +69,12 @@ const NewsCategory = () => {
 
   // Lọc tin thể thao
   const sportsNews = blogs.filter(
-    (item) =>
-      item.category_id?.name === "Thể Thao" ||
-      item.category_id?.name === "Du lịch"
+    (item) => item.category_id?.name === "Thể Thao"
   );
 
   // Lọc tin giải trí
   const entertainmentNews = blogs.filter(
-    (item) =>
-      item.category_id?.name === "Giải Trí" ||
-      item.category_id?.name === "Phim ảnh"
+    (item) => item.category_id?.name === "Giải Trí"
   );
 
   const handleLoadMore = () => {

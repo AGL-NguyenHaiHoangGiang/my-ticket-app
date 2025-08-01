@@ -9,7 +9,12 @@ import iconTicket from "../../assets/images/account/ticket.svg";
 import iconWallet from "../../assets/images/account/wallet.svg";
 import iconLogout from "../../assets/images/account/icon-logout.svg";
 
-const AccountSidebar = ({ userName, onLogout, activeTab = "account" }) => {
+const AccountSidebar = ({
+  userName,
+  onLogout,
+  activeTab = "account",
+  userImage,
+}) => {
   const navigate = useNavigate();
 
   const handleLogout = async (e) => {
@@ -37,7 +42,7 @@ const AccountSidebar = ({ userName, onLogout, activeTab = "account" }) => {
     <div className="account__side">
       <div className="welcome__container">
         <div className="avatar__container avatar__sidebar">
-          <img src={avatar} alt="Avatar Image" />
+          <img src={userImage} alt="Avatar Image" />
         </div>
         <div className="name__container">
           <div className="welcome__text">

@@ -5,6 +5,7 @@ import AccountMainContent from "../components/account/AccountMainContent";
 import NotFound from "./404";
 import SimpleLoading from "../components/SimpleLoading";
 import UserService from "../services/user";
+import avatarPlaceholder from "../assets/images/account/avatar.jpg";
 
 const Account = ({ auth }) => {
   const [isEditing, setIsEditing] = useState(false);
@@ -66,6 +67,7 @@ const Account = ({ auth }) => {
               joinDate: userData.createdAt
                 ? new Date(userData.createdAt).toLocaleDateString("vi-VN")
                 : userData.joinDate || "N/A",
+              avatar: userData.avatar || avatarPlaceholder,
             };
 
             console.log("Formatted User Info:", formattedUserInfo); // Debug log
@@ -183,7 +185,11 @@ const Account = ({ auth }) => {
         <div className="container">
           <AccountBreadcrumbs />
           <div className="account__wrapper">
-            <AccountSidebar userName={userInfo.name} onLogout={logout} />
+            <AccountSidebar
+              userName={userInfo.name}
+              onLogout={logout}
+              userImage={userInfo.avatar}
+            />
             <AccountMainContent
               userInfo={userInfo}
               isEditing={isEditing}

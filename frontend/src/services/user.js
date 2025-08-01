@@ -27,7 +27,7 @@ class UserService {
   // Lấy tất cả booking của user hiện tại
   static async getUserBookings() {
     const token = localStorage.getItem("customerToken");
-    return axios.get(`${API_BASE_URL}/user/my-bookings1`, {
+    return axios.get(`${API_BASE_URL}/user/my-bookings`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
