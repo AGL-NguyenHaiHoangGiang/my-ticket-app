@@ -12,10 +12,10 @@ const adminEventRoutes = require('./routes/admin.event.routes')
 
 const app = express()
 
-const httpsOptions = {
-  key: './cert/cert-key.pem',
-  cert: './cert/cert.pem'
-}
+// const httpsOptions = {
+//   key: './cert/cert-key.pem',
+//   cert: './cert/cert.pem'
+// }
 
 // init middlewares
 app.use(express.json())
